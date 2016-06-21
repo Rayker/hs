@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.ardecs.hs.hsdb.repositories.SpecialityRepository;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @EnableJpaRepositories(basePackages = {"ru.ardecs.hs.hsdb.repositories"})
