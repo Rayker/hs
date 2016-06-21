@@ -5,15 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.ardecs.hs.hsdb.entities.Speciality;
 import ru.ardecs.hs.hsdb.repositories.SpecialityRepository;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @EnableJpaRepositories(basePackages = {"ru.ardecs.hs.hsdb.repositories"})
@@ -22,11 +18,10 @@ public class HelloController {
 	@Autowired
 	private SpecialityRepository repository;
 
-	private ObjectMapper mapper = new ObjectMapper();
-
 	@RequestMapping(value = "/specialities", method = RequestMethod.GET)
-	public String specialities(Pageable pageable) throws IOException {
-		return mapper.writeValueAsString(repository.findAll(pageable));
+	@ResponseBody
+	public Iterable<Speciality> specialities(Pageable pageable) throws IOException {
+		return repository.findAll(pageable);
 	}
 
 	public void setRepository(SpecialityRepository repository) {
