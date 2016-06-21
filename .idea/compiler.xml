@@ -23,11 +23,13 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="hsapi" />
+        <module name="hsdb" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="hs" target="1.5" />
       <module name="hsapi" target="1.5" />
+      <module name="hsdb" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
