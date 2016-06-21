@@ -46,5 +46,10 @@
             <artifactId>spring-boot-starter-jdbc</artifactId>
             <version>1.2.7.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson</groupId>
+            <artifactId>jackson-datatype-json-org</artifactId>
+            <version>1.8.0</version>
+        </dependency>
     </dependencies>
 </project>

@@ -2,6 +2,7 @@
   <dictionary name="Rayker">
     <words>
       <w>hsapi</w>
+      <w>hsdb</w>
     </words>
   </dictionary>
 </component>
