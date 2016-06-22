@@ -4,5 +4,4 @@ import org.springframework.data.repository.CrudRepository;
 import ru.ardecs.hs.hsdb.entities.Hospital;
 
 public interface HospitalRepository extends CrudRepository<Hospital, Long> {
-	//Iterable<Hospital> find(Iterable<Long> ids);
 }
