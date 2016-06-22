@@ -1,0 +1,29 @@
+package ru.ardecs.hs.hsdb.entities;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "hospitals")
+public class Hospital {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
+
+	private String name;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+}
