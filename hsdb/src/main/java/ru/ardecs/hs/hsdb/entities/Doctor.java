@@ -11,12 +11,10 @@ public class Doctor {
 
 	private String fullname;
 
-//	@Column(name = "specialities_id")
 	@ManyToOne
 	@JoinColumn(name = "specialities_id")
 	private Speciality speciality;
 
-//	@Column(name = "hospitals_id")
 	@ManyToOne
 	@JoinColumn(name = "hospitals_id")
 	private Hospital hospital;

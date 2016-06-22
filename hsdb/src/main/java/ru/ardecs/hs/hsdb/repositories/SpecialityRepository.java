@@ -4,6 +4,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import ru.ardecs.hs.hsdb.entities.Speciality;
 
-	public interface SpecialityRepository extends CrudRepository<Speciality, Long> {
+public interface SpecialityRepository extends CrudRepository<Speciality, Long> {
 	Iterable<Speciality> findAll(Pageable pageable);
 }
