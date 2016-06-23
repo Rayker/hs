@@ -28,8 +28,8 @@ public class WebController {
 		cfg = new Configuration(Configuration.VERSION_2_3_23);
 		cfg.setClassForTemplateLoading(getClass(), "/ftl/");
 		cfg.setDefaultEncoding("UTF-8");
-//		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
+		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+//		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.DEBUG_HANDLER);
 		cfg.setAutoFlush(true);
 	}
 
@@ -54,14 +54,27 @@ public class WebController {
 	}
 
 	@RequestMapping(value = "/hospitals.html", method = RequestMethod.POST, params = {"specialityId"})
-	@ResponseBody
-	public List<Hospital> hospitals(Long specialityId, Pageable pageable) {
-		return doctorRepository.queryHospitalsBySpecialityId(specialityId, pageable);
+	public String hospitals(Long specialityId, Pageable pageable)   throws IOException, TemplateException {
+		Map<String, Object> map = new HashMap<>();
+		map.put("specialityId", specialityId);
+		map.put("hospitals", doctorRepository.queryHospitalsBySpecialityId(specialityId, pageable));
+		Template template = cfg.getTemplate("hospitals.ftl");
+		try (Writer output = new StringWriter()) {
+			template.process(map, output);
+			return output.toString();
+		}
 	}
 
 	@RequestMapping(value = "/doctors.html", method = RequestMethod.POST, params = {"specialityId", "hospitalId"})
-	@ResponseBody
-	public List<Doctor> doctors(Long specialityId, Long hospitalId, Pageable pageable) {
-		return doctorRepository.findBySpecialityIdAndHospitalId(specialityId, hospitalId, pageable);
+	public String doctors(Long specialityId, Long hospitalId, Pageable pageable) throws IOException, TemplateException {
+		Map<String, Object> map = new HashMap<>();
+		map.put("specialityId", specialityId);
+		map.put("hospitalId", hospitalId);
+		map.put("doctors", doctorRepository.findBySpecialityIdAndHospitalId(specialityId, hospitalId, pageable));
+		Template template = cfg.getTemplate("doctors.ftl");
+		try (Writer output = new StringWriter()) {
+			template.process(map, output);
+			return output.toString();
+		}
 	}
 }

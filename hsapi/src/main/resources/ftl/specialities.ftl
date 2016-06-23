@@ -5,10 +5,11 @@
         <title>title</title>
     </head>
     <body>
-        <form>
+        <form method='POST' action='hospitals.html'>
             <#list specialities as speciality>
-                <input type='radio' name='scenarioId' value='${speciality.id}'>${speciality.name}</input>
+                <label><input type='radio' name='specialityId' value='${speciality.id}'>${speciality.name}<br></label>
             </#list>
+            <input type='submit'>
         </form>
     </body>
 </html>
