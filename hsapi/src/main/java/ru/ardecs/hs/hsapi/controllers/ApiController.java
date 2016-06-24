@@ -53,16 +53,9 @@ public class ApiController {
 		return doctorRepository.findBySpecialityIdAndHospitalId(specialityId, hospitalId, pageable);
 	}
 
-//	@RequestMapping(value = "/intervals.json", method = RequestMethod.POST, params = {"doctorId"})
-//	public List<VisitModel> intervals(Long doctorId) {
-//		List<VisitModel> temp = scheduleManager.getTimes(doctorId, new Date(System.currentTimeMillis()));
-//		return temp;
-//	}
-
-	@RequestMapping(value = "/intervals.json", method = RequestMethod.POST, params = {"doctorId"})
-	public List<VisitModel> times(Long doctorId) {
-//		Iterable<ReservedTime> all = reservedTimeRepository.findByDate(new java.sql.Date(new Date().getTime()));
-		List<VisitModel> times = scheduleManager.getTimes(doctorId, new java.sql.Date(new Date().getTime()));
+	@RequestMapping(value = "/intervals.json", method = RequestMethod.POST, params = {"doctorId", "date"})
+	public List<VisitModel> times(Long doctorId, java.sql.Date date) {
+		List<VisitModel> times = scheduleManager.getTimes(doctorId, date);
 		return times;
 	}
 }

@@ -40,6 +40,7 @@ public class ScheduleManager {
 												numberInInterval,
 												jobInterval.getId(),
 												getVisitTime(jobInterval, numberInInterval),
+												date,
 												keys.contains(getKey(jobInterval, numberInInterval)))))
 				.collect(Collectors.toList());
 	}

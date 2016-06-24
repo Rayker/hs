@@ -1,15 +1,19 @@
 package ru.ardecs.hs.hsapi.bl;
 
+import java.sql.Date;
+
 public class VisitModel {
 	private int numberInInterval;
 	private long intervalId;
 	private String visitTime;
+	private Date date;
 	private boolean reserved;
 
-	public VisitModel(int numberInInterval, long intervalId, String visitTime, boolean reserved) {
+	public VisitModel(int numberInInterval, long intervalId, String visitTime, Date date, boolean reserved) {
 		this.numberInInterval = numberInInterval;
 		this.intervalId = intervalId;
 		this.visitTime = visitTime;
+		this.date = date;
 		this.reserved = reserved;
 	}
 
@@ -43,5 +47,13 @@ public class VisitModel {
 
 	public void setIntervalId(long intervalId) {
 		this.intervalId = intervalId;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 }
