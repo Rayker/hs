@@ -1,5 +1,7 @@
 package ru.ardecs.hs.hsapi.bl;
 
+import ru.ardecs.hs.hsdb.entities.ReservedTime;
+
 import java.sql.Date;
 
 public class VisitModel {
@@ -15,6 +17,14 @@ public class VisitModel {
 		this.visitTime = visitTime;
 		this.date = date;
 		this.reserved = reserved;
+	}
+
+	public VisitModel(ReservedTime reservedTime) {
+		this.numberInInterval = reservedTime.getNumberInInterval();
+		this.intervalId = reservedTime.getJobInterval().getId();
+		this.visitTime = ScheduleManager.getVisitTime(reservedTime.getJobInterval(), reservedTime.getNumberInInterval());
+		this.date = reservedTime.getDate();
+		this.reserved = true;
 	}
 
 	public int getNumberInInterval() {

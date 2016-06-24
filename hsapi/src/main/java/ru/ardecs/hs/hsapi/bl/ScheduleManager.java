@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ScheduleManager {
-	private final int visitInMinutes = 30;
-	private final int visitInMilliseconds = visitInMinutes * 60 * 1000;
-	private DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+	private final static int visitInMinutes = 30;
+	private final static int visitInMilliseconds = visitInMinutes * 60 * 1000;
+	private static DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 	@Autowired
 	private ReservedTimeRepository reservedTimeRepository;
 
@@ -49,7 +49,7 @@ public class ScheduleManager {
 		return "" + numberInInterval + "_" + jobInterval.getId();
 	}
 
-	private String getVisitTime(JobInterval jobInterval, int numberInInterval) {
+	public static String getVisitTime(JobInterval jobInterval, int numberInInterval) {
 		long temp = jobInterval.getStartTime().getTime() + numberInInterval * visitInMilliseconds;
 		return timeFormat.format(new java.util.Date(temp));
 	}

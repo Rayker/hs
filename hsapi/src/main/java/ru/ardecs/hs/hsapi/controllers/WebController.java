@@ -6,10 +6,13 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ru.ardecs.hs.hsapi.bl.TicketModel;
 import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
+import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
 import ru.ardecs.hs.hsdb.repositories.SpecialityRepository;
 
 import javax.annotation.PostConstruct;
@@ -34,6 +37,9 @@ public class WebController {
 	}
 
 	@Autowired
+	private ReservedTimeRepository reservedTimeRepository;
+
+	@Autowired
 	private SpecialityRepository specialityRepository;
 
 	@Autowired
@@ -43,11 +49,7 @@ public class WebController {
 	public String specialities(Pageable pageable) throws IOException, TemplateException {
 		Map<String, Object> map = new HashMap<>();
 		map.put("specialities", specialityRepository.findAll(pageable).getContent());
-		Template template = cfg.getTemplate("specialities.ftl");
-		try (Writer output = new StringWriter()) {
-			template.process(map, output);
-			return output.toString();
-		}
+		return generateHtml(map, "specialities.ftl");
 	}
 
 	@RequestMapping(value = "/hospitals.html", method = RequestMethod.POST, params = {"specialityId"})
@@ -55,11 +57,7 @@ public class WebController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("specialityId", specialityId);
 		map.put("hospitals", doctorRepository.queryHospitalsBySpecialityId(specialityId, pageable));
-		Template template = cfg.getTemplate("hospitals.ftl");
-		try (Writer output = new StringWriter()) {
-			template.process(map, output);
-			return output.toString();
-		}
+		return generateHtml(map, "hospitals.ftl");
 	}
 
 	@RequestMapping(value = "/doctors.html", method = RequestMethod.POST, params = {"specialityId", "hospitalId"})
@@ -68,9 +66,23 @@ public class WebController {
 		map.put("specialityId", specialityId);
 		map.put("hospitalId", hospitalId);
 		map.put("doctors", doctorRepository.findBySpecialityIdAndHospitalId(specialityId, hospitalId, pageable));
-		Template template = cfg.getTemplate("doctors.ftl");
+		return generateHtml(map, "doctors.ftl");
+	}
+
+
+
+	@RequestMapping(value = "visits/{reservedTimeId}/ticket.html", method = RequestMethod.GET)
+	public String getTicket(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
+		TicketModel model = new TicketModel(reservedTimeRepository.findOne(reservedTimeId));
+		Map<String, Object> map = new HashMap<>();
+		map.put("model", model);
+		return generateHtml(map, "ticket.ftl");
+	}
+
+	private String generateHtml(Map<String, Object> model, String name) throws IOException, TemplateException {
+		Template template = cfg.getTemplate(name);
 		try (Writer output = new StringWriter()) {
-			template.process(map, output);
+			template.process(model, output);
 			return output.toString();
 		}
 	}

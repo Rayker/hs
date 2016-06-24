@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import ru.ardecs.hs.hsapi.bl.ScheduleManager;
+import ru.ardecs.hs.hsapi.bl.TicketModel;
 import ru.ardecs.hs.hsapi.bl.VisitModel;
 import ru.ardecs.hs.hsdb.entities.*;
 import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
@@ -55,10 +56,9 @@ public class ApiController {
 
 	@RequestMapping(value = "/visits", method = RequestMethod.POST, params = {"jobIntervalId", "numberInInterval", "date"})
 	public Long reserveVisit(Long jobIntervalId, int numberInInterval, java.sql.Date date) {
-		// todo check
+		// TODO: 6/24/16 check
 		ReservedTime saved = reservedTimeRepository.save(new ReservedTime(jobIntervalId, numberInInterval, date));
-		long id = saved.getId();
-		return id;
+		return saved.getId();
 	}
 
 //	@RequestMapping(value = "/visits/${reservedTimeId}", method = RequestMethod.GET)
@@ -68,6 +68,8 @@ public class ApiController {
 
 	@RequestMapping(value = "/visits/{reservedTimeId}", method = RequestMethod.DELETE)
 	public void getVisitModel(@PathVariable Long reservedTimeId) {
+		// TODO: 6/24/16 if not exists
 		reservedTimeRepository.delete(reservedTimeId);
+		// TODO: 6/24/16 return something?
 	}
 }
