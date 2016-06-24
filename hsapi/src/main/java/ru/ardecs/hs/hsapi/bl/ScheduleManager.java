@@ -6,9 +6,9 @@ import ru.ardecs.hs.hsdb.entities.JobInterval;
 import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
 import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
 
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -58,7 +58,7 @@ public class ScheduleManager {
 	}
 
 	private Set<String> getReservedTimesKeys(Long doctorId, Date date) {
-		return reservedTimeRepository.findByJobIntervalDoctorIdAndDate(doctorId, date)
+		return reservedTimeRepository.findByJobIntervalDoctorIdAndDate(doctorId, new java.sql.Date(date.getTime()))
 				.stream()
 				.map(t -> getKey(t.getJobInterval(), t.getNumberInInterval()))
 				.collect(Collectors.toSet());

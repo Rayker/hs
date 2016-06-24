@@ -2,7 +2,7 @@ package ru.ardecs.hs.hsapi.bl;
 
 import ru.ardecs.hs.hsdb.entities.ReservedTime;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class VisitModel {
 	private int numberInInterval;

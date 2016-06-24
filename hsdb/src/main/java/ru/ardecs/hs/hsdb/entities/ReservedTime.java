@@ -21,10 +21,10 @@ public class ReservedTime {
 
 	public ReservedTime() {}
 
-	public ReservedTime(Long jobIntervalId, int numberInInterval, java.sql.Date date) {
+	public ReservedTime(Long jobIntervalId, int numberInInterval, java.util.Date date) {
 		jobInterval.setId(jobIntervalId);
 		this.numberInInterval = numberInInterval;
-		this.date = date;
+		this.date = new Date(date.getTime());
 	}
 
 	public long getId() {
