@@ -61,8 +61,8 @@ public class ScheduleManager {
 
 	private Set<String> getReservedTimesKeys(Long doctorId, Date date) {
 		return reservedTimeRepository.findByJobIntervalDoctorIdAndDate(doctorId, date)
-					.stream()
-					.map(t -> getKey(t.getJobInterval(), t.getNumberInInterval()))
-					.collect(Collectors.toSet());
+				.stream()
+				.map(t -> getKey(t.getJobInterval(), t.getNumberInInterval()))
+				.collect(Collectors.toSet());
 	}
 }

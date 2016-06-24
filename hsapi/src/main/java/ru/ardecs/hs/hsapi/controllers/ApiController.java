@@ -10,12 +10,11 @@ import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsapi.bl.VisitModel;
 import ru.ardecs.hs.hsdb.entities.*;
 import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
-import ru.ardecs.hs.hsdb.repositories.JobIntervalRepository;
 import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
 import ru.ardecs.hs.hsdb.repositories.SpecialityRepository;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.annotation.PostConstruct;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -33,8 +32,6 @@ public class ApiController {
 
 	@Autowired
 	private ReservedTimeRepository reservedTimeRepository;
-	@Autowired
-	private JobIntervalRepository jobIntervalRepository;
 
 	private ScheduleManager scheduleManager;
 
@@ -43,19 +40,26 @@ public class ApiController {
 		return specialityRepository.findAll(pageable);
 	}
 
-	@RequestMapping(value = "/hospitals.json", method = RequestMethod.POST, params = {"specialityId"})
+	@RequestMapping(value = "/hospitals.json", method = RequestMethod.GET, params = {"specialityId"})
 	public List<Hospital> hospitals(Long specialityId, Pageable pageable) {
 		return doctorRepository.queryHospitalsBySpecialityId(specialityId, pageable);
 	}
 
-	@RequestMapping(value = "/doctors.json", method = RequestMethod.POST, params = {"specialityId", "hospitalId"})
+	@RequestMapping(value = "/doctors.json", method = RequestMethod.GET, params = {"specialityId", "hospitalId"})
 	public List<Doctor> doctors(Long specialityId, Long hospitalId, Pageable pageable) {
 		return doctorRepository.findBySpecialityIdAndHospitalId(specialityId, hospitalId, pageable);
 	}
 
-	@RequestMapping(value = "/intervals.json", method = RequestMethod.POST, params = {"doctorId", "date"})
+	@RequestMapping(value = "/intervals.json", method = RequestMethod.GET, params = {"doctorId", "date"})
 	public List<VisitModel> times(Long doctorId, java.sql.Date date) {
-		List<VisitModel> times = scheduleManager.getTimes(doctorId, date);
-		return times;
+		return scheduleManager.getTimes(doctorId, date);
+	}
+
+	@RequestMapping(value = "/visits", method = RequestMethod.POST, params = {"jobIntervalId", "numberInInterval", "date"})
+	public Long reserveVisit(Long jobIntervalId, int numberInInterval, java.sql.Date date) {
+		// todo check
+		ReservedTime saved = reservedTimeRepository.save(new ReservedTime(jobIntervalId, numberInInterval, date));
+		long id = saved.getId();
+		return id;
 	}
 }

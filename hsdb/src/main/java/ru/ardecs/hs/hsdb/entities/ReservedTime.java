@@ -10,14 +10,20 @@ public class ReservedTime {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
+	@ManyToOne
+	@JoinColumn(name = "job_intervals_id")
+	private JobInterval jobInterval = new JobInterval();
+
 	@Column(name = "number_in_interval")
 	private int numberInInterval;
 
 	private Date date;
 
-	@ManyToOne
-	@JoinColumn(name = "job_intervals_id")
-	private JobInterval jobInterval;
+	public ReservedTime(Long jobIntervalId, int numberInInterval, java.sql.Date date) {
+		jobInterval.setId(jobIntervalId);
+		this.numberInInterval = numberInInterval;
+		this.date = date;
+	}
 
 	public long getId() {
 		return id;

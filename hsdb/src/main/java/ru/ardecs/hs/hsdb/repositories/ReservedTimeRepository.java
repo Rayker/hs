@@ -9,6 +9,4 @@ import java.util.List;
 
 public interface ReservedTimeRepository extends CrudRepository<ReservedTime, Long> {
 	List<ReservedTime> findByJobIntervalDoctorIdAndDate(Long id, Date date);
-
-	List<ReservedTime> findByDate(Date date);
 }
