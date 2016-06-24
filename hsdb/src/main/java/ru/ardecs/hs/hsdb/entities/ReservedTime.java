@@ -19,6 +19,8 @@ public class ReservedTime {
 
 	private Date date;
 
+	public ReservedTime() {}
+
 	public ReservedTime(Long jobIntervalId, int numberInInterval, java.sql.Date date) {
 		jobInterval.setId(jobIntervalId);
 		this.numberInInterval = numberInInterval;

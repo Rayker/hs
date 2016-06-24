@@ -3,9 +3,7 @@ package ru.ardecs.hs.hsapi.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsapi.bl.VisitModel;
 import ru.ardecs.hs.hsdb.entities.*;
@@ -61,5 +59,15 @@ public class ApiController {
 		ReservedTime saved = reservedTimeRepository.save(new ReservedTime(jobIntervalId, numberInInterval, date));
 		long id = saved.getId();
 		return id;
+	}
+
+//	@RequestMapping(value = "/visits/${reservedTimeId}", method = RequestMethod.GET)
+//	public VisitModel getVisitModel(Long reservedTimeId) {
+//		reservedTimeRepository.findOne(reservedTimeId);
+//	}
+
+	@RequestMapping(value = "/visits/{reservedTimeId}", method = RequestMethod.DELETE)
+	public void getVisitModel(@PathVariable Long reservedTimeId) {
+		reservedTimeRepository.delete(reservedTimeId);
 	}
 }
