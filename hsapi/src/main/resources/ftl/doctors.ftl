@@ -9,7 +9,7 @@
             <input type='hidden' name='specialityId' value='${specialityId}'>
             <input type='hidden' name='hospitalId' value='${hospitalId}'>
             <#list doctors as doctor>
-                <label><input type='radio' name='doctorId' value='${doctor.id}'>${doctor.fullname!"test"}<br></label>
+                <label><input type='radio' name='doctorId' value='${doctor.id}'>${doctor.fullname}<br></label>
             </#list>
             <input type='submit'>
         </form>

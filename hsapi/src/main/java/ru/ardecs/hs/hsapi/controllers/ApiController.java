@@ -6,17 +6,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ru.ardecs.hs.hsdb.entities.Doctor;
-import ru.ardecs.hs.hsdb.entities.Hospital;
-import ru.ardecs.hs.hsdb.entities.Speciality;
+import ru.ardecs.hs.hsapi.bl.ScheduleManager;
+import ru.ardecs.hs.hsapi.bl.VisitModel;
+import ru.ardecs.hs.hsdb.entities.*;
 import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
-import ru.ardecs.hs.hsdb.repositories.HospitalRepository;
+import ru.ardecs.hs.hsdb.repositories.JobIntervalRepository;
+import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
 import ru.ardecs.hs.hsdb.repositories.SpecialityRepository;
 
+import javax.annotation.PostConstruct;
+import java.util.Date;
 import java.util.List;
 
 @RestController
 public class ApiController {
+	@PostConstruct
+	public void init() {
+		scheduleManager = new ScheduleManager(reservedTimeRepository, doctorRepository);
+	}
+
 	@Autowired
 	private SpecialityRepository specialityRepository;
 
@@ -24,7 +32,11 @@ public class ApiController {
 	private DoctorRepository doctorRepository;
 
 	@Autowired
-	private HospitalRepository hospitalRepository;
+	private ReservedTimeRepository reservedTimeRepository;
+	@Autowired
+	private JobIntervalRepository jobIntervalRepository;
+
+	private ScheduleManager scheduleManager;
 
 	@RequestMapping(value = "/specialities.json", method = RequestMethod.GET)
 	public Page<Speciality> specialities(Pageable pageable) {
@@ -39,5 +51,18 @@ public class ApiController {
 	@RequestMapping(value = "/doctors.json", method = RequestMethod.POST, params = {"specialityId", "hospitalId"})
 	public List<Doctor> doctors(Long specialityId, Long hospitalId, Pageable pageable) {
 		return doctorRepository.findBySpecialityIdAndHospitalId(specialityId, hospitalId, pageable);
+	}
+
+//	@RequestMapping(value = "/intervals.json", method = RequestMethod.POST, params = {"doctorId"})
+//	public List<VisitModel> intervals(Long doctorId) {
+//		List<VisitModel> temp = scheduleManager.getTimes(doctorId, new Date(System.currentTimeMillis()));
+//		return temp;
+//	}
+
+	@RequestMapping(value = "/intervals.json", method = RequestMethod.POST, params = {"doctorId"})
+	public List<VisitModel> times(Long doctorId) {
+//		Iterable<ReservedTime> all = reservedTimeRepository.findByDate(new java.sql.Date(new Date().getTime()));
+		List<VisitModel> times = scheduleManager.getTimes(doctorId, new java.sql.Date(new Date().getTime()));
+		return times;
 	}
 }

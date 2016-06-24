@@ -1,6 +1,10 @@
 package ru.ardecs.hs.hsdb.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "doctors")
@@ -18,6 +22,10 @@ public class Doctor {
 	@ManyToOne
 	@JoinColumn(name = "hospitals_id")
 	private Hospital hospital;
+
+	@OneToMany(mappedBy = "doctor")
+	@JsonIgnore
+	private List<JobInterval> jobIntervals;
 
 	public long getId() {
 		return id;
@@ -49,5 +57,13 @@ public class Doctor {
 
 	public void setHospital(Hospital hospital) {
 		this.hospital = hospital;
+	}
+
+	public List<JobInterval> getJobIntervals() {
+		return jobIntervals;
+	}
+
+	public void setJobIntervals(List<JobInterval> jobIntervals) {
+		this.jobIntervals = jobIntervals;
 	}
 }
