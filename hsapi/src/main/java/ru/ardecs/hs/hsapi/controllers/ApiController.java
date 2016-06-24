@@ -18,11 +18,6 @@ import java.util.List;
 
 @RestController
 public class ApiController {
-	@PostConstruct
-	public void init() {
-		scheduleManager = new ScheduleManager(reservedTimeRepository, doctorRepository);
-	}
-
 	@Autowired
 	private SpecialityRepository specialityRepository;
 
@@ -32,6 +27,7 @@ public class ApiController {
 	@Autowired
 	private ReservedTimeRepository reservedTimeRepository;
 
+	@Autowired
 	private ScheduleManager scheduleManager;
 
 	@RequestMapping(value = "/specialities.json", method = RequestMethod.GET)

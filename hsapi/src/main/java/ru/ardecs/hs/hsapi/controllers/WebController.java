@@ -24,17 +24,8 @@ import java.util.Map;
 
 @RestController
 public class WebController {
+	@Autowired
 	private Configuration cfg;
-
-	@PostConstruct
-	public void init() throws IOException {
-		cfg = new Configuration(Configuration.VERSION_2_3_23);
-		cfg.setClassForTemplateLoading(getClass(), "/ftl/");
-		cfg.setDefaultEncoding("UTF-8");
-		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-//		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.DEBUG_HANDLER);
-		cfg.setAutoFlush(true);
-	}
 
 	@Autowired
 	private ReservedTimeRepository reservedTimeRepository;
@@ -69,17 +60,13 @@ public class WebController {
 		return generateHtml(map, "doctors.ftl");
 	}
 
-
-
 	@RequestMapping(value = "visits/{reservedTimeId}/ticket.html", method = RequestMethod.GET)
 	public String getTicket(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
 		TicketModel model = new TicketModel(reservedTimeRepository.findOne(reservedTimeId));
-		Map<String, Object> map = new HashMap<>();
-		map.put("model", model);
-		return generateHtml(map, "ticket.ftl");
+		return generateHtml(model, "ticket.ftl");
 	}
 
-	private String generateHtml(Map<String, Object> model, String name) throws IOException, TemplateException {
+	private String generateHtml(Object model, String name) throws IOException, TemplateException {
 		Template template = cfg.getTemplate(name);
 		try (Writer output = new StringWriter()) {
 			template.process(model, output);

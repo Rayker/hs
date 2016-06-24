@@ -1,6 +1,7 @@
 package ru.ardecs.hs.hsapi.bl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hsdb.entities.JobInterval;
 import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
 import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
@@ -13,20 +14,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Component
 public class ScheduleManager {
 	private final static int visitInMinutes = 30;
 	private final static int visitInMilliseconds = visitInMinutes * 60 * 1000;
-	private static DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+	private final static DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
 	@Autowired
 	private ReservedTimeRepository reservedTimeRepository;
 
 	@Autowired
 	private DoctorRepository doctorRepository;
-
-	public ScheduleManager(ReservedTimeRepository reservedTimeRepository, DoctorRepository doctorRepository) {
-		this.reservedTimeRepository = reservedTimeRepository;
-		this.doctorRepository = doctorRepository;
-	}
 
 	public List<VisitModel> getTimes(Long doctorId, Date date) {
 		Set<String> keys = getReservedTimesKeys(doctorId, date);

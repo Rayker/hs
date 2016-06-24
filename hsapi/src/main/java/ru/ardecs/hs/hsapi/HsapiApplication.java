@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = {"ru.ardecs.hs.hsdb.repositories"})
 @EntityScan("ru.ardecs.hs.hsdb.*")
-@ComponentScan("ru.ardecs.hs.hsapi.*")
+@ComponentScan(basePackages = {"ru.ardecs.hs.hsapi.*", "ru.ardecs.hs.hsapi"})
 public class HsapiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HsapiApplication.class, args);

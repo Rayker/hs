@@ -5,10 +5,10 @@
         <title>title</title>
     </head>
     <body>
-        <div>${model.hospital}</div>
-        <div>${model.doctor} (${model.doctorSpeciality})</div>
-        <div>${model.visitDate?date}</div>
-        <div>Time: ${model.visitTime}</div>
-        <div>Cancellation code: ${model.cancellationCode}</div>
+        <div>${hospital}</div>
+        <div>${doctor} (${doctorSpeciality})</div>
+        <div>${visitDate?date}</div>
+        <div>Time: ${visitTime}</div>
+        <div>Cancellation code: ${cancellationCode}</div>
     </body>
 </html>
