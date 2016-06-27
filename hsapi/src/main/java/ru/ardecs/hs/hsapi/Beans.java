@@ -3,7 +3,11 @@ package ru.ardecs.hs.hsapi;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.util.Properties;
 
 @Component
 public class Beans {
@@ -20,5 +24,13 @@ public class Beans {
 			cfg.setAutoFlush(true);
 		}
 		return cfg;
+	}
+
+	@Bean(name = "app.props")
+	public Properties getApplicationProperties() throws IOException {
+		ClassPathResource resource = new ClassPathResource("application.properties");
+		Properties properties = new Properties();
+		properties.load(resource.getInputStream());
+		return properties;
 	}
 }

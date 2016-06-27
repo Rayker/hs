@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ru.ardecs.hs.hsapi.TemplateGenerator;
 import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsapi.bl.TicketModel;
 import ru.ardecs.hs.hsapi.bl.VisitModel;
@@ -28,7 +29,7 @@ import java.util.stream.IntStream;
 @RestController
 public class WebController {
 	@Autowired
-	private Configuration cfg;
+	TemplateGenerator templateGenerator;
 
 	@Autowired
 	private ReservedTimeRepository reservedTimeRepository;
@@ -46,7 +47,7 @@ public class WebController {
 	public String specialities() throws IOException, TemplateException {
 		Map<String, Object> map = new HashMap<>();
 		map.put("specialities", specialityRepository.findAll());
-		return generateHtml(map, "specialities.ftl");
+		return templateGenerator.generateHtml(map, "specialities.ftl");
 	}
 
 	@RequestMapping(value = "/hospitals.html", method = RequestMethod.POST, params = {"specialityId"})
@@ -54,7 +55,7 @@ public class WebController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("specialityId", requestModel.getSpecialityId());
 		map.put("hospitals", doctorRepository.queryHospitalsBySpecialityId(requestModel.getSpecialityId()));
-		return generateHtml(map, "hospitals.ftl");
+		return templateGenerator.generateHtml(map, "hospitals.ftl");
 	}
 
 	@RequestMapping(value = "/doctors.html", method = RequestMethod.POST, params = {"specialityId", "hospitalId"})
@@ -63,7 +64,7 @@ public class WebController {
 		map.put("specialityId", doctorsRequestModel.getSpecialityId());
 		map.put("hospitalId", doctorsRequestModel.getHospitalId());
 		map.put("doctors", doctorRepository.findBySpecialityIdAndHospitalId(doctorsRequestModel.getSpecialityId(), doctorsRequestModel.getHospitalId()));
-		return generateHtml(map, "doctors.ftl");
+		return templateGenerator.generateHtml(map, "doctors.ftl");
 	}
 
 	@RequestMapping(value = "/dates.html", params = "doctorId")
@@ -79,7 +80,7 @@ public class WebController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("dates", dates);
 		map.put("doctorId", datesRequestModel.getDoctorId());
-		return generateHtml(map, "dates.ftl");
+		return templateGenerator.generateHtml(map, "dates.ftl");
 	}
 
 	@RequestMapping(value = "/intervals.html", method = RequestMethod.POST, params = {"doctorId", "date"})
@@ -88,12 +89,12 @@ public class WebController {
 		model.put("date", intervalsRequestModel.getDate());
 		List<VisitModel> temp = scheduleManager.getTimes(intervalsRequestModel.getDoctorId(), intervalsRequestModel.getDate());
 		model.put("visits", temp);
-		return generateHtml(model, "visitTimes.ftl");
+		return templateGenerator.generateHtml(model, "visitTimes.ftl");
 	}
 
 	@RequestMapping(value = "/visits/new.html", method = RequestMethod.POST, params = {"date", "numberInInterval", "intervalId"})
 	public String getVisitForm(VisitFormRequestModel visitFormRequestModel) throws IOException, TemplateException {
-		return generateHtml(new VisitModel(visitFormRequestModel.getNumberInInterval(), visitFormRequestModel.getIntervalId(), null, visitFormRequestModel.getDate(), false), "visitForm.ftl");
+		return templateGenerator.generateHtml(new VisitModel(visitFormRequestModel.getNumberInInterval(), visitFormRequestModel.getIntervalId(), null, visitFormRequestModel.getDate(), false), "visitForm.ftl");
 	}
 
 	@RequestMapping(value = "/visits", method = RequestMethod.POST, params = {"date", "numberInInterval", "intervalId"})
@@ -107,14 +108,6 @@ public class WebController {
 	@RequestMapping(value = "visits/{reservedTimeId}/ticket.html", method = RequestMethod.GET)
 	public String getTicket(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
 		TicketModel model = new TicketModel(reservedTimeRepository.findOne(reservedTimeId));
-		return generateHtml(model, "ticket.ftl");
-	}
-
-	private String generateHtml(Object model, String name) throws IOException, TemplateException {
-		Template template = cfg.getTemplate(name);
-		try (Writer output = new StringWriter()) {
-			template.process(model, output);
-			return output.toString();
-		}
+		return templateGenerator.generateHtml(model, "ticket.ftl");
 	}
 }

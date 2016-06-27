@@ -1,5 +1,6 @@
 package ru.ardecs.hs.hsapi.controllers;
 
+import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsapi.bl.VisitModel;
+import ru.ardecs.hs.hsapi.mail.MailSender;
 import ru.ardecs.hs.hsdb.entities.Doctor;
 import ru.ardecs.hs.hsdb.entities.Hospital;
 import ru.ardecs.hs.hsdb.entities.Speciality;
@@ -19,6 +21,7 @@ import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
 import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
 import ru.ardecs.hs.hsdb.repositories.SpecialityRepository;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +38,9 @@ public class ApiController {
 
 	@Autowired
 	private ScheduleManager scheduleManager;
+
+	@Autowired
+	private MailSender mailSender;
 
 	@RequestMapping(value = "/specialities.json", method = RequestMethod.GET)
 	public Page<Speciality> specialities(Pageable pageable) {
@@ -76,5 +82,10 @@ public class ApiController {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
+	}
+
+	@RequestMapping(value = "/mail/send/{reservedTimeId}", method = RequestMethod.POST)
+	public void send(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
+		mailSender.send("denis160995@yandex.kz", reservedTimeId);
 	}
 }
