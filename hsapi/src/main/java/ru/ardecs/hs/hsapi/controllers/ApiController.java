@@ -1,7 +1,6 @@
 package ru.ardecs.hs.hsapi.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,7 +14,6 @@ import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsapi.bl.VisitModel;
 import ru.ardecs.hs.hsdb.entities.Doctor;
 import ru.ardecs.hs.hsdb.entities.Hospital;
-import ru.ardecs.hs.hsdb.entities.ReservedTime;
 import ru.ardecs.hs.hsdb.entities.Speciality;
 import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
 import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
@@ -45,12 +43,12 @@ public class ApiController {
 
 	@RequestMapping(value = "/hospitals.json", method = RequestMethod.GET, params = {"specialityId"})
 	public List<Hospital> hospitals(Long specialityId, Pageable pageable) {
-		return doctorRepository.queryHospitalsBySpecialityId(specialityId, pageable);
+		return doctorRepository.queryHospitalsBySpecialityId(specialityId);
 	}
 
 	@RequestMapping(value = "/doctors.json", method = RequestMethod.GET, params = {"specialityId", "hospitalId"})
 	public List<Doctor> doctors(Long specialityId, Long hospitalId, Pageable pageable) {
-		return doctorRepository.findBySpecialityIdAndHospitalId(specialityId, hospitalId, pageable);
+		return doctorRepository.findBySpecialityIdAndHospitalId(specialityId, hospitalId);
 	}
 
 	@RequestMapping(value = "/intervals.json", method = RequestMethod.GET, params = {"doctorId", "date"})
