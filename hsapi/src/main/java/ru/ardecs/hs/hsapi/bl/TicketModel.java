@@ -20,7 +20,7 @@ public class TicketModel {
 		this.doctorSpeciality = reservedTime.getJobInterval().getDoctor().getSpeciality().getName();
 		this.visitDate = reservedTime.getDate();
 		this.visitTime = ScheduleManager.getVisitTime(reservedTime.getJobInterval(), reservedTime.getNumberInInterval());
-		this.cancellationCode = reservedTime.getId(); // FIXME: 6/24/16
+		this.cancellationCode = reservedTime.getId(); // FIXME: 6/24/16 custom cancellation code?
 	}
 
 	public String getHospital() {

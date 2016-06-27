@@ -5,7 +5,7 @@
         <title>title</title>
     </head>
     <body>
-        <form method='POST' action='doctors.html'>
+        <form method='POST' action='dates.html'>
             <input type='hidden' name='specialityId' value='${specialityId}'>
             <input type='hidden' name='hospitalId' value='${hospitalId}'>
             <#list doctors as doctor>
