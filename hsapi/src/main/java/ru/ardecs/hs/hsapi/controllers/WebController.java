@@ -51,7 +51,7 @@ public class WebController {
 	}
 
 	@RequestMapping(value = "/hospitals.html", method = RequestMethod.POST, params = {"specialityId"})
-	public String hospitals(Long specialityId, Pageable pageable)   throws IOException, TemplateException {
+	public String hospitals(Long specialityId, Pageable pageable) throws IOException, TemplateException {
 		Map<String, Object> map = new HashMap<>();
 		map.put("specialityId", specialityId);
 		map.put("hospitals", doctorRepository.queryHospitalsBySpecialityId(specialityId, pageable));
@@ -84,7 +84,7 @@ public class WebController {
 	}
 
 	@RequestMapping(value = "/intervals.html", method = RequestMethod.POST, params = {"doctorId", "date"})
-	public String times(Long doctorId, @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) throws IOException, TemplateException {
+	public String times(Long doctorId, @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date) throws IOException, TemplateException {
 		Map<String, Object> model = new HashMap<>();
 		model.put("date", date);
 		List<VisitModel> temp = scheduleManager.getTimes(doctorId, date);
@@ -92,9 +92,15 @@ public class WebController {
 		return generateHtml(model, "visitTimes.ftl");
 	}
 
-	@RequestMapping(value = "/ticket.html", method = RequestMethod.POST, params = {"date", "numberInInterval", "intervalId"})
-	public void createVisit(long intervalId, int numberInInterval, @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, HttpServletResponse response) throws IOException {
-		ReservedTime savedVisit = reservedTimeRepository.save(new ReservedTime(intervalId, numberInInterval, date));
+	@RequestMapping(value = "/visits/new.html", method = RequestMethod.POST, params = {"date", "numberInInterval", "intervalId"})
+	public String getVisitForm(long intervalId, int numberInInterval, @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date) throws IOException, TemplateException {
+		return generateHtml(new VisitModel(numberInInterval, intervalId, null, date, false), "visitForm.ftl");
+	}
+
+	@RequestMapping(value = "/visits", method = RequestMethod.POST, params = {"date", "numberInInterval", "intervalId"})
+	public void createVisit(long intervalId, int numberInInterval, @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
+	                        String visitorName, @DateTimeFormat(pattern = "yyyy-MM-dd") Date visitorBirthday, HttpServletResponse response) throws IOException {
+		ReservedTime savedVisit = reservedTimeRepository.save(new ReservedTime(intervalId, numberInInterval, date, visitorName, visitorBirthday));
 		response.sendRedirect("visits/" + savedVisit.getId() + "/ticket.html");
 	}
 

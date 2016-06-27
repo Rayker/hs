@@ -19,9 +19,15 @@ public class ReservedTime {
 
 	private Date date;
 
+	private String visitorName;
+
+	private Date visitorBirthday;
+
 	public ReservedTime() {}
 
-	public ReservedTime(Long jobIntervalId, int numberInInterval, java.util.Date date) {
+	public ReservedTime(Long jobIntervalId, int numberInInterval, java.util.Date date, String visitorName, java.util.Date visitorBirthday) {
+		this.visitorName = visitorName;
+		this.visitorBirthday = new Date(visitorBirthday.getTime());
 		jobInterval.setId(jobIntervalId);
 		this.numberInInterval = numberInInterval;
 		this.date = new Date(date.getTime());
@@ -57,5 +63,21 @@ public class ReservedTime {
 
 	public void setNumberInInterval(int numberInInterval) {
 		this.numberInInterval = numberInInterval;
+	}
+
+	public String getVisitorName() {
+		return visitorName;
+	}
+
+	public void setVisitorName(String visitorName) {
+		this.visitorName = visitorName;
+	}
+
+	public Date getVisitorBirthday() {
+		return visitorBirthday;
+	}
+
+	public void setVisitorBirthday(Date visitorBirthday) {
+		this.visitorBirthday = visitorBirthday;
 	}
 }

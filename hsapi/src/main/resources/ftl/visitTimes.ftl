@@ -6,7 +6,7 @@
     </head>
     <body>
         <#list visits as visit>
-            <form method='POST' action='ticket.html'>
+            <form method='POST' action='visits/new.html'>
                 <input type='hidden' name='numberInInterval' value='${visit.numberInInterval}'>
                 <input type='hidden' name='intervalId' value='${visit.intervalId}'>
                 <input type='hidden' name='date' value='${date?date?iso_local}'>
