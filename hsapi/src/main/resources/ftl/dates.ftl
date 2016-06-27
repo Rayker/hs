@@ -8,7 +8,7 @@
         <form method='POST' action='intervals.html'>
             <input type='hidden' name='doctorId' value='${doctorId}'>
             <#list dates as date>
-                <label><input type='radio' name='date' value='${date?date?iso_local}'>${date?date?iso_utc}<br></label>
+                <label><input type='radio' name='date' value='${date?date?string("dd.MM.yyyy")}'>${date?date?string("dd.MM.yyyy")}<br></label>
             </#list>
             <input type='submit'>
         </form>
