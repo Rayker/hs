@@ -63,18 +63,6 @@ public class ApiController {
 		return scheduleManager.getTimes(doctorId, date);
 	}
 
-//	@RequestMapping(value = "/visits", method = RequestMethod.POST, params = {"jobIntervalId", "numberInInterval", "date"})
-//	public ResponseEntity<Long> reserveVisit(Long jobIntervalId, int numberInInterval, @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
-//		ReservedTime saved;
-//		try {
-//			saved = reservedTimeRepository.save(new ReservedTime(jobIntervalId, numberInInterval, date));
-//		} catch (DataIntegrityViolationException e) {
-//			return new ResponseEntity<Long>(HttpStatus.CONFLICT);
-//		}
-//
-//		return new ResponseEntity<Long>(saved.getId(), HttpStatus.OK);
-//	}
-
 	@RequestMapping(value = "/visits/{reservedTimeId}", method = RequestMethod.DELETE)
 	public ResponseEntity getVisitModel(@PathVariable Long reservedTimeId) {
 		try {

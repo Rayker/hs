@@ -1,6 +1,9 @@
 package ru.ardecs.hs.hsapi.mail;
 
+import ch.qos.logback.classic.Level;
 import freemarker.template.TemplateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,6 +22,10 @@ import java.io.IOException;
 @Component
 public class MailSender
 {
+	private static final Logger logger =
+			LoggerFactory.getLogger(MailSender.class);
+	public static final String EMAIL_TICKET_TEMPLATE = "mail/ticket.ftl";
+
 	@Autowired
 	private TemplateGenerator templateGenerator;
 
@@ -34,13 +41,14 @@ public class MailSender
 	@Autowired
 	private Session session;
 
-	public void send(String addressTo, Long reservedTimeId) throws IOException, TemplateException {
+	public void send(String addressTo, Long reservedTimeId) {
+		logger.debug("Start of email sending");
 		try {
 			Message message = createMessage(addressTo, reservedTimeId);
 			Transport.send(message);
-			System.out.println("Done");
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			logger.debug("Email was successfully sent");
+		} catch (MessagingException | IOException | TemplateException e) {
+			logger.error("Message processing error", e);
 		}
 	}
 
@@ -56,6 +64,6 @@ public class MailSender
 
 	private String generateHtml(Long reservedTimeId) throws IOException, TemplateException {
 		TicketModel model = new TicketModel(reservedTimeRepository.findOne(reservedTimeId));
-		return templateGenerator.generateHtml(model, "mail/ticket.ftl");
+		return templateGenerator.generateHtml(model, EMAIL_TICKET_TEMPLATE);
 	}
 }
