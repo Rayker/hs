@@ -20,10 +20,10 @@ public class Beans {
 	private Configuration cfg;
 
 	@Bean
-	public Configuration getTemplateConfiguration() {
+	public Configuration getTemplateConfiguration(@Value("${application.ftlBaseFolder}") String baseDir) {
 		if (cfg == null) {
 			cfg = new Configuration(Configuration.VERSION_2_3_23);
-			cfg.setClassForTemplateLoading(getClass(), "/ftl/");
+			cfg.setClassForTemplateLoading(getClass(), baseDir);
 			cfg.setDefaultEncoding("UTF-8");
 			cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 //		    cfg.setTemplateExceptionHandler(TemplateExceptionHandler.DEBUG_HANDLER);
