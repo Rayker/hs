@@ -2,10 +2,16 @@ package ru.ardecs.hs.hsapi;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -32,5 +38,17 @@ public class Beans {
 		Properties properties = new Properties();
 		properties.load(resource.getInputStream());
 		return properties;
+	}
+
+	@Bean
+	public Session getMailSession(@Qualifier("app.props") Properties properties,
+	                              @Value("${mail.from.username}") String username,
+	                              @Value("${mail.from.password}") String password) {
+		return Session.getInstance(properties,
+				new Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username, password);
+					}
+				});
 	}
 }

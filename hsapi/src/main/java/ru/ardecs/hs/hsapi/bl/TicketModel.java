@@ -10,7 +10,7 @@ public class TicketModel {
 	private String doctorSpeciality;
 	private Date visitDate;
 	private String visitTime;
-	private long cancellationCode;
+	private long visitId;
 	private String visitorName;
 	private Date visitorBirthday;
 
@@ -22,7 +22,7 @@ public class TicketModel {
 		this.doctorSpeciality = reservedTime.getJobInterval().getDoctor().getSpeciality().getName();
 		this.visitDate = reservedTime.getDate();
 		this.visitTime = ScheduleManager.getVisitTime(reservedTime.getJobInterval(), reservedTime.getNumberInInterval());
-		this.cancellationCode = reservedTime.getId(); // FIXME: 6/24/16 custom cancellation code?
+		this.visitId = reservedTime.getId();
 		this.visitorName = reservedTime.getVisitorName();
 		this.visitorBirthday = reservedTime.getVisitorBirthday();
 	}
@@ -59,12 +59,12 @@ public class TicketModel {
 		this.visitDate = visitDate;
 	}
 
-	public long getCancellationCode() {
-		return cancellationCode;
+	public long getVisitId() {
+		return visitId;
 	}
 
-	public void setCancellationCode(long cancellationCode) {
-		this.cancellationCode = cancellationCode;
+	public void setVisitId(long visitId) {
+		this.visitId = visitId;
 	}
 
 	public String getVisitTime() {

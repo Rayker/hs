@@ -15,6 +15,11 @@
         <div>${visitorName}</div>
         <div>${visitorBirthday}</div>
 
-        <div>Cancellation code: ${cancellationCode}</div>
+        <div>Cancellation code: ${visitId}</div>
+
+        <form method='POST' action='/visits/${visitId}/ticket/send'>
+            <input type='text' name='addressTo'>
+            <input type='submit'>
+        </form>
     </body>
 </html>

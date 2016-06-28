@@ -21,6 +21,7 @@ import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
 import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
 import ru.ardecs.hs.hsdb.repositories.SpecialityRepository;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -84,8 +85,9 @@ public class ApiController {
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
 
-	@RequestMapping(value = "/mail/send/{reservedTimeId}", method = RequestMethod.POST)
-	public void send(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
-		mailSender.send("denis160995@yandex.kz", reservedTimeId);
+	@RequestMapping(value = "/visits/{reservedTimeId}/ticket/send", method = RequestMethod.POST, params = {"addressTo"})
+	public void send(@PathVariable Long reservedTimeId, String addressTo, HttpServletResponse response) throws IOException, TemplateException {
+		mailSender.send(addressTo, reservedTimeId);
+		response.sendRedirect("/visits/" + reservedTimeId + "/ticket.html");
 	}
 }
