@@ -1,5 +1,6 @@
-package ru.ardecs.hs.hsapi.bl;
+package ru.ardecs.hs.hsapi.models;
 
+import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsdb.entities.ReservedTime;
 
 import java.util.Date;

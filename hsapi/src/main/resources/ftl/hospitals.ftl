@@ -5,7 +5,7 @@
         <title>title</title>
     </head>
     <body>
-        <form method='POST' action='doctors.html'>
+        <form method='GET' action='doctors.html'>
             <input type='hidden' name='specialityId' value='${specialityId}'>
             <#list hospitals as hospital>
                 <label><input type='radio' name='hospitalId' value='${hospital.id}'>${hospital.name}<br></label>

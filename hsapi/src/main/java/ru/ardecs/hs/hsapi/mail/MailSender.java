@@ -1,6 +1,5 @@
 package ru.ardecs.hs.hsapi.mail;
 
-import ch.qos.logback.classic.Level;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hsapi.TemplateGenerator;
-import ru.ardecs.hs.hsapi.bl.TicketModel;
+import ru.ardecs.hs.hsapi.models.TicketModel;
 import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
 
 import javax.mail.Message;

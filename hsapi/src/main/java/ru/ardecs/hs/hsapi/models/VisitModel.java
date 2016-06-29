@@ -1,19 +1,20 @@
-package ru.ardecs.hs.hsapi.bl;
+package ru.ardecs.hs.hsapi.models;
 
+import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsdb.entities.ReservedTime;
 
 import java.util.Date;
 
 public class VisitModel {
 	private int numberInInterval;
-	private long intervalId;
+	private long jobIntervalId;
 	private String visitTime;
 	private Date date;
 	private boolean reserved;
 
-	public VisitModel(int numberInInterval, long intervalId, String visitTime, Date date, boolean reserved) {
+	public VisitModel(int numberInInterval, long jobIntervalId, String visitTime, Date date, boolean reserved) {
 		this.numberInInterval = numberInInterval;
-		this.intervalId = intervalId;
+		this.jobIntervalId = jobIntervalId;
 		this.visitTime = visitTime;
 		this.date = date;
 		this.reserved = reserved;
@@ -21,7 +22,7 @@ public class VisitModel {
 
 	public VisitModel(ReservedTime reservedTime) {
 		this.numberInInterval = reservedTime.getNumberInInterval();
-		this.intervalId = reservedTime.getJobInterval().getId();
+		this.jobIntervalId = reservedTime.getJobInterval().getId();
 		this.visitTime = ScheduleManager.getVisitTime(reservedTime.getJobInterval(), reservedTime.getNumberInInterval());
 		this.date = reservedTime.getDate();
 		this.reserved = true;
@@ -51,12 +52,12 @@ public class VisitModel {
 		this.reserved = reserved;
 	}
 
-	public long getIntervalId() {
-		return intervalId;
+	public long getJobIntervalId() {
+		return jobIntervalId;
 	}
 
-	public void setIntervalId(long intervalId) {
-		this.intervalId = intervalId;
+	public void setJobIntervalId(long jobIntervalId) {
+		this.jobIntervalId = jobIntervalId;
 	}
 
 	public Date getDate() {

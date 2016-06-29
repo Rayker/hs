@@ -7,7 +7,7 @@
     <body>
         <form method='POST' action='/visits'>
             <input type='hidden' name='numberInInterval' value='${numberInInterval}'>
-            <input type='hidden' name='intervalId' value='${intervalId}'>
+            <input type='hidden' name='jobIntervalId' value='${jobIntervalId}'>
             <input type='hidden' name='date' value='${date?date?string("dd.MM.yyyy")}'>
             <table>
                 <tr>

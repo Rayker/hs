@@ -2,11 +2,10 @@ package ru.ardecs.hs.hsapi.requestmodels;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 public class VisitCreatingRequestModel {
-	private long intervalId;
+	private long jobIntervalId;
 	private int numberInInterval;
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private Date date;
@@ -14,12 +13,12 @@ public class VisitCreatingRequestModel {
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private Date visitorBirthday;
 
-	public long getIntervalId() {
-		return intervalId;
+	public long getJobIntervalId() {
+		return jobIntervalId;
 	}
 
-	public void setIntervalId(long intervalId) {
-		this.intervalId = intervalId;
+	public void setJobIntervalId(long jobIntervalId) {
+		this.jobIntervalId = jobIntervalId;
 	}
 
 	public int getNumberInInterval() {

@@ -15,7 +15,6 @@ public class ReservedTime implements Serializable {
 	@JoinColumn(name = "job_intervals_id")
 	private JobInterval jobInterval = new JobInterval();
 
-	@Column(name = "number_in_interval")
 	private int numberInInterval;
 
 	private Date date;

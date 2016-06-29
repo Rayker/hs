@@ -10,6 +10,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import ru.ardecs.hs.hsapi.cache.CachedVisit;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
@@ -55,8 +56,8 @@ public class Beans {
 	}
 
 	@Bean
-	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory rc) {
-		final RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+	public RedisTemplate<String, CachedVisit> redisTemplate(RedisConnectionFactory rc) {
+		final RedisTemplate<String, CachedVisit> redisTemplate = new RedisTemplate<>();
 		redisTemplate.setConnectionFactory(rc);
 		return redisTemplate;
 	}

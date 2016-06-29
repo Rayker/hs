@@ -5,7 +5,7 @@
         <title>title</title>
     </head>
     <body>
-        <form method='POST' action='intervals.html'>
+        <form method='GET' action='intervals.html'>
             <input type='hidden' name='doctorId' value='${doctorId}'>
             <#list dates as date>
                 <label><input type='radio' name='date' value='${date?date?string("dd.MM.yyyy")}'>${date?date?string("dd.MM.yyyy")}<br></label>

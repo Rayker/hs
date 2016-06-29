@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.ardecs.hs.hsapi.bl.ScheduleManager;
-import ru.ardecs.hs.hsapi.bl.VisitModel;
+import ru.ardecs.hs.hsapi.models.VisitModel;
 import ru.ardecs.hs.hsapi.mail.MailSender;
 import ru.ardecs.hs.hsdb.entities.Doctor;
 import ru.ardecs.hs.hsdb.entities.Hospital;
@@ -21,6 +21,7 @@ import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
 import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
 import ru.ardecs.hs.hsdb.repositories.SpecialityRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
@@ -59,8 +60,8 @@ public class ApiController {
 	}
 
 	@RequestMapping(value = "/intervals.json", method = RequestMethod.GET, params = {"doctorId", "date"})
-	public List<VisitModel> times(Long doctorId, @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
-		return scheduleManager.getTimes(doctorId, date);
+	public List<VisitModel> times(Long doctorId, @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, HttpServletRequest request) {
+		return scheduleManager.getVisitsByNotSessionId(doctorId, date, request.getRequestedSessionId());
 	}
 
 	@RequestMapping(value = "/visits/{reservedTimeId}", method = RequestMethod.DELETE)

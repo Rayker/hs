@@ -6,11 +6,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ru.ardecs.hs.hsapi.Example;
+import ru.ardecs.hs.hsapi.cache.CacheManager;
 import ru.ardecs.hs.hsapi.TemplateGenerator;
 import ru.ardecs.hs.hsapi.bl.ScheduleManager;
-import ru.ardecs.hs.hsapi.bl.TicketModel;
-import ru.ardecs.hs.hsapi.bl.VisitModel;
+import ru.ardecs.hs.hsapi.cache.CachedVisit;
+import ru.ardecs.hs.hsapi.models.TicketModel;
+import ru.ardecs.hs.hsapi.models.VisitModel;
 import ru.ardecs.hs.hsapi.requestmodels.*;
 import ru.ardecs.hs.hsdb.entities.ReservedTime;
 import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
@@ -19,6 +20,7 @@ import ru.ardecs.hs.hsdb.repositories.SpecialityRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,7 +29,7 @@ import java.util.stream.IntStream;
 @RestController
 public class WebController {
 	@Autowired
-	Example example;
+	CacheManager cacheManager;
 
 	@Autowired
 	TemplateGenerator templateGenerator;
@@ -51,7 +53,7 @@ public class WebController {
 		return templateGenerator.generateHtml(map, "specialities.ftl");
 	}
 
-	@RequestMapping(value = "/hospitals.html", method = RequestMethod.POST, params = {"specialityId"})
+	@RequestMapping(value = "/hospitals.html", method = RequestMethod.GET, params = {"specialityId"})
 	public String hospitals(HospitalsRequestModel requestModel) throws IOException, TemplateException {
 		Map<String, Object> map = new HashMap<>();
 		map.put("specialityId", requestModel.getSpecialityId());
@@ -59,7 +61,7 @@ public class WebController {
 		return templateGenerator.generateHtml(map, "hospitals.ftl");
 	}
 
-	@RequestMapping(value = "/doctors.html", method = RequestMethod.POST, params = {"specialityId", "hospitalId"})
+	@RequestMapping(value = "/doctors.html", method = RequestMethod.GET, params = {"specialityId", "hospitalId"})
 	public String doctors(DoctorsRequestModel doctorsRequestModel) throws IOException, TemplateException {
 		Map<String, Object> map = new HashMap<>();
 		map.put("specialityId", doctorsRequestModel.getSpecialityId());
@@ -84,25 +86,46 @@ public class WebController {
 		return templateGenerator.generateHtml(map, "dates.ftl");
 	}
 
-	@RequestMapping(value = "/intervals.html", method = RequestMethod.POST, params = {"doctorId", "date"})
-	public String times(IntervalsRequestModel intervalsRequestModel) throws IOException, TemplateException {
+	@RequestMapping(value = "/intervals.html", method = RequestMethod.GET, params = {"doctorId", "date"})
+	public String times(IntervalsRequestModel intervalsRequestModel, HttpServletRequest request) throws IOException, TemplateException {
 		Map<String, Object> model = new HashMap<>();
 		model.put("date", intervalsRequestModel.getDate());
-		List<VisitModel> temp = scheduleManager.getTimes(intervalsRequestModel.getDoctorId(), intervalsRequestModel.getDate());
+		List<VisitModel> temp = scheduleManager.getVisitsByNotSessionId(
+				intervalsRequestModel.getDoctorId(),
+				intervalsRequestModel.getDate(),
+				request.getSession().getId());
 		model.put("visits", temp);
 		return templateGenerator.generateHtml(model, "visitTimes.ftl");
 	}
 
-	@RequestMapping(value = "/visits/new.html", method = RequestMethod.POST, params = {"date", "numberInInterval", "intervalId"})
-	public String getVisitForm(VisitFormRequestModel visitFormRequestModel) throws IOException, TemplateException {
-		return templateGenerator.generateHtml(new VisitModel(visitFormRequestModel.getNumberInInterval(), visitFormRequestModel.getIntervalId(), null, visitFormRequestModel.getDate(), false), "visitForm.ftl");
+	@RequestMapping(value = "/visits/new.html", method = RequestMethod.POST, params = {"date", "numberInInterval", "jobIntervalId"})
+	public String getVisitForm(VisitFormRequestModel visitFormRequestModel, HttpSession session) throws IOException, TemplateException {
+		CachedVisit cachedVisit = new CachedVisit(
+				doctorRepository.findOneByJobIntervalId(visitFormRequestModel.getJobIntervalId()).getId(),
+				visitFormRequestModel.getJobIntervalId(),
+				visitFormRequestModel.getNumberInInterval(),
+				visitFormRequestModel.getDate());
+		cacheManager.cache(cachedVisit, session.getId());
+
+		VisitModel visitModel = new VisitModel(
+				visitFormRequestModel.getNumberInInterval(),
+				visitFormRequestModel.getJobIntervalId(),
+				null,
+				visitFormRequestModel.getDate(),
+				false);
+		return templateGenerator.generateHtml(visitModel, "visitForm.ftl");
 	}
 
-	@RequestMapping(value = "/visits", method = RequestMethod.POST, params = {"date", "numberInInterval", "intervalId"})
-	public void createVisit(VisitCreatingRequestModel visitCreatingRequestModel, HttpServletResponse response) throws IOException {
-		ReservedTime savedVisit = reservedTimeRepository.save(new ReservedTime(visitCreatingRequestModel.getIntervalId(),
-				visitCreatingRequestModel.getNumberInInterval(), visitCreatingRequestModel.getDate(),
-				visitCreatingRequestModel.getVisitorName(), visitCreatingRequestModel.getVisitorBirthday()));
+	@RequestMapping(value = "/visits", method = RequestMethod.POST, params = {"date", "numberInInterval", "jobIntervalId"})
+	public void createVisit(VisitCreatingRequestModel visitCreatingRequestModel, HttpServletResponse response, HttpSession session) throws IOException {
+		ReservedTime reservedTime = new ReservedTime(
+				visitCreatingRequestModel.getJobIntervalId(),
+				visitCreatingRequestModel.getNumberInInterval(),
+				visitCreatingRequestModel.getDate(),
+				visitCreatingRequestModel.getVisitorName(),
+				visitCreatingRequestModel.getVisitorBirthday());
+
+		ReservedTime savedVisit = scheduleManager.save(reservedTime, session.getId());
 		response.sendRedirect("visits/" + savedVisit.getId() + "/ticket.html");
 	}
 
@@ -114,20 +137,20 @@ public class WebController {
 
 	// TEMP
 
-	@RequestMapping(value = "visits/{reservedTimeId}/ticket/save/redis", method = RequestMethod.GET)
-	public void saveToRedis(@PathVariable Long reservedTimeId, HttpServletRequest request) throws IOException, TemplateException {
-		example.save(reservedTimeRepository.findOne(reservedTimeId), request.getSession().getId());
-	}
+//	@RequestMapping(value = "visits/{reservedTimeId}/ticket/save/redis", method = RequestMethod.GET)
+//	public void saveToRedis(@PathVariable Long reservedTimeId, HttpServletRequest request) throws IOException, TemplateException {
+//		cacheManager.cache(reservedTimeRepository.findOne(reservedTimeId), request.getSession().getId());
+//	}
 
-	@RequestMapping(value = "visits/ticket/get/redis.html", method = RequestMethod.GET)
-	public String getTicketFromRedis(HttpServletRequest request) throws IOException, TemplateException {
-		TicketModel model = new TicketModel(example.getValue(request.getSession().getId()));
-		return templateGenerator.generateHtml(model, "ticket.ftl");
-	}
+//	@RequestMapping(value = "visits/ticket/get/redis.html", method = RequestMethod.GET)
+//	public String getTicketFromRedis(HttpServletRequest request) throws IOException, TemplateException {
+//		TicketModel model = new TicketModel(cacheManager.getValue(request.getSession().getId()));
+//		return templateGenerator.generateHtml(model, "ticket.ftl");
+//	}
 
-	@RequestMapping(value = "visits", method = RequestMethod.GET)
-	public List<ReservedTime> getAll() {
-		List<ReservedTime> allKeys = example.getAllKeys();
-		return allKeys;
-	}
+//	@RequestMapping(value = "visits", method = RequestMethod.GET)
+//	public List<ReservedTime> getAll(HttpServletRequest request) {
+//		List<ReservedTime> allKeys = cacheManager.getAllCachedReservedTimesExcept(request.getSession().getId());
+//		return allKeys;
+//	}
 }
