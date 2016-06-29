@@ -126,7 +126,8 @@ public class WebController {
 	}
 
 	@RequestMapping(value = "visits", method = RequestMethod.GET)
-	public List<String> getAll() {
-		return example.getAllKeys();
+	public List<ReservedTime> getAll() {
+		List<ReservedTime> allKeys = example.getAllKeys();
+		return allKeys;
 	}
 }

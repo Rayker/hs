@@ -5,6 +5,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hsdb.entities.ReservedTime;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,10 +29,23 @@ public class Example {
 		return (ReservedTime) template.opsForValue().get(getKey(sessionId));
 	}
 
-	public List<String> getAllKeys() {
-		Set<byte[]> keys = template.getConnectionFactory().getConnection().keys("*".getBytes());
-		return keys.stream().map(bs -> new String(bs)).collect(Collectors.toList());
+	public List<ReservedTime> getAllKeys() {
+		Set<byte[]> keys = template.getConnectionFactory().getConnection().keys(("*" + getKey("*")).getBytes());
+		List<String> collect = keys.stream()
+				.map(bs -> new String(bs))
+				.map(s -> s.substring(7))
+				.collect(Collectors.toList());
+		List<ReservedTime> list = new ArrayList<>();
+		for (String key : collect) {
+			list.add((ReservedTime) template.opsForValue().get(key));
+		}
+		return list;
 	}
+
+//	public List<String> getAllKeys() {
+//		Set<String> keys = template.keys("*");
+//		return keys.stream().collect(Collectors.toList());
+//	}
 
 //	public void addLink(String userId, URL url) {
 //		listOps.leftPush(userId, url.toExternalForm());
