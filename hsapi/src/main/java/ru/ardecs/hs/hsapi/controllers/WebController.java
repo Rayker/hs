@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ru.ardecs.hs.hsapi.cache.CacheManager;
 import ru.ardecs.hs.hsapi.TemplateGenerator;
 import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
@@ -28,8 +27,6 @@ import java.util.stream.IntStream;
 
 @RestController
 public class WebController {
-	@Autowired
-	CacheManager cacheManager;
 
 	@Autowired
 	TemplateGenerator templateGenerator;
@@ -105,7 +102,7 @@ public class WebController {
 				visitFormRequestModel.getJobIntervalId(),
 				visitFormRequestModel.getNumberInInterval(),
 				visitFormRequestModel.getDate());
-		cacheManager.cache(cachedVisit, session.getId());
+		scheduleManager.cache(cachedVisit, session.getId());
 
 		VisitModel visitModel = new VisitModel(
 				visitFormRequestModel.getNumberInInterval(),
@@ -139,18 +136,18 @@ public class WebController {
 
 //	@RequestMapping(value = "visits/{reservedTimeId}/ticket/save/redis", method = RequestMethod.GET)
 //	public void saveToRedis(@PathVariable Long reservedTimeId, HttpServletRequest request) throws IOException, TemplateException {
-//		cacheManager.cache(reservedTimeRepository.findOne(reservedTimeId), request.getSession().getId());
+//		redisCacheManager.cache(reservedTimeRepository.findOne(reservedTimeId), request.getSession().getId());
 //	}
 
 //	@RequestMapping(value = "visits/ticket/get/redis.html", method = RequestMethod.GET)
 //	public String getTicketFromRedis(HttpServletRequest request) throws IOException, TemplateException {
-//		TicketModel model = new TicketModel(cacheManager.getValue(request.getSession().getId()));
+//		TicketModel model = new TicketModel(redisCacheManager.getValue(request.getSession().getId()));
 //		return templateGenerator.generateHtml(model, "ticket.ftl");
 //	}
 
 //	@RequestMapping(value = "visits", method = RequestMethod.GET)
 //	public List<ReservedTime> getAll(HttpServletRequest request) {
-//		List<ReservedTime> allKeys = cacheManager.getAllCachedReservedTimesExcept(request.getSession().getId());
+//		List<ReservedTime> allKeys = redisCacheManager.getAllCachedReservedTimesExcept(request.getSession().getId());
 //		return allKeys;
 //	}
 }

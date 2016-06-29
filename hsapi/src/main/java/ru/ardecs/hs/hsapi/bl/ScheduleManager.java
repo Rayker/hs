@@ -41,17 +41,18 @@ public class ScheduleManager {
 	public List<VisitModel> getVisitsByNotSessionId(Long doctorId, Date date, String sessionId) {
 		Set<String> reservedTimesKeys = getReservedTimesKeysByNotSessionId(doctorId, date, sessionId);
 
-		return doctorRepository.findOne(doctorId).getJobIntervals()
+		return doctorRepository
+				.findOne(doctorId)
+				.getJobIntervals()
 				.stream()
-				.flatMap(jobInterval ->
-						generateArithmeticProgressionForInterval(jobInterval)
-								.mapToObj(
-										numberInInterval -> new VisitModel(
-												numberInInterval,
-												jobInterval.getId(),
-												getVisitTime(jobInterval, numberInInterval),
-												date,
-												reservedTimesKeys.contains(getKey(jobInterval.getId(), numberInInterval)))))
+				.flatMap(jobInterval -> generateArithmeticProgressionForInterval(jobInterval)
+						.mapToObj(
+								numberInInterval -> new VisitModel(
+										numberInInterval,
+										jobInterval.getId(),
+										getVisitTime(jobInterval, numberInInterval),
+										date,
+										reservedTimesKeys.contains(getKey(jobInterval.getId(), numberInInterval)))))
 				.collect(Collectors.toList());
 	}
 
@@ -66,8 +67,7 @@ public class ScheduleManager {
 
 	private Set<String> getReservedTimesKeysByNotSessionId(Long doctorId, Date date, String sessionId) {
 		return Stream
-				.concat(
-						getConfirmedVisits(doctorId, date),
+				.concat(getConfirmedVisits(doctorId, date),
 						getCachedVisitsByNotSessionId(doctorId, date, sessionId))
 				.collect(Collectors.toSet());
 	}
@@ -81,7 +81,6 @@ public class ScheduleManager {
 
 	private Stream<String> getCachedVisitsByNotSessionId(Long doctorId, Date date, String sessionId) {
 		return cacheManager.getAllCachedReservedTimesExcept(sessionId)
-				.stream()
 				.filter(v -> dateEquals(v.getDate(), date))
 				.filter(v -> Objects.equals(v.getDoctorId(), doctorId))
 				.map(v -> getKey(v.getJobIntervalId(), v.getNumberInInterval()));

@@ -23,7 +23,7 @@ public class MailSender
 {
 	private static final Logger logger =
 			LoggerFactory.getLogger(MailSender.class);
-	public static final String EMAIL_TICKET_TEMPLATE = "mail/ticket.ftl";
+	private static final String EMAIL_TICKET_TEMPLATE = "mail/ticket.ftl";
 
 	@Autowired
 	private TemplateGenerator templateGenerator;
