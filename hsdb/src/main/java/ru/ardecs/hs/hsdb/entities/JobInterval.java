@@ -3,12 +3,13 @@ package ru.ardecs.hs.hsdb.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.List;
 
 @Entity
 @Table(name = "job_intervals")
-public class JobInterval {
+public class JobInterval implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;

@@ -1,11 +1,12 @@
 package ru.ardecs.hs.hsdb.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 
 @Entity
 @Table(name = "reserved_times")
-public class ReservedTime {
+public class ReservedTime implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;

@@ -1,10 +1,11 @@
 package ru.ardecs.hs.hsdb.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "hospitals")
-public class Hospital {
+public class Hospital implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;

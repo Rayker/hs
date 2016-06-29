@@ -1,13 +1,12 @@
 package ru.ardecs.hs.hsapi.controllers;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ru.ardecs.hs.hsapi.Example;
 import ru.ardecs.hs.hsapi.TemplateGenerator;
 import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsapi.bl.TicketModel;
@@ -20,14 +19,15 @@ import ru.ardecs.hs.hsdb.repositories.SpecialityRepository;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @RestController
 public class WebController {
+	@Autowired
+	Example example;
+
 	@Autowired
 	TemplateGenerator templateGenerator;
 
@@ -72,7 +72,7 @@ public class WebController {
 		Calendar calendar = Calendar.getInstance();
 		List<Date> dates = IntStream.range(0, 7)
 				.mapToObj(i -> {
-					calendar.add(calendar.DATE, 1);
+					calendar.add(Calendar.DATE, 1);
 					return calendar.getTime();
 				})
 				.collect(Collectors.toList());
@@ -108,6 +108,19 @@ public class WebController {
 	@RequestMapping(value = "visits/{reservedTimeId}/ticket.html", method = RequestMethod.GET)
 	public String getTicket(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
 		TicketModel model = new TicketModel(reservedTimeRepository.findOne(reservedTimeId));
+		return templateGenerator.generateHtml(model, "ticket.ftl");
+	}
+
+	// TEMP
+
+	@RequestMapping(value = "visits/{reservedTimeId}/ticket/save/redis", method = RequestMethod.GET)
+	public void saveToRedis(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
+		example.save(reservedTimeRepository.findOne(reservedTimeId));
+	}
+
+	@RequestMapping(value = "visits/{reservedTimeId}/ticket/get/redis.html", method = RequestMethod.GET)
+	public String getTicketFromRedis(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
+		TicketModel model = new TicketModel(example.getValue(reservedTimeId));
 		return templateGenerator.generateHtml(model, "ticket.ftl");
 	}
 }
