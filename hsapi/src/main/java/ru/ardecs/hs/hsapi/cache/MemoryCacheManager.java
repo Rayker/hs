@@ -1,13 +1,18 @@
 package ru.ardecs.hs.hsapi.cache;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 @Component
+@Qualifier("MemoryCacheManager")
 public class MemoryCacheManager implements CacheManager {
 	private final Object locker = new Object();
 
@@ -16,7 +21,9 @@ public class MemoryCacheManager implements CacheManager {
 
 	private Map<String, CachedNode> nodesBySessionId = new HashMap<>();
 
-	private SortedMap<Date, CachedNode> nodesByExpireTime = new TreeMap<>();
+	private SortedMap<Date, CachedNode> nodesByExpiredTime = new TreeMap<>();
+
+	private Multimap<String, CachedNode> nodesByDateAndDoctorId = HashMultimap.create();
 
 	@Override
 	public void cache(CachedVisit cachedVisit, String sessionId) {
@@ -28,16 +35,19 @@ public class MemoryCacheManager implements CacheManager {
 
 		synchronized (locker) {
 			nodesBySessionId.put(cachedNode.getSessionId(), cachedNode);
-			nodesByExpireTime.put(cachedNode.getTimeOfExpire(), cachedNode);
+			nodesByExpiredTime.put(cachedNode.getExpiredTime(), cachedNode);
+			nodesByDateAndDoctorId.put(cachedNode.getDateAndDoctorIdKey(), cachedNode);
 		}
 	}
 
 	@Override
-	public Stream<CachedVisit> getAllCachedReservedTimesExcept(String sessionId) {
+	public List<CachedVisit> getCachedVisitsByDoctorIdAndDateAndNotSessionId(Long doctorId, Date date, String sessionId) {
 		synchronized (locker) {
-			return nodesBySessionId.values().stream()
+			return nodesByDateAndDoctorId.get(CachedNode.createDateAndDoctorIdKey(date, doctorId))
+					.stream()
 					.filter(node -> !node.getSessionId().equals(sessionId))
-					.map(CachedNode::getCachedVisit);
+					.map(CachedNode::getCachedVisit)
+					.collect(Collectors.toList());
 		}
 	}
 
@@ -48,55 +58,66 @@ public class MemoryCacheManager implements CacheManager {
 			if (deletedNode == null) {
 				return;
 			}
-			nodesByExpireTime.remove(deletedNode.getTimeOfExpire());
-			nodesBySessionId.remove(deletedNode.getSessionId());
+			delete(deletedNode);
 		}
 	}
 
-	private boolean tryDeleteByExpireTime() {
-		// TODO: 6/29/16 refactor this
+	private boolean tryDeleteByLeastExpiredTime() {
 		synchronized (locker) {
-			if (nodesByExpireTime.isEmpty()) {
+			if (nodesByExpiredTime.isEmpty()) {
 				return false;
 			}
-			Date firstKey = nodesByExpireTime.firstKey();
-			if (new Date().compareTo(firstKey) > 0) {
-				CachedNode deletedNode = nodesByExpireTime.remove(firstKey);
-				nodesBySessionId.remove(deletedNode.getSessionId());
+			Date expiredTime = nodesByExpiredTime.firstKey();
+			if (new Date().compareTo(expiredTime) > 0) {
+				delete(nodesByExpiredTime.get(expiredTime));
 				return true;
-			} else {
-				return false;
 			}
+			return false;
 		}
 	}
 
 	@Scheduled(fixedDelayString = "${application.cache.checkDelay}")
-	private void deleteHead() {
-		while (tryDeleteByExpireTime()) {
+	private void deleteExpired() {
+		while (tryDeleteByLeastExpiredTime()) {
 		}
+	}
+
+	private void delete(CachedNode deletedNode) {
+		nodesByExpiredTime.remove(deletedNode.getExpiredTime());
+		nodesBySessionId.remove(deletedNode.getSessionId());
+		nodesByDateAndDoctorId.remove(deletedNode.getDateAndDoctorIdKey(), deletedNode);
 	}
 }
 
 class CachedNode {
+	private static final SimpleDateFormat innerKeyDateFormat = new SimpleDateFormat("yyyyMMdd_");
 	private final CachedVisit cachedVisit;
-	private final Date timeOfExpire;
+	private final Date expiredTime;
 	private final String sessionId;
 
-	public CachedNode(String sessionId, CachedVisit cachedVisit, Date cacheTime) {
+	CachedNode(String sessionId, CachedVisit cachedVisit, Date cacheTime) {
 		this.cachedVisit = cachedVisit;
-		this.timeOfExpire = cacheTime;
+		this.expiredTime = cacheTime;
 		this.sessionId = sessionId;
 	}
 
-	public CachedVisit getCachedVisit() {
+	static String createDateAndDoctorIdKey(Date date, Long doctorId) {
+		return innerKeyDateFormat.format(date) + doctorId;
+	}
+
+	CachedVisit getCachedVisit() {
 		return cachedVisit;
 	}
 
-	public Date getTimeOfExpire() {
-		return timeOfExpire;
+	Date getExpiredTime() {
+		return expiredTime;
 	}
 
-	public String getSessionId() {
+	String getSessionId() {
 		return sessionId;
+	}
+
+	String getDateAndDoctorIdKey() {
+		return createDateAndDoctorIdKey(cachedVisit.getDate(), cachedVisit.getDoctorId());
 	}
 }

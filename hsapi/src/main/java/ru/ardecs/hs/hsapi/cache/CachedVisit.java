@@ -3,7 +3,7 @@ package ru.ardecs.hs.hsapi.cache;
 import java.io.Serializable;
 import java.util.Date;
 
-public class CachedVisit implements Serializable{
+public class CachedVisit implements Serializable {
 	private Long doctorId;
 	private Long jobIntervalId;
 	private int numberInInterval;

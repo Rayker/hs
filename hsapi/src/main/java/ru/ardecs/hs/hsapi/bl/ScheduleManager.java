@@ -1,6 +1,7 @@
 package ru.ardecs.hs.hsapi.bl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hsapi.cache.CacheManager;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
@@ -25,10 +26,14 @@ public class ScheduleManager {
 	private final static int visitInMinutes = 30;
 	private final static int visitInMilliseconds = visitInMinutes * 60 * 1000;
 	private final static DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
 	@Autowired
+	@Qualifier("MemoryCacheManager")
 	private CacheManager cacheManager;
+
 	@Autowired
 	private ReservedTimeRepository reservedTimeRepository;
+
 	@Autowired
 	private DoctorRepository doctorRepository;
 
@@ -80,15 +85,9 @@ public class ScheduleManager {
 	}
 
 	private Stream<String> getCachedVisitsByNotSessionId(Long doctorId, Date date, String sessionId) {
-		return cacheManager.getAllCachedReservedTimesExcept(sessionId)
-				.filter(v -> dateEquals(v.getDate(), date))
-				.filter(v -> Objects.equals(v.getDoctorId(), doctorId))
+		return cacheManager.getCachedVisitsByDoctorIdAndDateAndNotSessionId(doctorId, date, sessionId)
+				.stream()
 				.map(v -> getKey(v.getJobIntervalId(), v.getNumberInInterval()));
-	}
-
-	private boolean dateEquals(Date date1, Date date2) {
-		SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
-		return fmt.format(date1).equals(fmt.format(date2));
 	}
 
 	private String getKey(Long jobIntervalId, int numberInInterval) {

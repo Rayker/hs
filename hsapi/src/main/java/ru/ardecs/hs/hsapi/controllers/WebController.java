@@ -131,23 +131,4 @@ public class WebController {
 		TicketModel model = new TicketModel(reservedTimeRepository.findOne(reservedTimeId));
 		return templateGenerator.generateHtml(model, "ticket.ftl");
 	}
-
-	// TEMP
-
-//	@RequestMapping(value = "visits/{reservedTimeId}/ticket/save/redis", method = RequestMethod.GET)
-//	public void saveToRedis(@PathVariable Long reservedTimeId, HttpServletRequest request) throws IOException, TemplateException {
-//		redisCacheManager.cache(reservedTimeRepository.findOne(reservedTimeId), request.getSession().getId());
-//	}
-
-//	@RequestMapping(value = "visits/ticket/get/redis.html", method = RequestMethod.GET)
-//	public String getTicketFromRedis(HttpServletRequest request) throws IOException, TemplateException {
-//		TicketModel model = new TicketModel(redisCacheManager.getValue(request.getSession().getId()));
-//		return templateGenerator.generateHtml(model, "ticket.ftl");
-//	}
-
-//	@RequestMapping(value = "visits", method = RequestMethod.GET)
-//	public List<ReservedTime> getAll(HttpServletRequest request) {
-//		List<ReservedTime> allKeys = redisCacheManager.getAllCachedReservedTimesExcept(request.getSession().getId());
-//		return allKeys;
-//	}
 }
