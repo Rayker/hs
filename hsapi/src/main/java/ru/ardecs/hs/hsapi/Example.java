@@ -5,18 +5,32 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hsdb.entities.ReservedTime;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Component
 public class Example {
 	public static final String RESERVED_TIME_NAME = "reservedTime";
+
 	@Autowired
 	private RedisTemplate<String, Object> template;
 
-	public void save(ReservedTime reservedTime) {
-		template.opsForValue().set(RESERVED_TIME_NAME, reservedTime);
+	public void save(ReservedTime reservedTime, String sessionId) {
+		template.opsForValue().set(getKey(sessionId), reservedTime);
 	}
 
-	public ReservedTime getValue(Long reservedTimeId) {
-		return (ReservedTime) template.opsForValue().get(RESERVED_TIME_NAME);
+	private String getKey(String sessionId) {
+		return RESERVED_TIME_NAME + ":" + sessionId;
+	}
+
+	public ReservedTime getValue(String sessionId) {
+		return (ReservedTime) template.opsForValue().get(getKey(sessionId));
+	}
+
+	public List<String> getAllKeys() {
+		Set<byte[]> keys = template.getConnectionFactory().getConnection().keys("*".getBytes());
+		return keys.stream().map(bs -> new String(bs)).collect(Collectors.toList());
 	}
 
 //	public void addLink(String userId, URL url) {

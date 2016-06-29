@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.mail.Authenticator;
@@ -19,7 +21,7 @@ import java.util.Properties;
 public class Beans {
 	private Configuration cfg;
 
-	@Bean
+	@Bean(name = "freemarker.configuration")
 	public Configuration getTemplateConfiguration(@Value("${application.ftlBaseFolder}") String baseDir) {
 		if (cfg == null) {
 			cfg = new Configuration(Configuration.VERSION_2_3_23);
@@ -50,5 +52,12 @@ public class Beans {
 						return new PasswordAuthentication(username, password);
 					}
 				});
+	}
+
+	@Bean
+	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory rc) {
+		final RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+		redisTemplate.setConnectionFactory(rc);
+		return redisTemplate;
 	}
 }

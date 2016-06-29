@@ -17,6 +17,7 @@ import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
 import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
 import ru.ardecs.hs.hsdb.repositories.SpecialityRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
@@ -114,13 +115,18 @@ public class WebController {
 	// TEMP
 
 	@RequestMapping(value = "visits/{reservedTimeId}/ticket/save/redis", method = RequestMethod.GET)
-	public void saveToRedis(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
-		example.save(reservedTimeRepository.findOne(reservedTimeId));
+	public void saveToRedis(@PathVariable Long reservedTimeId, HttpServletRequest request) throws IOException, TemplateException {
+		example.save(reservedTimeRepository.findOne(reservedTimeId), request.getSession().getId());
 	}
 
-	@RequestMapping(value = "visits/{reservedTimeId}/ticket/get/redis.html", method = RequestMethod.GET)
-	public String getTicketFromRedis(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
-		TicketModel model = new TicketModel(example.getValue(reservedTimeId));
+	@RequestMapping(value = "visits/ticket/get/redis.html", method = RequestMethod.GET)
+	public String getTicketFromRedis(HttpServletRequest request) throws IOException, TemplateException {
+		TicketModel model = new TicketModel(example.getValue(request.getSession().getId()));
 		return templateGenerator.generateHtml(model, "ticket.ftl");
+	}
+
+	@RequestMapping(value = "visits", method = RequestMethod.GET)
+	public List<String> getAll() {
+		return example.getAllKeys();
 	}
 }
