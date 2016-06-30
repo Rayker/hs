@@ -5,7 +5,7 @@
         <title>title</title>
     </head>
     <body>
-        <form method='GET' action='dates.html'>
+        <form method='GET' action='/doctors/workdays.html'>
             <input type='hidden' name='specialityId' value='${specialityId}'>
             <input type='hidden' name='hospitalId' value='${hospitalId}'>
             <#list doctors as doctor>

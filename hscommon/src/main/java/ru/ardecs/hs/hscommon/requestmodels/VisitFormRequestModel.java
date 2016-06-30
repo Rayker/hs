@@ -1,10 +1,11 @@
-package ru.ardecs.hs.hsapi.requestmodels;
+package ru.ardecs.hs.hscommon.requestmodels;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class VisitFormRequestModel {
+public class VisitFormRequestModel implements Serializable {
 	private long jobIntervalId;
 	private int numberInInterval;
 	@DateTimeFormat(pattern = "dd.MM.yyyy")

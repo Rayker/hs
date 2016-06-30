@@ -1,6 +1,5 @@
-package ru.ardecs.hs.hsapi.models;
+package ru.ardecs.hs.hscommon.models;
 
-import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hscommon.entities.ReservedTime;
 
 import java.util.Date;
@@ -22,7 +21,9 @@ public class TicketModel {
 		this.doctor = reservedTime.getJobInterval().getDoctor().getFullname();
 		this.doctorSpeciality = reservedTime.getJobInterval().getDoctor().getSpeciality().getName();
 		this.visitDate = reservedTime.getDate();
-		this.visitTime = ScheduleManager.getVisitTime(reservedTime.getJobInterval(), reservedTime.getNumberInInterval());
+		// FIXME: 6/30/16
+//		this.visitTime = ScheduleManager.getVisitTime(reservedTime.getJobInterval(), reservedTime.getNumberInInterval());
+		this.visitTime = "";
 		this.visitId = reservedTime.getId();
 		this.visitorName = reservedTime.getVisitorName();
 		this.visitorBirthday = reservedTime.getVisitorBirthday();

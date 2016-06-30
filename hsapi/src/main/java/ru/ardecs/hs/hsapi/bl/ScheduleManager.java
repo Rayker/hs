@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hsapi.cache.CacheManager;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
-import ru.ardecs.hs.hsapi.models.VisitModel;
+import ru.ardecs.hs.hscommon.models.VisitModel;
 import ru.ardecs.hs.hscommon.entities.JobInterval;
 import ru.ardecs.hs.hscommon.entities.ReservedTime;
 import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
@@ -43,12 +43,13 @@ public class ScheduleManager {
 	// TODO: 6/30/16 add doctorId dependency
 	public List<Date> getWorkDays(Long doctorId, int dayCount) {
 		Calendar calendar = Calendar.getInstance();
-		return IntStream.range(0, dayCount)
+		List<Date> list = IntStream.range(0, dayCount)
 				.mapToObj(i -> {
 					calendar.add(Calendar.DATE, 1);
 					return calendar.getTime();
 				})
 				.collect(Collectors.toList());
+		return list;
 	}
 
 	public List<VisitModel> getVisitsByNotSessionId(Long doctorId, Date date, String sessionId) {

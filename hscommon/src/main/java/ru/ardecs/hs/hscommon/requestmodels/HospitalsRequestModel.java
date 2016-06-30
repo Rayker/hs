@@ -1,4 +1,4 @@
-package ru.ardecs.hs.hsapi.requestmodels;
+package ru.ardecs.hs.hscommon.requestmodels;
 
 public class HospitalsRequestModel {
 	private long specialityId;

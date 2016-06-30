@@ -1,4 +1,4 @@
-package ru.ardecs.hs.hsapi.models;
+package ru.ardecs.hs.hscommon.models;
 
 import java.util.Date;
 
