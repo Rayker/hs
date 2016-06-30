@@ -9,22 +9,23 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.ardecs.hs.hsapi.TemplateGenerator;
 import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
+import ru.ardecs.hs.hsapi.mail.MailSender;
 import ru.ardecs.hs.hsapi.models.TicketModel;
 import ru.ardecs.hs.hsapi.models.VisitModel;
 import ru.ardecs.hs.hsapi.requestmodels.*;
-import ru.ardecs.hs.hsdb.entities.ReservedTime;
 import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
 import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
 import ru.ardecs.hs.hsdb.repositories.SpecialityRepository;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+// TODO: 6/30/16 add deleting
 @RestController
 public class WebController {
 
@@ -42,6 +43,9 @@ public class WebController {
 
 	@Autowired
 	private ScheduleManager scheduleManager;
+
+	@Autowired
+	private MailSender mailSender;
 
 	@RequestMapping(value = "/specialities.html", method = RequestMethod.GET)
 	public String specialities() throws IOException, TemplateException {
@@ -69,13 +73,7 @@ public class WebController {
 
 	@RequestMapping(value = "/dates.html", params = "doctorId")
 	public String choseDate(DatesRequestModel datesRequestModel) throws IOException, TemplateException {
-		Calendar calendar = Calendar.getInstance();
-		List<Date> dates = IntStream.range(0, 7)
-				.mapToObj(i -> {
-					calendar.add(Calendar.DATE, 1);
-					return calendar.getTime();
-				})
-				.collect(Collectors.toList());
+		List<Date> dates = scheduleManager.getWorkDays(datesRequestModel.getDoctorId(), 7);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("dates", dates);
@@ -84,13 +82,13 @@ public class WebController {
 	}
 
 	@RequestMapping(value = "/intervals.html", method = RequestMethod.GET, params = {"doctorId", "date"})
-	public String times(IntervalsRequestModel intervalsRequestModel, HttpServletRequest request) throws IOException, TemplateException {
+	public String times(IntervalsRequestModel intervalsRequestModel, HttpSession session) throws IOException, TemplateException {
 		Map<String, Object> model = new HashMap<>();
 		model.put("date", intervalsRequestModel.getDate());
 		List<VisitModel> temp = scheduleManager.getVisitsByNotSessionId(
 				intervalsRequestModel.getDoctorId(),
 				intervalsRequestModel.getDate(),
-				request.getSession().getId());
+				session.getId());
 		model.put("visits", temp);
 		return templateGenerator.generateHtml(model, "visitTimes.ftl");
 	}
@@ -113,22 +111,29 @@ public class WebController {
 		return templateGenerator.generateHtml(visitModel, "visitForm.ftl");
 	}
 
-	@RequestMapping(value = "/visits", method = RequestMethod.POST, params = {"date", "numberInInterval", "jobIntervalId"})
-	public void createVisit(VisitCreatingRequestModel visitCreatingRequestModel, HttpServletResponse response, HttpSession session) throws IOException {
-		ReservedTime reservedTime = new ReservedTime(
-				visitCreatingRequestModel.getJobIntervalId(),
-				visitCreatingRequestModel.getNumberInInterval(),
-				visitCreatingRequestModel.getDate(),
-				visitCreatingRequestModel.getVisitorName(),
-				visitCreatingRequestModel.getVisitorBirthday());
+//	@RequestMapping(value = "/visits", method = RequestMethod.POST, params = {"date", "numberInInterval", "jobIntervalId"})
+//	public void createVisit(VisitCreatingRequestModel visitCreatingRequestModel, HttpServletResponse response, HttpSession session) throws IOException {
+//		ReservedTime reservedTime = new ReservedTime(
+//				visitCreatingRequestModel.getJobIntervalId(),
+//				visitCreatingRequestModel.getNumberInInterval(),
+//				visitCreatingRequestModel.getDate(),
+//				visitCreatingRequestModel.getVisitorName(),
+//				visitCreatingRequestModel.getVisitorBirthday());
+//
+//		ReservedTime savedVisit = scheduleManager.save(reservedTime, session.getId());
+//		response.sendRedirect("visits/" + savedVisit.getId() + "/ticket.html");
+//	}
 
-		ReservedTime savedVisit = scheduleManager.save(reservedTime, session.getId());
-		response.sendRedirect("visits/" + savedVisit.getId() + "/ticket.html");
-	}
-
-	@RequestMapping(value = "visits/{reservedTimeId}/ticket.html", method = RequestMethod.GET)
+	@RequestMapping(value = "/visits/{reservedTimeId}/ticket.html", method = RequestMethod.GET)
 	public String getTicket(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
 		TicketModel model = new TicketModel(reservedTimeRepository.findOne(reservedTimeId));
 		return templateGenerator.generateHtml(model, "ticket.ftl");
+	}
+
+	// TODO: 6/30/16 move?
+	@RequestMapping(value = "/visits/{reservedTimeId}/ticket/send", method = RequestMethod.POST, params = {"addressTo"})
+	public void send(@PathVariable Long reservedTimeId, String addressTo, HttpServletResponse response) throws IOException, TemplateException {
+		mailSender.send(addressTo, reservedTimeId);
+		response.sendRedirect("/visits/" + reservedTimeId + "/ticket.html");
 	}
 }

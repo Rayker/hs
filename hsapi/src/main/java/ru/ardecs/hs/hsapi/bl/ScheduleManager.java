@@ -13,10 +13,7 @@ import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -41,6 +38,17 @@ public class ScheduleManager {
 	public static String getVisitTime(JobInterval jobInterval, int numberInInterval) {
 		long temp = jobInterval.getStartTime().getTime() + numberInInterval * visitInMilliseconds;
 		return timeFormat.format(new java.util.Date(temp));
+	}
+
+	// TODO: 6/30/16 add doctorId dependency
+	public List<Date> getWorkDays(Long doctorId, int dayCount) {
+		Calendar calendar = Calendar.getInstance();
+		return IntStream.range(0, dayCount)
+				.mapToObj(i -> {
+					calendar.add(Calendar.DATE, 1);
+					return calendar.getTime();
+				})
+				.collect(Collectors.toList());
 	}
 
 	public List<VisitModel> getVisitsByNotSessionId(Long doctorId, Date date, String sessionId) {
