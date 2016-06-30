@@ -1,9 +1,14 @@
 <component name="ProjectDictionaryState">
   <dictionary name="Rayker">
     <words>
+      <w>datasource</w>
       <w>fullname</w>
+      <w>gmail</w>
       <w>hsapi</w>
       <w>hsdb</w>
+      <w>jdbc</w>
+      <w>smtp</w>
+      <w>starttls</w>
       <w>webapp</w>
     </words>
   </dictionary>
