@@ -94,11 +94,13 @@ class CachedNode {
 	private final CachedVisit cachedVisit;
 	private final Date expiredTime;
 	private final String sessionId;
+	private final String dateAndDoctorIdKey;
 
 	CachedNode(String sessionId, CachedVisit cachedVisit, Date cacheTime) {
 		this.cachedVisit = cachedVisit;
 		this.expiredTime = cacheTime;
 		this.sessionId = sessionId;
+		this.dateAndDoctorIdKey = createDateAndDoctorIdKey(cachedVisit.getDate(), cachedVisit.getDoctorId());
 	}
 
 	static String createDateAndDoctorIdKey(Date date, Long doctorId) {
@@ -118,6 +120,6 @@ class CachedNode {
 	}
 
 	String getDateAndDoctorIdKey() {
-		return createDateAndDoctorIdKey(cachedVisit.getDate(), cachedVisit.getDoctorId());
+		return dateAndDoctorIdKey;
 	}
 }
