@@ -1,4 +1,4 @@
-package ru.ardecs.hs.hsapi;
+package ru.ardecs.hs.hscommon;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;

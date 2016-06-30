@@ -1,8 +1,8 @@
-package ru.ardecs.hs.hsdb.entities;
+package ru.ardecs.hs.hscommon.entities;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "reserved_times")

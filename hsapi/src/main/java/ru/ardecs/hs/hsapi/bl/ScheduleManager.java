@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hsapi.cache.CacheManager;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
 import ru.ardecs.hs.hsapi.models.VisitModel;
-import ru.ardecs.hs.hsdb.entities.JobInterval;
-import ru.ardecs.hs.hsdb.entities.ReservedTime;
+import ru.ardecs.hs.hscommon.entities.JobInterval;
+import ru.ardecs.hs.hscommon.entities.ReservedTime;
 import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
 import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
 

@@ -1,4 +1,4 @@
-package ru.ardecs.hs.hsdb.entities;
+package ru.ardecs.hs.hscommon.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;

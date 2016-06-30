@@ -10,8 +10,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = {"ru.ardecs.hs.hsdb.repositories"})
 @EnableScheduling
-@EntityScan("ru.ardecs.hs.hsdb.*")
-@ComponentScan(basePackages = {"ru.ardecs.hs.hsapi.*", "ru.ardecs.hs.hsapi"})
+@EntityScan("ru.ardecs.hs.hscommon.*")
+@ComponentScan(basePackages = {"ru.ardecs.hs.hsapi.*", "ru.ardecs.hs.*"})
 public class HsapiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HsapiApplication.class, args);

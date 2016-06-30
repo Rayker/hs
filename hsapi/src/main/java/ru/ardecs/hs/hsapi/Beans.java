@@ -1,8 +1,5 @@
 package ru.ardecs.hs.hsapi;
 
-import freemarker.template.Configuration;
-import freemarker.template.TemplateExceptionHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,21 +17,6 @@ import java.util.Properties;
 
 @Component
 public class Beans {
-	private Configuration cfg;
-
-	@Bean(name = "freemarker.configuration")
-	public Configuration getTemplateConfiguration(@Value("${application.ftlBaseFolder}") String baseDir) {
-		if (cfg == null) {
-			cfg = new Configuration(Configuration.VERSION_2_3_23);
-			cfg.setClassForTemplateLoading(getClass(), baseDir);
-			cfg.setDefaultEncoding("UTF-8");
-			cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-//		    cfg.setTemplateExceptionHandler(TemplateExceptionHandler.DEBUG_HANDLER);
-			cfg.setAutoFlush(true);
-		}
-		return cfg;
-	}
-
 	@Bean(name = "app.props")
 	public Properties getApplicationProperties() throws IOException {
 		ClassPathResource resource = new ClassPathResource("application.properties");

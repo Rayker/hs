@@ -1,11 +1,11 @@
-package ru.ardecs.hs.hsdb.entities;
+package ru.ardecs.hs.hscommon.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.List;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "job_intervals")

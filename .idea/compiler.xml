@@ -23,12 +23,16 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="hsapi" />
+        <module name="hsclient" />
+        <module name="hscommon" />
         <module name="hsdb" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
       <module name="hs" target="1.8" />
       <module name="hsapi" target="1.8" />
+      <module name="hsclient" target="1.8" />
+      <module name="hscommon" target="1.8" />
       <module name="hsdb" target="1.8" />
     </bytecodeTargetLevel>
   </component>

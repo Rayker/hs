@@ -3,6 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hsapi" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hsclient" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hscommon" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hsdb" charset="UTF-8" />
   </component>
 </project>
