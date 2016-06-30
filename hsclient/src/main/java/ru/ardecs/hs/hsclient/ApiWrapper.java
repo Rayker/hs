@@ -50,13 +50,13 @@ public class ApiWrapper {
 		return httpclient.execute(httpRequest);
 	}
 
-	private <T> T getValue(URI uri) throws IOException {
+	private <T> T getValue(URI uri, Type type) throws IOException {
 		HttpGet httpGet = new HttpGet(uri);
 		CloseableHttpResponse response = httpclient.execute(httpGet);
 		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-		Type listType = new TypeToken<T>() {
-		}.getType();
-		return new Gson().fromJson(rd, listType);
+//		Type listType = new TypeToken<T>() {
+//		}.getType();
+		return new Gson().fromJson(rd, type);
 	}
 
 	public <T> T parse(CloseableHttpResponse response) throws IOException {
@@ -73,7 +73,8 @@ public class ApiWrapper {
 	}
 
 	public List<Speciality> specialities() throws IOException {
-		return this.<ArrayList<Speciality>>getValue(URI.create("http://localhost:8090/specialities.json"));
+		return this.<ArrayList<Speciality>>getValue(URI.create("http://localhost:8090/specialities.json"), new TypeToken<List<Speciality>>() {
+		}.getType());
 	}
 
 	public List<Hospital> hospitals(HospitalsRequestModel requestModel) throws URISyntaxException, IOException {
@@ -82,7 +83,8 @@ public class ApiWrapper {
 				.addParameter("specialityId", String.valueOf(requestModel.getSpecialityId()))
 				.build();
 
-		return this.<ArrayList<Hospital>>getValue(uri);
+		return this.<ArrayList<Hospital>>getValue(uri, new TypeToken<List<Hospital>>() {
+		}.getType());
 	}
 
 	public List<Doctor> doctors(DoctorsRequestModel doctorsRequestModel) throws URISyntaxException, IOException {
@@ -90,11 +92,14 @@ public class ApiWrapper {
 				.addParameter("specialityId", String.valueOf(doctorsRequestModel.getSpecialityId()))
 				.addParameter("hospitalId", String.valueOf(doctorsRequestModel.getHospitalId()))
 				.build();
-		return this.<ArrayList<Doctor>>getValue(uri);
+		return this.<ArrayList<Doctor>>getValue(uri, new TypeToken<List<Doctor>>() {
+		}.getType());
 	}
 
-	public Date[] choseDate(Long doctorId) throws IOException {
-		Date[] temp = this.<Date[]>getValue(URI.create("http://localhost:8090/doctors/" + doctorId + "/workdays.json"));
+	public List<Date> choseDate(Long doctorId) throws IOException {
+		List<Date> temp = this.<List<Date>>getValue(
+				URI.create("http://localhost:8090/doctors/" + doctorId + "/workdays.json"),
+				new TypeToken<List<Date>>() {}.getType());
 		return temp;
 	}
 

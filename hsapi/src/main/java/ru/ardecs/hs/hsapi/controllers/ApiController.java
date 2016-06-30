@@ -1,5 +1,6 @@
 package ru.ardecs.hs.hsapi.controllers;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,7 @@ public class ApiController {
 	}
 
 	@RequestMapping(value = "/doctors/{doctorId}/workdays.json")
+	@JsonFormat(pattern = "dd.MM.yyyy")
 	public List<Date> choseDate(@PathVariable Long doctorId) throws IOException, TemplateException {
 		// TODO: 6/30/16 refactor it
 		return scheduleManager.getWorkDays(doctorId, 7);
