@@ -9,7 +9,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.SerializableEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,6 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -62,9 +60,7 @@ public class ApiWrapperImpl implements ApiWrapper {
 		return new Gson().fromJson(rd, type);
 	}
 
-	private <T> T parse(CloseableHttpResponse response) throws IOException {
-		Type type = new TypeToken<T>() {
-		}.getType();
+	private <T> T parse(CloseableHttpResponse response, Type type) throws IOException {
 		BufferedReader responseReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 		return new Gson().fromJson(responseReader, type);
 	}
@@ -131,8 +127,16 @@ public class ApiWrapperImpl implements ApiWrapper {
 	}
 
 	@Override
-	public long createVisit(VisitCreatingRequestModel visitCreatingRequestModel, String sessionId) throws IOException {
-		throw new NotImplementedException();
+	public Long createVisit(VisitCreatingRequestModel visitCreatingRequestModel, String sessionId) throws IOException, URISyntaxException {
+		ArrayList<NameValuePair> params = new ArrayList<>();
+		params.add(new BasicNameValuePair("jobIntervalId", String.valueOf(visitCreatingRequestModel.getJobIntervalId())));
+		params.add(new BasicNameValuePair("numberInInterval", String.valueOf(visitCreatingRequestModel.getNumberInInterval())));
+		params.add(new BasicNameValuePair("visitorName", String.valueOf(visitCreatingRequestModel.getVisitorName())));
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+		params.add(new BasicNameValuePair("visitorBirthday", format.format(visitCreatingRequestModel.getVisitorBirthday())));
+		params.add(new BasicNameValuePair("date", format.format(visitCreatingRequestModel.getDate())));
+		params.add(new BasicNameValuePair("sessionId", sessionId));
+		return parse(sendPost("/visits", params), Long.class);
 	}
 
 	@Override

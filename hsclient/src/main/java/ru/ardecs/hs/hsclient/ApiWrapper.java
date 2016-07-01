@@ -25,7 +25,7 @@ public interface ApiWrapper {
 
 	void cache(VisitFormRequestModel visitFormRequestModel, String sessionId) throws IOException, URISyntaxException;
 
-	long createVisit(VisitCreatingRequestModel visitCreatingRequestModel, String sessionId) throws IOException;
+	Long createVisit(VisitCreatingRequestModel visitCreatingRequestModel, String sessionId) throws IOException, URISyntaxException;
 
 	TicketModel getTicketModel(Long reservedTimeId) throws IOException, URISyntaxException;
 

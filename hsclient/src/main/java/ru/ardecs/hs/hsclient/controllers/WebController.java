@@ -89,7 +89,7 @@ public class WebController {
 	}
 
 	@RequestMapping(value = "/visits", method = RequestMethod.POST, params = {"date", "numberInInterval", "jobIntervalId"})
-	public void createVisit(VisitCreatingRequestModel visitCreatingRequestModel, HttpServletResponse response, HttpSession session) throws IOException {
+	public void createVisit(VisitCreatingRequestModel visitCreatingRequestModel, HttpServletResponse response, HttpSession session) throws IOException, URISyntaxException {
 //		ReservedTime reservedTime = new ReservedTime(
 //				visitCreatingRequestModel.getJobIntervalId(),
 //				visitCreatingRequestModel.getNumberInInterval(),
