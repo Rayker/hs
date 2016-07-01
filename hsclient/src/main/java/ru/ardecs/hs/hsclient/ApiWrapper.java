@@ -23,7 +23,7 @@ public interface ApiWrapper {
 
 	List<VisitModel> times(IntervalsRequestModel intervalsRequestModel, String sessionId) throws URISyntaxException, IOException;
 
-	void cache(VisitFormRequestModel visitFormRequestModel, String sessionId);
+	void cache(VisitFormRequestModel visitFormRequestModel, String sessionId) throws IOException, URISyntaxException;
 
 	long createVisit(VisitCreatingRequestModel visitCreatingRequestModel, String sessionId) throws IOException;
 

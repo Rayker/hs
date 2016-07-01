@@ -3,6 +3,7 @@ package ru.ardecs.hs.hsclient;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hscommon.entities.Doctor;
 import ru.ardecs.hs.hscommon.entities.Hospital;
-import ru.ardecs.hs.hscommon.entities.ReservedTime;
 import ru.ardecs.hs.hscommon.entities.Speciality;
 import ru.ardecs.hs.hscommon.models.TicketModel;
 import ru.ardecs.hs.hscommon.models.VisitModel;
@@ -53,7 +53,7 @@ public class ApiWrapperImpl implements ApiWrapper {
 		return httpclient.execute(httpRequest);
 	}
 
-	private <T> T getValue(URI uri, Type type) throws IOException {
+	private <T> T sendGet(URI uri, Type type) throws IOException {
 		HttpGet httpGet = new HttpGet(uri);
 		CloseableHttpResponse response = httpclient.execute(httpGet);
 		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -69,15 +69,15 @@ public class ApiWrapperImpl implements ApiWrapper {
 		return new Gson().fromJson(responseReader, type);
 	}
 
-	private CloseableHttpResponse sendPost(String path, Serializable ser) throws URISyntaxException, IOException {
+	private CloseableHttpResponse sendPost(String path, List<NameValuePair> nvps) throws URISyntaxException, IOException {
 		HttpPost httpPost = new HttpPost(createUri(path, new ArrayList<>()));
-		httpPost.setEntity(new SerializableEntity(ser));
+		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
 		return execute(httpPost);
 	}
 
 	@Override
 	public List<Speciality> specialities() throws IOException, URISyntaxException {
-		return this.<ArrayList<Speciality>>getValue(createUri("/specialities.json", new ArrayList<>()), new TypeToken<List<Speciality>>() {
+		return this.<ArrayList<Speciality>>sendGet(createUri("/specialities.json", new ArrayList<>()), new TypeToken<List<Speciality>>() {
 		}.getType());
 	}
 
@@ -86,7 +86,7 @@ public class ApiWrapperImpl implements ApiWrapper {
 		URI uri = createUri("/hospitals.json", new ArrayList<>());
 		Type type = new TypeToken<List<Hospital>>() {
 		}.getType();
-		return this.<ArrayList<Hospital>>getValue(uri, type);
+		return this.<ArrayList<Hospital>>sendGet(uri, type);
 	}
 
 	@Override
@@ -95,14 +95,14 @@ public class ApiWrapperImpl implements ApiWrapper {
 		params.add(new BasicNameValuePair("specialityId", String.valueOf(doctorsRequestModel.getSpecialityId())));
 		params.add(new BasicNameValuePair("hospitalId", String.valueOf(doctorsRequestModel.getHospitalId())));
 		URI uri = createUri("/doctors.json", params);
-		return this.<ArrayList<Doctor>>getValue(uri, new TypeToken<List<Doctor>>() {
+		return this.<ArrayList<Doctor>>sendGet(uri, new TypeToken<List<Doctor>>() {
 		}.getType());
 	}
 
 	@Override
 	public List<Date> choseDate(Long doctorId) throws IOException, URISyntaxException {
 
-		return this.getValue(
+		return this.sendGet(
 				createUri("/doctors/" + doctorId + "/workdays.json", new ArrayList<>()),
 				new TypeToken<List<Date>>() {}.getType());
 	}
@@ -116,12 +116,18 @@ public class ApiWrapperImpl implements ApiWrapper {
 		params.add(new BasicNameValuePair("sessionId", sessionId));
 
 		Type type = new TypeToken<List<VisitModel>>() {}.getType();
-		return this.getValue(createUri("/visits/all.json", params), type);
+		return this.sendGet(createUri("/visits/all.json", params), type);
 	}
 
 	@Override
-	public void cache(VisitFormRequestModel visitFormRequestModel, String sessionId) {
-		throw new NotImplementedException();
+	public void cache(VisitFormRequestModel visitFormRequestModel, String sessionId) throws IOException, URISyntaxException {
+		ArrayList<NameValuePair> params = new ArrayList<>();
+		params.add(new BasicNameValuePair("jobIntervalId", String.valueOf(visitFormRequestModel.getJobIntervalId())));
+		params.add(new BasicNameValuePair("numberInInterval", String.valueOf(visitFormRequestModel.getNumberInInterval())));
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+		params.add(new BasicNameValuePair("date", format.format(visitFormRequestModel.getDate())));
+		params.add(new BasicNameValuePair("sessionId", sessionId));
+		sendPost("/cache/visits", params);
 	}
 
 	@Override
@@ -131,7 +137,7 @@ public class ApiWrapperImpl implements ApiWrapper {
 
 	@Override
 	public TicketModel getTicketModel(Long reservedTimeId) throws IOException, URISyntaxException {
-		return this.getValue(createUri("/visits/" + reservedTimeId + ".json", new ArrayList<>()), TicketModel.class);
+		return this.sendGet(createUri("/visits/" + reservedTimeId + ".json", new ArrayList<>()), TicketModel.class);
 	}
 
 	@Override
