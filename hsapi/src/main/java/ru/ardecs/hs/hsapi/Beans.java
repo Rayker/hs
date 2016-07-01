@@ -17,26 +17,6 @@ import java.util.Properties;
 
 @Component
 public class Beans {
-	@Bean(name = "app.props")
-	public Properties getApplicationProperties() throws IOException {
-		ClassPathResource resource = new ClassPathResource("application.properties");
-		Properties properties = new Properties();
-		properties.load(resource.getInputStream());
-		return properties;
-	}
-
-	@Bean
-	public Session getMailSession(@Qualifier("app.props") Properties properties,
-	                              @Value("${mail.from.username}") String username,
-	                              @Value("${mail.from.password}") String password) {
-		return Session.getInstance(properties,
-				new Authenticator() {
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(username, password);
-					}
-				});
-	}
-
 	@Bean
 	public RedisTemplate<String, CachedVisit> redisTemplate(RedisConnectionFactory rc) {
 		final RedisTemplate<String, CachedVisit> redisTemplate = new RedisTemplate<>();

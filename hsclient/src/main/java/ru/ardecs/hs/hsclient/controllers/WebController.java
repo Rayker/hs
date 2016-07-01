@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.ardecs.hs.hsclient.api.ApiWrapper;
+import ru.ardecs.hs.hsclient.mail.MailSender;
 import ru.ardecs.hs.hscommon.TemplateGenerator;
 import ru.ardecs.hs.hscommon.models.TicketModel;
 import ru.ardecs.hs.hscommon.models.VisitModel;
@@ -32,6 +33,9 @@ public class WebController {
 
 	@Autowired
 	private ApiWrapper apiWrapper;
+
+	@Autowired
+	private MailSender mailSender;
 
 	@RequestMapping(value = "/specialities.html", method = RequestMethod.GET)
 	public String specialities() throws IOException, TemplateException, ClassNotFoundException, JSONException, URISyntaxException {
@@ -90,30 +94,20 @@ public class WebController {
 
 	@RequestMapping(value = "/visits", method = RequestMethod.POST, params = {"date", "numberInInterval", "jobIntervalId"})
 	public void createVisit(VisitCreatingRequestModel visitCreatingRequestModel, HttpServletResponse response, HttpSession session) throws IOException, URISyntaxException {
-//		ReservedTime reservedTime = new ReservedTime(
-//				visitCreatingRequestModel.getJobIntervalId(),
-//				visitCreatingRequestModel.getNumberInInterval(),
-//				visitCreatingRequestModel.getDate(),
-//				visitCreatingRequestModel.getVisitorName(),
-//				visitCreatingRequestModel.getVisitorBirthday());
-//
-//		ReservedTime savedVisit = scheduleManager.save(reservedTime, session.getId());
-
 		long reservedTimeId = apiWrapper.createVisit(visitCreatingRequestModel, session.getId());
 		response.sendRedirect("visits/" + reservedTimeId + "/ticket.html");
 	}
 
 	@RequestMapping(value = "/visits/{reservedTimeId}/ticket.html", method = RequestMethod.GET)
 	public String getTicket(@PathVariable Long reservedTimeId) throws IOException, TemplateException, URISyntaxException {
-//		TicketModel model = new TicketModel(reservedTimeRepository.findOne(reservedTimeId));
 		TicketModel model = apiWrapper.getTicketModel(reservedTimeId);
 		return templateGenerator.generateHtml(model, "ticket.ftl");
 	}
-//
-//	// TODO: 6/30/16 move?
-//	@RequestMapping(value = "/visits/{reservedTimeId}/ticket/send", method = RequestMethod.POST, params = {"addressTo"})
-//	public void send(@PathVariable Long reservedTimeId, String addressTo, HttpServletResponse response) throws IOException, TemplateException {
-//		mailSender.send(addressTo, reservedTimeId);
-//		response.sendRedirect("/visits/" + reservedTimeId + "/ticket.html");
-//	}
+
+	// TODO: 6/30/16 move?
+	@RequestMapping(value = "/visits/{reservedTimeId}/ticket/send", method = RequestMethod.POST, params = {"addressTo"})
+	public void send(@PathVariable Long reservedTimeId, String addressTo, HttpServletResponse response) throws IOException, TemplateException {
+		mailSender.send(addressTo, reservedTimeId);
+		response.sendRedirect("/visits/" + reservedTimeId + "/ticket.html");
+	}
 }

@@ -17,7 +17,7 @@
 
         <div>Cancellation code: ${visitId}</div>
 
-        <form method='POST' action='visits/${visitId}/ticket/send'>
+        <form method='POST' action='ticket/send'>
             <input type='text' name='addressTo'>
             <input type='submit'>
         </form>
