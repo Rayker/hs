@@ -6,7 +6,7 @@
     </head>
     <body>
         <#list visits as visit>
-            <form method='POST' action='visits/new.html'>
+            <form method='POST' action='new.html'>
                 <input type='hidden' name='numberInInterval' value='${visit.numberInInterval}'>
                 <input type='hidden' name='jobIntervalId' value='${visit.jobIntervalId}'>
                 <input type='hidden' name='date' value='${date?date?string("dd.MM.yyyy")}'>

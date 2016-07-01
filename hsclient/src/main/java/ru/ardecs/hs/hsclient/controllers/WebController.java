@@ -34,7 +34,7 @@ public class WebController {
 	private ApiWrapper apiWrapper;
 
 	@RequestMapping(value = "/specialities.html", method = RequestMethod.GET)
-	public String specialities() throws IOException, TemplateException, ClassNotFoundException, JSONException {
+	public String specialities() throws IOException, TemplateException, ClassNotFoundException, JSONException, URISyntaxException {
 		Map<String, Object> map = new HashMap<>();
 		map.put("specialities", apiWrapper.specialities());
 		return templateGenerator.generateHtml(map, "specialities.ftl");
@@ -58,7 +58,7 @@ public class WebController {
 	}
 
 	@RequestMapping(value = "/doctors/workdays.html", params = "doctorId")
-	public String choseDate(Long doctorId) throws IOException, TemplateException {
+	public String choseDate(Long doctorId) throws IOException, TemplateException, URISyntaxException {
 		Map<String, Object> map = new HashMap<>();
 		map.put("dates", apiWrapper.choseDate(doctorId));
 		map.put("doctorId", doctorId);
@@ -77,15 +77,6 @@ public class WebController {
 		model.put("visits", apiWrapper.times(intervalsRequestModel, session.getId()));
 		return templateGenerator.generateHtml(model, "visitTimes.ftl");
 	}
-
-//	private <T> T getValue(URI uri) throws IOException {
-//		HttpGet httpGet = new HttpGet(uri);
-//		CloseableHttpResponse response = httpclient.execute(httpGet);
-//		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-//		Type listType = new TypeToken<T>() {
-//		}.getType();
-//		return new Gson().fromJson(rd, listType);
-//	}
 
 	@RequestMapping(value = "/visits/new.html", method = RequestMethod.POST, params = {"date", "numberInInterval", "jobIntervalId"})
 	public String getVisitForm(VisitFormRequestModel visitFormRequestModel, HttpSession session) throws IOException, TemplateException, URISyntaxException {

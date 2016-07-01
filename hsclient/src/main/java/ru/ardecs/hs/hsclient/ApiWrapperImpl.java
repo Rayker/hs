@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.SerializableEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hscommon.entities.Doctor;
@@ -27,6 +28,7 @@ import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,42 +75,47 @@ public class ApiWrapperImpl implements ApiWrapper {
 	}
 
 	@Override
-	public List<Speciality> specialities() throws IOException {
-		return this.<ArrayList<Speciality>>getValue(URI.create("http://localhost:8090/specialities.json"), new TypeToken<List<Speciality>>() {
+	public List<Speciality> specialities() throws IOException, URISyntaxException {
+		return this.<ArrayList<Speciality>>getValue(createUri("/specialities.json", new ArrayList<>()), new TypeToken<List<Speciality>>() {
 		}.getType());
 	}
 
 	@Override
 	public List<Hospital> hospitals(HospitalsRequestModel requestModel) throws URISyntaxException, IOException {
-		URI uri = new URIBuilder("http://localhost/hospitals.json")
-				.setPort(8090)
-				.addParameter("specialityId", String.valueOf(requestModel.getSpecialityId()))
-				.build();
-
-		return this.<ArrayList<Hospital>>getValue(uri, new TypeToken<List<Hospital>>() {
-		}.getType());
+		URI uri = createUri("/hospitals.json", new ArrayList<>());
+		Type type = new TypeToken<List<Hospital>>() {
+		}.getType();
+		return this.<ArrayList<Hospital>>getValue(uri, type);
 	}
 
 	@Override
 	public List<Doctor> doctors(DoctorsRequestModel doctorsRequestModel) throws URISyntaxException, IOException {
-		URI uri = new URIBuilder("http://localhost:8090/doctors.json")
-				.addParameter("specialityId", String.valueOf(doctorsRequestModel.getSpecialityId()))
-				.addParameter("hospitalId", String.valueOf(doctorsRequestModel.getHospitalId()))
-				.build();
+		List<NameValuePair> params = new ArrayList<>();
+		params.add(new BasicNameValuePair("specialityId", String.valueOf(doctorsRequestModel.getSpecialityId())));
+		params.add(new BasicNameValuePair("hospitalId", String.valueOf(doctorsRequestModel.getHospitalId())));
+		URI uri = createUri("/doctors.json", params);
 		return this.<ArrayList<Doctor>>getValue(uri, new TypeToken<List<Doctor>>() {
 		}.getType());
 	}
 
 	@Override
-	public List<Date> choseDate(Long doctorId) throws IOException {
+	public List<Date> choseDate(Long doctorId) throws IOException, URISyntaxException {
+
 		return this.getValue(
-				URI.create("http://localhost:8090/doctors/" + doctorId + "/workdays.json"),
+				createUri("/doctors/" + doctorId + "/workdays.json", new ArrayList<>()),
 				new TypeToken<List<Date>>() {}.getType());
 	}
 
 	@Override
-	public List<VisitModel> times(IntervalsRequestModel intervalsRequestModel, String sessionId) {
-		throw new NotImplementedException();
+	public List<VisitModel> times(IntervalsRequestModel intervalsRequestModel, String sessionId) throws URISyntaxException, IOException {
+		ArrayList<NameValuePair> params = new ArrayList<>();
+		params.add(new BasicNameValuePair("doctorId", String.valueOf(intervalsRequestModel.getDoctorId())));
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+		params.add(new BasicNameValuePair("date", format.format(intervalsRequestModel.getDate())));
+		params.add(new BasicNameValuePair("sessionId", sessionId));
+
+		Type type = new TypeToken<List<VisitModel>>() {}.getType();
+		return this.getValue(createUri("/visits/all.json", params), type);
 	}
 
 	@Override

@@ -13,15 +13,15 @@ import java.util.Date;
 import java.util.List;
 
 public interface ApiWrapper {
-	List<Speciality> specialities() throws IOException;
+	List<Speciality> specialities() throws IOException, URISyntaxException;
 
 	List<Hospital> hospitals(HospitalsRequestModel requestModel) throws URISyntaxException, IOException;
 
 	List<Doctor> doctors(DoctorsRequestModel doctorsRequestModel) throws URISyntaxException, IOException;
 
-	List<Date> choseDate(Long doctorId) throws IOException;
+	List<Date> choseDate(Long doctorId) throws IOException, URISyntaxException;
 
-	List<VisitModel> times(IntervalsRequestModel intervalsRequestModel, String sessionId);
+	List<VisitModel> times(IntervalsRequestModel intervalsRequestModel, String sessionId) throws URISyntaxException, IOException;
 
 	void cache(VisitFormRequestModel visitFormRequestModel, String sessionId);
 
