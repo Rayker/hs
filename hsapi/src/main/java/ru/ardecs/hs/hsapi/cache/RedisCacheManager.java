@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import ru.ardecs.hs.hsapi.bl.ScheduleManager;
+import ru.ardecs.hs.hsapi.bl.ScheduleManagerImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 @Component
 public class RedisCacheManager implements CacheManager {
 	private static final Logger logger =
-			LoggerFactory.getLogger(ScheduleManager.class);
+			LoggerFactory.getLogger(ScheduleManagerImpl.class);
 
 	@Value("${application.cache.expireInMinutes}")
 	private long timeoutInMinutes;
