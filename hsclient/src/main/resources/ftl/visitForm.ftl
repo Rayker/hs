@@ -5,10 +5,10 @@
         <title>title</title>
     </head>
     <body>
-        <form method='POST' action='/visits'>
-            <input type='hidden' name='numberInInterval' value='${numberInInterval}'>
-            <input type='hidden' name='jobIntervalId' value='${jobIntervalId}'>
-            <input type='hidden' name='date' value='${date?date?string("dd.MM.yyyy")}'>
+        <form method='POST' action='/cities/${cityId}/visits'>
+            <input type='hidden' name='numberInInterval' value='${model.numberInInterval}'>
+            <input type='hidden' name='jobIntervalId' value='${model.jobIntervalId}'>
+            <input type='hidden' name='date' value='${model.date?date?string("dd.MM.yyyy")}'>
             <table>
                 <tr>
                     <td>Имя посетителя:</td>

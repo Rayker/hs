@@ -24,6 +24,7 @@
         <processorPath useClasspath="true" />
         <module name="hsapi" />
         <module name="hsclient" />
+        <module name="hsclientdb" />
         <module name="hscommon" />
         <module name="hsdb" />
       </profile>
@@ -32,6 +33,7 @@
       <module name="hs" target="1.8" />
       <module name="hsapi" target="1.8" />
       <module name="hsclient" target="1.8" />
+      <module name="hsclientdb" target="1.8" />
       <module name="hscommon" target="1.8" />
       <module name="hsdb" target="1.8" />
     </bytecodeTargetLevel>

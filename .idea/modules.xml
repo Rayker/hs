@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/hs.iml" filepath="$PROJECT_DIR$/hs.iml" />
       <module fileurl="file://$PROJECT_DIR$/hsapi/hsapi.iml" filepath="$PROJECT_DIR$/hsapi/hsapi.iml" />
       <module fileurl="file://$PROJECT_DIR$/hsclient/hsclient.iml" filepath="$PROJECT_DIR$/hsclient/hsclient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hsclientdb/hsclientdb.iml" filepath="$PROJECT_DIR$/hsclientdb/hsclientdb.iml" />
       <module fileurl="file://$PROJECT_DIR$/hscommon/hscommon.iml" filepath="$PROJECT_DIR$/hscommon/hscommon.iml" />
       <module fileurl="file://$PROJECT_DIR$/hsdb/hsdb.iml" filepath="$PROJECT_DIR$/hsdb/hsdb.iml" />
     </modules>

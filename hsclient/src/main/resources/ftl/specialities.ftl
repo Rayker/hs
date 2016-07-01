@@ -5,7 +5,7 @@
         <title>title</title>
     </head>
     <body>
-        <form method='GET' action='hospitals.html'>
+        <form method='GET' action='/cities/${cityId}/hospitals.html'>
             <#list specialities as speciality>
                 <label><input type='radio' name='specialityId' value='${speciality.id}'>${speciality.name}<br></label>
             </#list>

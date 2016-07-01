@@ -6,7 +6,7 @@ import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.ardecs.hs.hsclient.api.ApiWrapper;
+import ru.ardecs.hs.hsclient.api.ApiProvider;
 import ru.ardecs.hs.hscommon.TemplateGenerator;
 import ru.ardecs.hs.hscommon.models.TicketModel;
 
@@ -30,7 +30,7 @@ public class MailSender
 	private TemplateGenerator templateGenerator;
 
 	@Autowired
-	private ApiWrapper apiWrapper;
+	private ApiProvider apiProvider;
 
 	@Value("${mail.from.username}")
 	private String username;
@@ -41,10 +41,10 @@ public class MailSender
 	@Autowired
 	private Session session;
 
-	public void send(String addressTo, Long reservedTimeId) {
+	public void send(Long cityId, String addressTo, Long reservedTimeId) {
 //		logger.debug("Start of email sending");
 		try {
-			Message message = createMessage(addressTo, reservedTimeId);
+			Message message = createMessage(cityId, addressTo, reservedTimeId);
 			Transport.send(message);
 //			logger.debug("Email was successfully sent");
 		} catch (MessagingException | IOException | TemplateException | URISyntaxException e) {
@@ -53,18 +53,18 @@ public class MailSender
 		}
 	}
 
-	private Message createMessage(String addressTo, Long reservedTimeId) throws IOException, TemplateException, MessagingException, URISyntaxException {
+	private Message createMessage(Long cityId, String addressTo, Long reservedTimeId) throws IOException, TemplateException, MessagingException, URISyntaxException {
 		Message message = new MimeMessage(session);
 		message.setFrom(new InternetAddress(username));
 		message.setRecipients(Message.RecipientType.TO,
 				InternetAddress.parse(addressTo));
 		message.setSubject("Ticket " + reservedTimeId);
-		message.setContent(generateHtml(reservedTimeId), "text/html; charset=utf-8");
+		message.setContent(generateHtml(cityId, reservedTimeId), "text/html; charset=utf-8");
 		return message;
 	}
 
-	private String generateHtml(Long reservedTimeId) throws IOException, TemplateException, URISyntaxException {
-		TicketModel model = apiWrapper.getTicketModel(reservedTimeId);
+	private String generateHtml(Long cityId, Long reservedTimeId) throws IOException, TemplateException, URISyntaxException {
+		TicketModel model = apiProvider.getApiWrapper(cityId).getTicketModel(reservedTimeId);
 		return templateGenerator.generateHtml(model, EMAIL_TICKET_TEMPLATE);
 	}
 }

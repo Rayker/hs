@@ -23,6 +23,7 @@
         <module>hsdb</module>
         <module>hsclient</module>
         <module>hscommon</module>
+        <module>hsclientdb</module>
     </modules>
 
     <build>

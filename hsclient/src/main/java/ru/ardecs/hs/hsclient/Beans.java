@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import ru.ardecs.hs.hsclient.api.ApiProvider;
+import ru.ardecs.hs.hsclient.db.CityApiRepository;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
@@ -40,4 +42,9 @@ public class Beans {
 		properties.load(resource.getInputStream());
 		return properties;
 	}
+//
+//	@Bean
+//	public ApiProvider getApiProvider(CityApiRepository repository) {
+//		repository.findAll().spliterator();
+//	}
 }

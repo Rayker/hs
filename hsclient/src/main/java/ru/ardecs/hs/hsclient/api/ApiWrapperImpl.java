@@ -10,8 +10,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hscommon.entities.Doctor;
 import ru.ardecs.hs.hscommon.entities.Hospital;
 import ru.ardecs.hs.hscommon.entities.Speciality;
@@ -33,16 +31,22 @@ import java.util.Date;
 import java.util.List;
 
 // TODO: 7/1/16 refactor
-@Component
 public class ApiWrapperImpl implements ApiWrapper {
-	@Autowired
-	private CloseableHttpClient httpClient;
+	private final CloseableHttpClient httpClient;
+	private final String host;
+	private final int port;
+
+	public ApiWrapperImpl(CloseableHttpClient httpClient, String host, int port) {
+		this.httpClient = httpClient;
+		this.host = host;
+		this.port = port;
+	}
 
 	private URI createUri(String path, List<NameValuePair> nvps) throws URISyntaxException {
 		return new URIBuilder()
 				.setScheme("http")
-				.setHost("localhost")
-				.setPort(8090)
+				.setHost(host)
+				.setPort(port)
 				.setPath(path)
 				.addParameters(nvps)
 				.build();

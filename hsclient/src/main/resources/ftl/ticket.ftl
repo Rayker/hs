@@ -5,19 +5,19 @@
         <title>title</title>
     </head>
     <body>
-        <div>${hospital}</div>
-        <div>${doctor} (${doctorSpeciality})</div>
+        <div>${model.hospital}</div>
+        <div>${model.doctor} (${model.doctorSpeciality})</div>
 
-        <div>${visitDate?date?string("dd.MM.yyyy")?date}</div>
-        <div>Time: ${visitTime}</div>
+        <div>${model.visitDate?date?string("dd.MM.yyyy")?date}</div>
+        <div>Time: ${model.visitTime}</div>
 
         <div>Visitor:</div>
-        <div>${visitorName}</div>
-        <div>${visitorBirthday?date?string("dd.MM.yyyy")?date}</div>
+        <div>${model.visitorName}</div>
+        <div>${model.visitorBirthday?date?string("dd.MM.yyyy")?date}</div>
 
-        <div>Cancellation code: ${visitId}</div>
+        <div>Cancellation code: ${model.visitId}</div>
 
-        <form method='POST' action='ticket/send'>
+        <form method='POST' action='/cities/${cityId}/visits/${model.visitId}/ticket/send'>
             <input type='text' name='addressTo'>
             <input type='submit'>
         </form>
