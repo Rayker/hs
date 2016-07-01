@@ -4,6 +4,7 @@ import freemarker.template.TemplateException;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,10 +38,7 @@ public class WebController {
 
 	@Autowired
 	private CloseableHttpClient httpclient;
-//
-//	@Autowired
-//	private ApiWrapper apiWrapper;
-
+	
 	@Autowired
 	private MailSender mailSender;
 
@@ -59,8 +57,8 @@ public class WebController {
 		return templateGenerator.generateHtml(map, "specialities.ftl");
 	}
 
-	@RequestMapping(value = "/cities/{cityId}/hospitals.html", method = RequestMethod.GET, params = {"specialityId"})
-	public String hospitals(@PathVariable Long cityId, HospitalsRequestModel requestModel) throws IOException, TemplateException, URISyntaxException {
+	@RequestMapping(value = "/cities/{cityId}/hospitals.html", method = RequestMethod.GET)
+	public String hospitals(@PathVariable Long cityId, @Validated HospitalsRequestModel requestModel) throws IOException, TemplateException, URISyntaxException {
 		Map<String, Object> map = new HashMap<>();
 		map.put("specialityId", requestModel.getSpecialityId());
 		map.put("hospitals", apiProvider.getApiWrapper(cityId).hospitals(requestModel));
@@ -68,8 +66,8 @@ public class WebController {
 		return templateGenerator.generateHtml(map, "hospitals.ftl");
 	}
 
-	@RequestMapping(value = "/cities/{cityId}/doctors.html", method = RequestMethod.GET, params = {"specialityId", "hospitalId"})
-	public String doctors(@PathVariable Long cityId, DoctorsRequestModel doctorsRequestModel) throws IOException, TemplateException, URISyntaxException {
+	@RequestMapping(value = "/cities/{cityId}/doctors.html", method = RequestMethod.GET)
+	public String doctors(@PathVariable Long cityId, @Validated DoctorsRequestModel doctorsRequestModel) throws IOException, TemplateException, URISyntaxException {
 		Map<String, Object> map = new HashMap<>();
 		map.put("specialityId", doctorsRequestModel.getSpecialityId());
 		map.put("hospitalId", doctorsRequestModel.getHospitalId());
@@ -87,8 +85,8 @@ public class WebController {
 		return templateGenerator.generateHtml(map, "dates.ftl");
 	}
 
-	@RequestMapping(value = "/cities/{cityId}/visits/all.html", method = RequestMethod.GET, params = {"doctorId", "date"})
-	public String times(@PathVariable Long cityId, IntervalsRequestModel intervalsRequestModel, HttpSession session) throws IOException, TemplateException, URISyntaxException {
+	@RequestMapping(value = "/cities/{cityId}/visits/all.html", method = RequestMethod.GET)
+	public String times(@PathVariable Long cityId, @Validated IntervalsRequestModel intervalsRequestModel, HttpSession session) throws IOException, TemplateException, URISyntaxException {
 		Map<String, Object> map = new HashMap<>();
 		map.put("date", intervalsRequestModel.getDate());
 		map.put("visits", apiProvider.getApiWrapper(cityId).times(intervalsRequestModel, session.getId()));
@@ -96,8 +94,8 @@ public class WebController {
 		return templateGenerator.generateHtml(map, "visitTimes.ftl");
 	}
 
-	@RequestMapping(value = "/cities/{cityId}/visits/new.html", method = RequestMethod.POST, params = {"date", "numberInInterval", "jobIntervalId"})
-	public String getVisitForm(@PathVariable Long cityId, VisitFormRequestModel visitFormRequestModel, HttpSession session) throws IOException, TemplateException, URISyntaxException {
+	@RequestMapping(value = "/cities/{cityId}/visits/new.html", method = RequestMethod.POST)
+	public String getVisitForm(@PathVariable Long cityId, @Validated VisitFormRequestModel visitFormRequestModel, HttpSession session) throws IOException, TemplateException, URISyntaxException {
 //		apiWrapperImpl.sendPost("/cache/visits.json", visitFormRequestModel);
 
 		apiProvider.getApiWrapper(cityId).cache(visitFormRequestModel, session.getId());
@@ -114,8 +112,8 @@ public class WebController {
 		return templateGenerator.generateHtml(map, "visitForm.ftl");
 	}
 
-	@RequestMapping(value = "/cities/{cityId}/visits", method = RequestMethod.POST, params = {"date", "numberInInterval", "jobIntervalId"})
-	public void createVisit(@PathVariable Long cityId, VisitCreatingRequestModel visitCreatingRequestModel, HttpServletResponse response, HttpSession session) throws IOException, URISyntaxException {
+	@RequestMapping(value = "/cities/{cityId}/visits", method = RequestMethod.POST)
+	public void createVisit(@PathVariable Long cityId, @Validated VisitCreatingRequestModel visitCreatingRequestModel, HttpServletResponse response, HttpSession session) throws IOException, URISyntaxException {
 		long reservedTimeId = apiProvider.getApiWrapper(cityId).createVisit(visitCreatingRequestModel, session.getId());
 		response.sendRedirect("/cities/" + cityId + "/visits/" + reservedTimeId + "/ticket.html");
 	}
