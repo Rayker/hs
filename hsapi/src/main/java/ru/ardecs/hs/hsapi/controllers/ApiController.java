@@ -5,6 +5,7 @@ import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,7 @@ import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
 import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
 import ru.ardecs.hs.hsdb.repositories.SpecialityRepository;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -46,33 +48,32 @@ public class ApiController {
 		return specialityRepository.findAll();
 	}
 
-	@RequestMapping(value = "/hospitals.json", method = RequestMethod.GET, params = {"specialityId"})
-	public List<Hospital> hospitals(HospitalsRequestModel requestModel) {
+	@RequestMapping(value = "/hospitals.json", method = RequestMethod.GET)
+	public List<Hospital> hospitals(@Validated HospitalsRequestModel requestModel) {
 		return doctorRepository.queryHospitalsBySpecialityId(requestModel.getSpecialityId());
 	}
 
 	@RequestMapping(value = "/doctors.json", method = RequestMethod.GET, params = {"specialityId", "hospitalId"})
-	public List<Doctor> doctors(DoctorsRequestModel doctorsRequestModel) {
+	public List<Doctor> doctors(@Validated DoctorsRequestModel doctorsRequestModel) {
 		return doctorRepository.findBySpecialityIdAndHospitalId(doctorsRequestModel.getSpecialityId(), doctorsRequestModel.getHospitalId());
 	}
 
-	@RequestMapping(value = "/doctors/{doctorId}/workdays.json")
-	@JsonFormat(pattern = "dd.MM.yyyy")
+	@RequestMapping(value = "/doctors/{doctorId}/workdays.json", method = RequestMethod.GET)
 	public List<Date> choseDate(@PathVariable Long doctorId) throws IOException, TemplateException {
 		// TODO: 6/30/16 refactor it
 		return scheduleManager.getWorkDays(doctorId, 7);
 	}
 
-	@RequestMapping(value = "/visits/all.json", method = RequestMethod.GET, params = {"doctorId", "date"})
-	public List<VisitModel> times(IntervalsRequestModel intervalsRequestModel, String sessionId) {
+	@RequestMapping(value = "/visits/all.json", method = RequestMethod.GET, params = "sessionId")
+	public List<VisitModel> times(@Validated IntervalsRequestModel intervalsRequestModel, String sessionId) {
 		return scheduleManager.getVisitsByNotSessionId(
 				intervalsRequestModel.getDoctorId(),
 				intervalsRequestModel.getDate(),
 				sessionId);
 	}
 
-	@RequestMapping(value = "/cache/visits", method = RequestMethod.POST)
-	public void cache(VisitFormRequestModel visitFormRequestModel, String sessionId) {
+	@RequestMapping(value = "/cache/visits", method = RequestMethod.POST, params = "sessionId")
+	public void cache(@Validated VisitFormRequestModel visitFormRequestModel, String sessionId) {
 		CachedVisit cachedVisit = new CachedVisit(
 				doctorRepository.findOneByJobIntervalId(visitFormRequestModel.getJobIntervalId()).getId(),
 				visitFormRequestModel.getJobIntervalId(),
@@ -81,8 +82,8 @@ public class ApiController {
 		scheduleManager.cache(cachedVisit, sessionId);
 	}
 
-	@RequestMapping(value = "/visits", method = RequestMethod.POST, params = {"date", "numberInInterval", "jobIntervalId"})
-	public long createVisit(VisitCreatingRequestModel visitCreatingRequestModel, String sessionId) throws IOException {
+	@RequestMapping(value = "/visits", method = RequestMethod.POST, params = {"sessionId"})
+	public long createVisit(@Validated VisitCreatingRequestModel visitCreatingRequestModel, String sessionId) throws IOException {
 		ReservedTime reservedTime = new ReservedTime(
 				visitCreatingRequestModel.getJobIntervalId(),
 				visitCreatingRequestModel.getNumberInInterval(),
@@ -94,7 +95,7 @@ public class ApiController {
 		return savedVisit.getId();
 	}
 
-	@RequestMapping(value = "/visits/{reservedTimeId}.json", method = RequestMethod.GET)
+	@RequestMapping(value = "/visits/{reservedTimeId}/ticket.json", method = RequestMethod.GET)
 	public TicketModel getReservedTime(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
 		return new TicketModel(reservedTimeRepository.findOne(reservedTimeId));
 	}

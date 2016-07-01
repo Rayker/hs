@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ru.ardecs.hs.hsclient.ApiWrapper;
+import ru.ardecs.hs.hsclient.api.ApiWrapper;
 import ru.ardecs.hs.hscommon.TemplateGenerator;
 import ru.ardecs.hs.hscommon.models.TicketModel;
 import ru.ardecs.hs.hscommon.models.VisitModel;

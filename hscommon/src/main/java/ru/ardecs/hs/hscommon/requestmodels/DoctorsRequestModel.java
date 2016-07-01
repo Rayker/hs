@@ -1,22 +1,26 @@
 package ru.ardecs.hs.hscommon.requestmodels;
 
-public class DoctorsRequestModel {
-	private long specialityId;
-	private long hospitalId;
+import javax.validation.constraints.NotNull;
 
-	public long getSpecialityId() {
+public class DoctorsRequestModel {
+	@NotNull
+	private Long specialityId;
+	@NotNull
+	private Long hospitalId;
+
+	public Long getSpecialityId() {
 		return specialityId;
 	}
 
-	public void setSpecialityId(long specialityId) {
+	public void setSpecialityId(Long specialityId) {
 		this.specialityId = specialityId;
 	}
 
-	public long getHospitalId() {
+	public Long getHospitalId() {
 		return hospitalId;
 	}
 
-	public void setHospitalId(long hospitalId) {
+	public void setHospitalId(Long hospitalId) {
 		this.hospitalId = hospitalId;
 	}
 }

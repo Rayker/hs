@@ -2,10 +2,14 @@ package ru.ardecs.hs.hscommon.requestmodels;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class IntervalsRequestModel {
+	@NotNull
 	private Long doctorId;
+
+	@NotNull
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private Date date;
 

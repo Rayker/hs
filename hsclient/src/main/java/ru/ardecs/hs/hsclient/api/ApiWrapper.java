@@ -1,4 +1,4 @@
-package ru.ardecs.hs.hsclient;
+package ru.ardecs.hs.hsclient.api;
 
 import ru.ardecs.hs.hscommon.entities.Doctor;
 import ru.ardecs.hs.hscommon.entities.Hospital;

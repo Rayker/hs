@@ -2,33 +2,39 @@ package ru.ardecs.hs.hscommon.requestmodels;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 public class VisitFormRequestModel implements Serializable {
-	private long jobIntervalId;
-	private int numberInInterval;
+	@NotNull
+	private Long jobIntervalId;
+
+	@NotNull
+	private Integer numberInInterval;
+
+	@NotNull
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private Date date;
 
-	public long getJobIntervalId() {
+	public Long getJobIntervalId() {
 		return jobIntervalId;
 	}
 
-	public int getNumberInInterval() {
+	public void setJobIntervalId(Long jobIntervalId) {
+		this.jobIntervalId = jobIntervalId;
+	}
+
+	public Integer getNumberInInterval() {
 		return numberInInterval;
+	}
+
+	public void setNumberInInterval(Integer numberInInterval) {
+		this.numberInInterval = numberInInterval;
 	}
 
 	public Date getDate() {
 		return date;
-	}
-
-	public void setJobIntervalId(long jobIntervalId) {
-		this.jobIntervalId = jobIntervalId;
-	}
-
-	public void setNumberInInterval(int numberInInterval) {
-		this.numberInInterval = numberInInterval;
 	}
 
 	public void setDate(Date date) {

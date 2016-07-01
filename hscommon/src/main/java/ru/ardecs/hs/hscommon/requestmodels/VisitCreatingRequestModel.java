@@ -2,30 +2,40 @@ package ru.ardecs.hs.hscommon.requestmodels;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class VisitCreatingRequestModel {
-	private long jobIntervalId;
-	private int numberInInterval;
+	@NotNull
+	private Long jobIntervalId;
+
+	@NotNull
+	private Integer numberInInterval;
+
+	@NotNull
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private Date date;
+
+	@NotNull
 	private String visitorName;
+
+	@NotNull
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private Date visitorBirthday;
 
-	public long getJobIntervalId() {
+	public Long getJobIntervalId() {
 		return jobIntervalId;
 	}
 
-	public void setJobIntervalId(long jobIntervalId) {
+	public void setJobIntervalId(Long jobIntervalId) {
 		this.jobIntervalId = jobIntervalId;
 	}
 
-	public int getNumberInInterval() {
+	public Integer getNumberInInterval() {
 		return numberInInterval;
 	}
 
-	public void setNumberInInterval(int numberInInterval) {
+	public void setNumberInInterval(Integer numberInInterval) {
 		this.numberInInterval = numberInInterval;
 	}
 

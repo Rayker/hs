@@ -1,4 +1,4 @@
-package ru.ardecs.hs.hsclient;
+package ru.ardecs.hs.hsclient.api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+// TODO: 7/1/16 refactor
 @Component
 public class ApiWrapperImpl implements ApiWrapper {
 	@Autowired
@@ -141,7 +142,7 @@ public class ApiWrapperImpl implements ApiWrapper {
 
 	@Override
 	public TicketModel getTicketModel(Long reservedTimeId) throws IOException, URISyntaxException {
-		return this.sendGet(createUri("/visits/" + reservedTimeId + ".json", new ArrayList<>()), TicketModel.class);
+		return this.sendGet(createUri("/visits/" + reservedTimeId + "/ticket.json", new ArrayList<>()), TicketModel.class);
 	}
 
 	@Override
