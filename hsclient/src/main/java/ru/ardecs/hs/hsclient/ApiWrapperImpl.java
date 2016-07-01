@@ -17,6 +17,7 @@ import ru.ardecs.hs.hscommon.entities.Doctor;
 import ru.ardecs.hs.hscommon.entities.Hospital;
 import ru.ardecs.hs.hscommon.entities.ReservedTime;
 import ru.ardecs.hs.hscommon.entities.Speciality;
+import ru.ardecs.hs.hscommon.models.TicketModel;
 import ru.ardecs.hs.hscommon.models.VisitModel;
 import ru.ardecs.hs.hscommon.requestmodels.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -129,8 +130,8 @@ public class ApiWrapperImpl implements ApiWrapper {
 	}
 
 	@Override
-	public ReservedTime getReservedTime(Long reservedTimeId) throws IOException {
-		throw new NotImplementedException();
+	public TicketModel getTicketModel(Long reservedTimeId) throws IOException, URISyntaxException {
+		return this.getValue(createUri("/visits/" + reservedTimeId + ".json", new ArrayList<>()), TicketModel.class);
 	}
 
 	@Override

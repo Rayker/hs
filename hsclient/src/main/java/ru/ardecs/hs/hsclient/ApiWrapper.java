@@ -2,8 +2,8 @@ package ru.ardecs.hs.hsclient;
 
 import ru.ardecs.hs.hscommon.entities.Doctor;
 import ru.ardecs.hs.hscommon.entities.Hospital;
-import ru.ardecs.hs.hscommon.entities.ReservedTime;
 import ru.ardecs.hs.hscommon.entities.Speciality;
+import ru.ardecs.hs.hscommon.models.TicketModel;
 import ru.ardecs.hs.hscommon.models.VisitModel;
 import ru.ardecs.hs.hscommon.requestmodels.*;
 
@@ -27,7 +27,7 @@ public interface ApiWrapper {
 
 	long createVisit(VisitCreatingRequestModel visitCreatingRequestModel, String sessionId) throws IOException;
 
-	ReservedTime getReservedTime(Long reservedTimeId) throws IOException;
+	TicketModel getTicketModel(Long reservedTimeId) throws IOException, URISyntaxException;
 
 	boolean delete(Long reservedTimeId);
 }

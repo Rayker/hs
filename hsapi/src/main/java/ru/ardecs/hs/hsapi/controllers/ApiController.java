@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
+import ru.ardecs.hs.hscommon.models.TicketModel;
 import ru.ardecs.hs.hscommon.models.VisitModel;
 import ru.ardecs.hs.hscommon.requestmodels.*;
 import ru.ardecs.hs.hscommon.entities.Doctor;
@@ -94,8 +95,8 @@ public class ApiController {
 	}
 
 	@RequestMapping(value = "/visits/{reservedTimeId}.json", method = RequestMethod.GET)
-	public ReservedTime getReservedTime(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
-		return reservedTimeRepository.findOne(reservedTimeId);
+	public TicketModel getReservedTime(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
+		return new TicketModel(reservedTimeRepository.findOne(reservedTimeId));
 	}
 
 	@RequestMapping(value = "/visits/{reservedTimeId}", method = RequestMethod.DELETE)

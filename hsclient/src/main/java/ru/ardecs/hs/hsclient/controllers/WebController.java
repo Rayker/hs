@@ -69,11 +69,6 @@ public class WebController {
 	public String times(IntervalsRequestModel intervalsRequestModel, HttpSession session) throws IOException, TemplateException, URISyntaxException {
 		Map<String, Object> model = new HashMap<>();
 		model.put("date", intervalsRequestModel.getDate());
-//		new URIBuilder("http://localhost:8090/visits/all.json")
-//				.setParameter("doctorId", String.valueOf(intervalsRequestModel.getDoctorId()))
-//				.setParameter("date", String.valueOf(intervalsRequestModel.getDate()))
-//				.setParameter("sessionId", session.getId());
-
 		model.put("visits", apiWrapper.times(intervalsRequestModel, session.getId()));
 		return templateGenerator.generateHtml(model, "visitTimes.ftl");
 	}
@@ -109,9 +104,9 @@ public class WebController {
 	}
 
 	@RequestMapping(value = "/visits/{reservedTimeId}/ticket.html", method = RequestMethod.GET)
-	public String getTicket(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
+	public String getTicket(@PathVariable Long reservedTimeId) throws IOException, TemplateException, URISyntaxException {
 //		TicketModel model = new TicketModel(reservedTimeRepository.findOne(reservedTimeId));
-		TicketModel model = new TicketModel(apiWrapper.getReservedTime(reservedTimeId));
+		TicketModel model = apiWrapper.getTicketModel(reservedTimeId);
 		return templateGenerator.generateHtml(model, "ticket.ftl");
 	}
 //
