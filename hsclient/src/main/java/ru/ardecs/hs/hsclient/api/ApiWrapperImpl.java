@@ -80,7 +80,9 @@ public class ApiWrapperImpl implements ApiWrapper {
 
 	@Override
 	public List<Hospital> hospitals(HospitalsRequestModel requestModel) throws URISyntaxException, IOException {
-		URI uri = createUri("/hospitals.json", new ArrayList<>());
+		List<NameValuePair> params = new ArrayList<>();
+		params.add(new BasicNameValuePair("specialityId", String.valueOf(requestModel.getSpecialityId())));
+		URI uri = createUri("/hospitals.json", params);
 		Type type = new TypeToken<List<Hospital>>() {
 		}.getType();
 		return this.<ArrayList<Hospital>>sendGet(uri, type);
