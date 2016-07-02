@@ -36,46 +36,38 @@
     </properties>
 
     <dependencies>
-
-        <!-- TODO make common dependencies -->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
-
         <!-- db -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
-            <version>${spring-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-redis</artifactId>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.6</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson</groupId>
             <artifactId>jackson-datatype-json-org</artifactId>
-            <version>1.8.0</version>
         </dependency>
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>1.4.7</version>
         </dependency>
         <dependency>
             <groupId>ru.ardecs</groupId>
@@ -87,7 +79,6 @@
             <artifactId>hscommon</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
         <!-- 1. exclude commons-logging -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -100,14 +91,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
         <!-- 2. Bridge logging from JCL to SLF4j-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
             <version>${jcl.slf4j.version}</version>
         </dependency>
-
         <!-- 3. logback -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -116,21 +105,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-redis</artifactId>
-            <version>1.7.2.RELEASE</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-redis</artifactId>
-            <version>${spring-boot.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>19.0</version>
         </dependency>
     </dependencies>
 </project>
