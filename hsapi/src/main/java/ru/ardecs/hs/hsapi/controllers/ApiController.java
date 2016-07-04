@@ -1,6 +1,5 @@
 package ru.ardecs.hs.hsapi.controllers;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,23 +11,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
-import ru.ardecs.hs.hscommon.models.TicketModel;
-import ru.ardecs.hs.hscommon.models.VisitModel;
-import ru.ardecs.hs.hscommon.requestmodels.*;
 import ru.ardecs.hs.hscommon.entities.Doctor;
 import ru.ardecs.hs.hscommon.entities.Hospital;
 import ru.ardecs.hs.hscommon.entities.ReservedTime;
 import ru.ardecs.hs.hscommon.entities.Speciality;
+import ru.ardecs.hs.hscommon.models.TicketModel;
+import ru.ardecs.hs.hscommon.models.VisitModel;
+import ru.ardecs.hs.hscommon.requestmodels.*;
 import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
 import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
 import ru.ardecs.hs.hsdb.repositories.SpecialityRepository;
 
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-// TODO: 6/30/16 add required params
 @RestController
 public class ApiController {
 	@Autowired

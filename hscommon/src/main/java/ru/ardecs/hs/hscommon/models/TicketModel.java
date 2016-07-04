@@ -14,7 +14,8 @@ public class TicketModel {
 	private String visitorName;
 	private Date visitorBirthday;
 
-	public TicketModel() {}
+	public TicketModel() {
+	}
 
 	public TicketModel(ReservedTime reservedTime) {
 		this.hospital = reservedTime.getJobInterval().getDoctor().getHospital().getName();
