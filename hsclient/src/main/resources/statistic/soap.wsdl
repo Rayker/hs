@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions>
+
+    <types>
+        data type definitions........
+    </types>
+
+    <message>
+        definition of the data being communicated....
+    </message>
+
+    <portType>
+        set of operations......
+    </portType>
+
+    <binding>
+        protocol and data format specification....
+    </binding>
+
+</definitions>

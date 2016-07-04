@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<statistic date="2016-07-04" cityId="1">
+    <speciality id="4">
+        <visitsNumber>7</visitsNumber>
+    </speciality>
+    <speciality id="5">
+        <visitsNumber>10</visitsNumber>
+    </speciality>
+    <speciality id="7">
+        <visitsNumber>20</visitsNumber>
+    </speciality>
+</statistic>

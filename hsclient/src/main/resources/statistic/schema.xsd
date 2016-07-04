@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="statistic">
+        <xs:complexType>
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="speciality">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="visitsNumber" type="xs:nonNegativeInteger"/>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:positiveInteger" />
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="cityId" type="xs:positiveInteger" />
+            <xs:attribute name="date" type="xs:date" />
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
