@@ -13,6 +13,7 @@
       <w>smtp</w>
       <w>starttls</w>
       <w>webapp</w>
+      <w>xmlsoap</w>
     </words>
   </dictionary>
 </component>

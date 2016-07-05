@@ -1,20 +1,55 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<definitions>
+<definitions name="cityStatistic"
+             targetNamespace="http://localhost:8080/wsdl/cityStatistic.wsdl"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://localhost:8080/wsdl/cityStatistic.wsdl">
 
     <types>
-        data type definitions........
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:element name="cityStatistic">
+                <xs:complexType>
+                    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="speciality">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="visitsNumber" type="xs:nonNegativeInteger"/>
+                                </xs:sequence>
+                                <xs:attribute name="id" type="xs:positiveInteger"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="cityId" type="xs:positiveInteger"/>
+                    <xs:attribute name="date" type="xs:date"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
     </types>
 
-    <message>
-        definition of the data being communicated....
+    <message name="cityStatisticRequest">
+        <part name="cityStatistic" type="tns:cityStatistic"/>
     </message>
 
-    <portType>
-        set of operations......
+    <portType name="cityStatisticPortType">
+        <operation name="sendCityStatistic">
+            <input message="tns:cityStatisticRequest"/>
+        </operation>
     </portType>
 
-    <binding>
-        protocol and data format specification....
+    <binding name="cityStatisticBinding" type="tns:cityStatisticPortType">
+        <soap:binding style="rpc"
+                      transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="sendCityStatistic">
+            <soap:operation soapAction="sendCityStatistic"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+        </operation>
     </binding>
 
+    <service name="cityStatisticService">
+        <port binding="tns:cityStatisticBinding" name="cityStatisticPort">
+            <soap:address
+                    location="http://localhost:8080/sendCityStatistic/"/>
+        </port>
+    </service>
 </definitions>

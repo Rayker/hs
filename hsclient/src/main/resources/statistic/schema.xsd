@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element name="statistic">
+    <xs:element name="cityStatistic">
         <xs:complexType>
             <xs:sequence minOccurs="0" maxOccurs="unbounded">
                 <xs:element name="speciality">
