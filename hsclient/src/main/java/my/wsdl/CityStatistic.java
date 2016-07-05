@@ -18,16 +18,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for specialityStatistic complex type.
+ * <p>Java class for cityStatistic complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="specialityStatistic">
+ * &lt;complexType name="cityStatistic">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="visitsNumber" type="{http://www.w3.org/2001/XMLSchema}nonNegativeInteger"/>
+ *         &lt;element name="speciality" type="{http://localhost:8080/wsdl/cityStatistic.wsdl}specialityStatistic"/>
  *       &lt;/sequence>
  *       &lt;attribute name="id" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" />
  *     &lt;/restriction>
@@ -38,40 +38,39 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "specialityStatistic", propOrder = {
-    "visitsNumber"
+@XmlType(name = "cityStatistic", propOrder = {
+    "speciality"
 })
-public class SpecialityStatistic {
+public class CityStatistic {
 
     @XmlElement(required = true)
-    @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger visitsNumber;
+    protected SpecialityStatistic speciality;
     @XmlAttribute(name = "id")
     @XmlSchemaType(name = "positiveInteger")
     protected BigInteger id;
 
     /**
-     * Gets the value of the visitsNumber property.
+     * Gets the value of the speciality property.
      * 
      * @return
      *     possible object is
-     *     {@link BigInteger }
+     *     {@link SpecialityStatistic }
      *     
      */
-    public BigInteger getVisitsNumber() {
-        return visitsNumber;
+    public SpecialityStatistic getSpeciality() {
+        return speciality;
     }
 
     /**
-     * Sets the value of the visitsNumber property.
+     * Sets the value of the speciality property.
      * 
      * @param value
      *     allowed object is
-     *     {@link BigInteger }
+     *     {@link SpecialityStatistic }
      *     
      */
-    public void setVisitsNumber(BigInteger value) {
-        this.visitsNumber = value;
+    public void setSpeciality(SpecialityStatistic value) {
+        this.speciality = value;
     }
 
     /**

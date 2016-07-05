@@ -67,7 +67,7 @@ public class Beans {
 
 	@Bean
 	public XsdSchema countriesSchema() {
-		return new SimpleXsdSchema(new ClassPathResource("countries.xsd"));
+		return new SimpleXsdSchema(new ClassPathResource("statistic.xsd"));
 	}
 
 
