@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<cityStatistic date="2016-07-04" cityId="1">
-    <speciality id="4">
+<cityStatistic1 date="2016-07-04" cityId="1" xmlns="http://localhost:8080/wsdl/cityStatistic.wsdl">
+    <speciality  id="4">
         <visitsNumber>7</visitsNumber>
     </speciality>
     <speciality id="5">
@@ -9,4 +9,4 @@
     <speciality id="7">
         <visitsNumber>20</visitsNumber>
     </speciality>
-</cityStatistic>
+</cityStatistic1>
