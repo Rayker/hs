@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8080/wsdl/cityStatistic.wsdl">
-    <xs:element name="cityStatistic1">
-        <xs:complexType>
-            <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="speciality">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="visitsNumber" type="xs:nonNegativeInteger"/>
-                        </xs:sequence>
-                        <xs:attribute name="id" type="xs:positiveInteger" />
-                    </xs:complexType>
-                </xs:element>
-            </xs:sequence>
-            <xs:attribute name="cityId" type="xs:positiveInteger" />
-            <xs:attribute name="date" type="xs:date" />
-        </xs:complexType>
-    </xs:element>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://localhost:8080/wsdl/cityStatistic.wsdl"
+           targetNamespace="http://localhost:8080/wsdl/cityStatistic.wsdl">
+    <!--<xs:element name="cityStatisticRequest">-->
+        <!--<xs:complexType>-->
+            <!--<xs:sequence>-->
+                <!--<xs:element name="speciality1" type="specialityStatistic"/>-->
+            <!--</xs:sequence>-->
+            <!--<xs:attribute name="cityId" type="xs:positiveInteger" />-->
+            <!--<xs:attribute name="date" type="xs:date" />-->
+        <!--</xs:complexType>-->
+    <!--</xs:element>-->
+    <!--<xs:complexType name="specialityStatistic">-->
+        <!--<xs:sequence>-->
+            <!--<xs:element name="visitsNumber" type="xs:nonNegativeInteger"/>-->
+        <!--</xs:sequence>-->
+        <!--<xs:attribute name="id" type="xs:positiveInteger" />-->
+    <!--</xs:complexType>-->
 </xs:schema>
