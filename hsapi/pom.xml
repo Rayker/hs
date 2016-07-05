@@ -28,6 +28,76 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!--<plugin>-->
+                <!--<groupId>org.codehaus.mojo</groupId>-->
+                <!--<artifactId>jaxb2-maven-plugin</artifactId>-->
+                <!--<version>2.2</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>generate-sources</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>xjc</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--&lt;!&ndash;<arguments>-extension -Xvalue-constructor -Xfluent-api -Xnamespace-prefix</arguments>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<schemaDirectory>${project.basedir}/src/main/resources</schemaDirectory>&ndash;&gt;-->
+                            <!--<sources>-->
+                                <!--<source>${project.basedir}/src/main/resources/schema.xsd</source>-->
+                                <!--&lt;!&ndash;<source>${project.basedir}/src/main/resources/soap.wsdl</source>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<source>${project.basedir}/src/main/resources/xsd/smev/soap.xsd</source>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<source>${project.basedir}/src/main/resources/xsd/smev/smev.xsd</source>&ndash;&gt;-->
+                            <!--</sources>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+                <!--<configuration>-->
+                    <!--<packageName>temp.wsdl</packageName>-->
+                    <!--&lt;!&ndash;<bindingDirectory>${project.basedir}/src/main/webapp/WEB-INF/xsd/bind</bindingDirectory>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<bindingFiles>dateTimeBind.xml,nsbinding.xml</bindingFiles>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<enableIntrospection>true</enableIntrospection>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<encoding>${project.build.sourceEncoding}</encoding>&ndash;&gt;-->
+                    <!--<target>2.1</target>-->
+                <!--</configuration>-->
+                <!--<dependencies>-->
+                    <!--<dependency>-->
+                        <!--<groupId>org.jvnet.jaxb2_commons</groupId>-->
+                        <!--<artifactId>jaxb2-value-constructor</artifactId>-->
+                        <!--<version>3.0</version>-->
+                    <!--</dependency>-->
+                    <!--<dependency>-->
+                        <!--<groupId>org.jvnet.jaxb2_commons</groupId>-->
+                        <!--<artifactId>jaxb2-fluent-api</artifactId>-->
+                        <!--<version>3.0</version>-->
+                    <!--</dependency>-->
+                    <!--<dependency>-->
+                        <!--<groupId>org.jvnet.jaxb2_commons</groupId>-->
+                        <!--<artifactId>jaxb2-namespace-prefix</artifactId>-->
+                        <!--<version>1.1</version>-->
+                    <!--</dependency>-->
+                <!--</dependencies>-->
+            <!--</plugin>-->
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.13.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <schemaLanguage>WSDL</schemaLanguage>
+                    <generatePackage>hello.wsdl</generatePackage>
+                    <schemas>
+                        <schema>
+                            <url>http://localhost:8080/temp.wsdl</url>
+                        </schema>
+                    </schemas>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -72,36 +142,23 @@
         <dependency>
             <groupId>ru.ardecs</groupId>
             <artifactId>hsdb</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>ru.ardecs</groupId>
             <artifactId>hscommon</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
-        <!-- 1. exclude commons-logging -->
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
-        <!-- 2. Bridge logging from JCL to SLF4j-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>${jcl.slf4j.version}</version>
         </dependency>
-        <!-- 3. logback -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
         </dependency>
 
         <dependency>
