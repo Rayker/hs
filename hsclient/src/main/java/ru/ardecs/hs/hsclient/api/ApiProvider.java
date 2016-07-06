@@ -3,7 +3,7 @@ package ru.ardecs.hs.hsclient.api;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.ardecs.hs.hsclient.db.CityApi;
+import ru.ardecs.hs.hsclient.db.entities.CityApi;
 import ru.ardecs.hs.hsclient.db.CityApiRepository;
 
 import javax.annotation.PostConstruct;

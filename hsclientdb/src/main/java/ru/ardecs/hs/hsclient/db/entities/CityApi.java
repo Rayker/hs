@@ -1,4 +1,4 @@
-package ru.ardecs.hs.hsclient.db;
+package ru.ardecs.hs.hsclient.db.entities;
 
 import javax.persistence.*;
 

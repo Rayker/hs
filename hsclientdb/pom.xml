@@ -39,6 +39,10 @@
             <groupId>javax.persistence</groupId>
             <artifactId>persistence-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ru.ardecs</groupId>
+            <artifactId>hscommon</artifactId>
+        </dependency>
     </dependencies>
 
 
