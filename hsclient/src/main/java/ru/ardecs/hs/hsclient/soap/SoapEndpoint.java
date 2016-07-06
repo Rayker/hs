@@ -1,6 +1,6 @@
-package ru.ardecs.hs.hsclient.controllers;
+package ru.ardecs.hs.hsclient.soap;
 
-import ru.ardecs.hs.hsclient.soap.generated.SendCityStatisticRequest;
+import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
