@@ -42,7 +42,7 @@ public class WebController {
 	@Autowired
 	private MailSender mailSender;
 
-	@RequestMapping(value = "/cities.html", method = RequestMethod.GET)
+	@RequestMapping(value = {"/cities.html", "/index.html"}, method = RequestMethod.GET)
 	public String cities() throws IOException, TemplateException {
 		Map<String, Object> map = new HashMap<>();
 		map.put("cities", cityApiRepository.findAll());

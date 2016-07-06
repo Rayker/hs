@@ -12,7 +12,7 @@
 
 
         <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-            <file>${LOGS_DIR}/hsclient.log</file>
+            <file>${LOGS_DIR}/hsclient_debug.log</file>
             <encoder>
                 <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
             </encoder>
