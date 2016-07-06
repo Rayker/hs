@@ -1,8 +1,8 @@
 package ru.ardecs.hs.hscommon.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
-import javax.persistence.*;
 
 @Entity
 @Table(name = "reserved_times")
@@ -23,7 +23,8 @@ public class ReservedTime implements Serializable {
 
 	private Date visitorBirthday;
 
-	public ReservedTime() {}
+	public ReservedTime() {
+	}
 
 	public ReservedTime(Long jobIntervalId, int numberInInterval, java.util.Date date, String visitorName, java.util.Date visitorBirthday) {
 		this.visitorName = visitorName;
