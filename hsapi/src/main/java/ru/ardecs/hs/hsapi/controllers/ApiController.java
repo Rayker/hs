@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
-import ru.ardecs.hs.hsapi.clients.StatisticClient;
+import ru.ardecs.hs.hsapi.statistic.soap.StatisticClient;
 import ru.ardecs.hs.hscommon.entities.Doctor;
 import ru.ardecs.hs.hscommon.entities.Hospital;
 import ru.ardecs.hs.hscommon.entities.ReservedTime;

@@ -1,21 +1,15 @@
 package ru.ardecs.hs.hsapi;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
-import ru.ardecs.hs.hsapi.clients.StatisticClient;
+import ru.ardecs.hs.hsapi.statistic.soap.StatisticClient;
 
-import javax.mail.Authenticator;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import java.io.IOException;
-import java.util.Properties;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 
 @Component
 public class Beans {
@@ -42,4 +36,8 @@ public class Beans {
 		return client;
 	}
 
+	@Bean
+	public DatatypeFactory datatypeFactory() throws DatatypeConfigurationException {
+		return DatatypeFactory.newInstance();
+	}
 }
