@@ -29,14 +29,14 @@ public class Beans {
 	@Bean
 	public Jaxb2Marshaller marshaller() {
 		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-		marshaller.setContextPath("hello.wsdl");
+		marshaller.setContextPath("ru.ardecs.hs.hscommon.soap.generated");
 		return marshaller;
 	}
 
 	@Bean
 	public StatisticClient statisticClient(Jaxb2Marshaller marshaller) {
 		StatisticClient client = new StatisticClient();
-		client.setDefaultUri("http://localhost:8080/sendCityStatistic");
+		client.setDefaultUri("http://localhost:8080/ws");
 		client.setMarshaller(marshaller);
 		client.setUnmarshaller(marshaller);
 		return client;

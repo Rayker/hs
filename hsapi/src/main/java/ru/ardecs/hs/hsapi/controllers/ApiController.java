@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
+import ru.ardecs.hs.hsapi.clients.StatisticClient;
 import ru.ardecs.hs.hscommon.entities.Doctor;
 import ru.ardecs.hs.hscommon.entities.Hospital;
 import ru.ardecs.hs.hscommon.entities.ReservedTime;
@@ -39,6 +40,14 @@ public class ApiController {
 
 	@Autowired
 	private ScheduleManager scheduleManager;
+
+	@Autowired
+	private StatisticClient statisticClient;
+
+	@RequestMapping(value = "/temp", method = RequestMethod.POST)
+	public void temp() {
+		statisticClient.sendCityStatisticRequest();
+	}
 
 	@RequestMapping(value = "/specialities.json", method = RequestMethod.GET)
 	public Iterable<Speciality> specialities() {
