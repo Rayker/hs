@@ -43,7 +43,7 @@ public class TempRunner {
 	}
 
 	private static Validator createValidator() throws IOException, SAXException {
-		URL xsd = TempRunner.class.getResource("/schema.xsd");
+		URL xsd = TempRunner.class.getResource("/statistic.xsd");
 		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
 		Source schemaFile = new StreamSource(xsd.openStream());

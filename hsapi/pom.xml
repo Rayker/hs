@@ -29,6 +29,25 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <schemaDirectory>${project.basedir}/src/main/resources/</schemaDirectory>
+                    <packageName>ru.ardecs.hs.hsclient.soap.generated</packageName>
+                    <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+                    <clearOutputDir>false</clearOutputDir>
+                </configuration>
+            </plugin>
             <!--<plugin>-->
                 <!--<groupId>org.codehaus.mojo</groupId>-->
                 <!--<artifactId>jaxb2-maven-plugin</artifactId>-->
@@ -77,27 +96,6 @@
                     <!--</dependency>-->
                 <!--</dependencies>-->
             <!--</plugin>-->
-            <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
-                <version>0.13.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <schemaLanguage>WSDL</schemaLanguage>
-                    <generatePackage>hello.wsdl</generatePackage>
-                    <schemas>
-                        <schema>
-                            <url>http://localhost:8080/temp.wsdl</url>
-                        </schema>
-                    </schemas>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
