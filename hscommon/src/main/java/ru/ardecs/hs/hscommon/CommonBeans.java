@@ -4,7 +4,10 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import org.springframework.xml.xsd.SimpleXsdSchema;
+import org.springframework.xml.xsd.XsdSchema;
 
 @Component
 public class CommonBeans {
@@ -17,5 +20,10 @@ public class CommonBeans {
 //		    cfg.setTemplateExceptionHandler(TemplateExceptionHandler.DEBUG_HANDLER);
 		cfg.setAutoFlush(true);
 		return cfg;
+	}
+
+	@Bean
+	public XsdSchema cityStatisticSchema() {
+		return new SimpleXsdSchema(new ClassPathResource("statistic.xsd"));
 	}
 }

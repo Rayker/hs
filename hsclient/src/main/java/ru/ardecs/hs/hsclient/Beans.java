@@ -56,17 +56,17 @@ public class Beans {
 	}
 
 	@Bean(name = "cityStatistic")
-	public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema countriesSchema) {
+	public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema cityStatistic) {
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
 		wsdl11Definition.setPortTypeName("CityStatisticPort");
 		wsdl11Definition.setLocationUri("/ws");
 		wsdl11Definition.setTargetNamespace("http://localhost:8080/wsdl/cityStatistic.wsdl");
-		wsdl11Definition.setSchema(countriesSchema);
+		wsdl11Definition.setSchema(cityStatistic);
 		return wsdl11Definition;
 	}
 
-	@Bean
-	public XsdSchema countriesSchema() {
-		return new SimpleXsdSchema(new ClassPathResource("statistic.xsd"));
-	}
+//	@Bean
+//	public XsdSchema countriesSchema() {
+//		return new SimpleXsdSchema(new ClassPathResource("statistic.xsd"));
+//	}
 }
