@@ -6,7 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
-import ru.ardecs.hs.hsapi.statistic.soap.StatisticClient;
+import ru.ardecs.hs.hsapi.statistic.StatisticsSoapSender;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -28,8 +28,8 @@ public class Beans {
 	}
 
 	@Bean
-	public StatisticClient statisticClient(Jaxb2Marshaller marshaller) {
-		StatisticClient client = new StatisticClient();
+	public StatisticsSoapSender statisticClient(Jaxb2Marshaller marshaller) {
+		StatisticsSoapSender client = new StatisticsSoapSender();
 		client.setDefaultUri("http://localhost:8080/ws");
 		client.setMarshaller(marshaller);
 		client.setUnmarshaller(marshaller);

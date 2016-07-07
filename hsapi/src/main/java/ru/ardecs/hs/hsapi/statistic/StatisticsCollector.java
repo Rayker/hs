@@ -1,12 +1,10 @@
-package ru.ardecs.hs.hsapi.statistic.soap;
-
+package ru.ardecs.hs.hsapi.statistic;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
+import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
 import ru.ardecs.hs.hscommon.soap.generated.SpecialityStatistic;
 import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
@@ -16,9 +14,9 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class StatisticClient extends WebServiceGatewaySupport {
-
-	private static final Logger logger = LoggerFactory.getLogger(StatisticClient.class);
+@Component
+public class StatisticsCollector {
+	private static final Logger logger = LoggerFactory.getLogger(StatisticsCollector.class);
 
 	@Autowired
 	private DoctorRepository repository;
@@ -29,15 +27,14 @@ public class StatisticClient extends WebServiceGatewaySupport {
 	@Value("${application.city.id}")
 	private long cityId;
 
-	@Scheduled(cron = "${application.statisticsCollection.cron}")
-	public void sendCityStatisticRequest() {
-		logger.info("sendCityStatistic: start");
+	public SendCityStatisticRequest collect() {
+		logger.info("StatisticsCollector.collect(): start");
 
 		SendCityStatisticRequest request = new SendCityStatisticRequest();
 		request.setCityId(BigInteger.valueOf(cityId));
 		request.setDate(datatypeFactory.newXMLGregorianCalendar(new GregorianCalendar()));
 
-		logger.info("sendCityStatistic: statistics collection");
+		logger.info("StatisticsCollector.collect(): statistics collection");
 		repository
 				.findBySpeciality(new java.sql.Date(new Date().getTime()))
 				.stream()
@@ -49,9 +46,7 @@ public class StatisticClient extends WebServiceGatewaySupport {
 				})
 				.forEach(s -> request.getSpecialityStatistic().add(s));
 
-		logger.info("sendCityStatistic: request");
-		getWebServiceTemplate().marshalSendAndReceive(request);
-
-		logger.info("sendCityStatistic: success");
+		logger.info("StatisticsCollector.collect(): statistics was collected");
+		return request;
 	}
 }

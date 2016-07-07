@@ -8,6 +8,7 @@ import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
@@ -64,6 +65,16 @@ public class Beans {
 		wsdl11Definition.setSchema(cityStatistic);
 		return wsdl11Definition;
 	}
+
+//	@Bean
+//	public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
+//		DefaultJmsListenerContainerFactory factory =
+//				new DefaultJmsListenerContainerFactory();
+//		factory.setConnectionFactory(connectionFactory());
+//		factory.setDestinationResolver(destinationResolver());
+//		factory.setConcurrency("3-10");
+//		return factory;
+//	}
 
 //	@Bean
 //	public XsdSchema countriesSchema() {
