@@ -78,10 +78,6 @@
             <artifactId>hsdb</artifactId>
         </dependency>
         <dependency>
-            <groupId>ru.ardecs</groupId>
-            <artifactId>hscommon</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>

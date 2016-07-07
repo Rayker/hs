@@ -31,10 +31,7 @@ public class ApiProvider {
 	private ApiWrapper load(CityApi e) {
 		return apiWrappers.put(
 				e.getId(),
-				new ApiWrapperImpl(
-						httpClient,
-						e.getHost(),
-						e.getPort()));
+				new ApiWrapperImpl(httpClient, e.getHost(), e.getPort()));
 	}
 
 	public ApiWrapper getApiWrapper(Long cityId) {

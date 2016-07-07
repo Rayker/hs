@@ -94,12 +94,14 @@ public class WebController {
 		return templateGenerator.generateHtml(map, "visitTimes.ftl");
 	}
 
+	// TODO: 7/7/16 replace to VisitFormModel
 	@RequestMapping(value = "/cities/{cityId}/visits/new.html", method = RequestMethod.POST)
 	public String getVisitForm(@PathVariable Long cityId, @Validated VisitFormRequestModel visitFormRequestModel, HttpSession session) throws IOException, TemplateException, URISyntaxException {
 //		apiWrapperImpl.sendPost("/cache/visits.json", visitFormRequestModel);
 
 		apiProvider.getApiWrapper(cityId).cache(visitFormRequestModel, session.getId());
 
+		// TODO: 7/7/16 replace to VisitFormModel
 		VisitModel visitModel = new VisitModel(
 				visitFormRequestModel.getNumberInInterval(),
 				visitFormRequestModel.getJobIntervalId(),
@@ -112,6 +114,7 @@ public class WebController {
 		return templateGenerator.generateHtml(map, "visitForm.ftl");
 	}
 
+	// TODO: 7/7/16 replace to VisitFormModel
 	@RequestMapping(value = "/cities/{cityId}/visits", method = RequestMethod.POST)
 	public void createVisit(@PathVariable Long cityId, @Validated VisitCreatingRequestModel visitCreatingRequestModel, HttpServletResponse response, HttpSession session) throws IOException, URISyntaxException {
 		long reservedTimeId = apiProvider.getApiWrapper(cityId).createVisit(visitCreatingRequestModel, session.getId());
