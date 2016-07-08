@@ -15,7 +15,7 @@ public class StatisticReceiver {
 	@Autowired
 	private StatisticsRepositoryWrapper repositoryWrapper;
 
-	@JmsListener(destination = "temp-destination")
+	@JmsListener(destination = "${application.jms.destination}")
 	public void receiveMessage(SendCityStatisticRequest request) {
 		logger.info("sendSpecialityStatistic: date = {}, cityId = {}", request.getDate(), request.getCityId());
 		repositoryWrapper.save(request);

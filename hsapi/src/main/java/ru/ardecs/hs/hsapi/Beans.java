@@ -3,6 +3,8 @@ package ru.ardecs.hs.hsapi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.jms.core.JmsMessagingTemplate;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
@@ -39,5 +41,10 @@ public class Beans {
 	@Bean
 	public DatatypeFactory datatypeFactory() throws DatatypeConfigurationException {
 		return DatatypeFactory.newInstance();
+	}
+
+	@Bean
+	public JmsMessagingTemplate jmsMessagingTemplate(JmsTemplate jmsTemplate) {
+		return new JmsMessagingTemplate(jmsTemplate);
 	}
 }
