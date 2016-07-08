@@ -13,7 +13,7 @@ public class StatisticsSoapSender extends WebServiceGatewaySupport {
 	@Autowired
 	private StatisticsCollector statisticsCollector;
 
-	@Scheduled(cron = "${application.statisticsCollection.cron}")
+//	@Scheduled(cron = "${application.statisticsCollection.cron}")
 	public void sendCityStatisticRequest() {
 		logger.info("sendCityStatistic(): statistics collection");
 

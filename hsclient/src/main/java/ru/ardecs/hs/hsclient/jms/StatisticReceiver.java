@@ -2,17 +2,24 @@ package ru.ardecs.hs.hsclient.jms;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
+import ru.ardecs.hs.hsclient.statistic.StatisticsRepositoryWrapper;
 import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
 
 @Component
 public class StatisticReceiver {
 	private static Logger logger = LoggerFactory.getLogger(StatisticReceiver.class);
 
+	@Autowired
+	private StatisticsRepositoryWrapper repositoryWrapper;
+
 	@JmsListener(destination = "temp-destination")
 	public void receiveMessage(SendCityStatisticRequest request) {
-		logger.info("Received message: cityId = {}", request.getCityId());
+		logger.info("sendSpecialityStatistic: date = {}, cityId = {}", request.getDate(), request.getCityId());
+		repositoryWrapper.save(request);
+		logger.info("sendSpecialityStatistic: statistic is successfully saved");
 	}
 
 }
