@@ -35,6 +35,7 @@ public class ApiWrapperImpl implements ApiWrapper {
 	private final CloseableHttpClient httpClient;
 	private final String host;
 	private final int port;
+	private Gson gson = new Gson();
 
 	public ApiWrapperImpl(CloseableHttpClient httpClient, String host, int port) {
 		this.httpClient = httpClient;
@@ -60,7 +61,7 @@ public class ApiWrapperImpl implements ApiWrapper {
 
 	private <T> T parse(CloseableHttpResponse response, Type type) throws IOException {
 		BufferedReader responseReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-		return new Gson().fromJson(responseReader, type);
+		return gson.fromJson(responseReader, type);
 	}
 
 	private CloseableHttpResponse sendPost(String path, List<NameValuePair> nvps) throws URISyntaxException, IOException {

@@ -23,13 +23,6 @@ public class Beans {
 	}
 
 	@Bean
-	public Jaxb2Marshaller marshaller() {
-		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-		marshaller.setContextPath("ru.ardecs.hs.hscommon.soap.generated");
-		return marshaller;
-	}
-
-	@Bean
 	public StatisticsSoapSender statisticsSoapSender(Jaxb2Marshaller marshaller) {
 		StatisticsSoapSender sender = new StatisticsSoapSender();
 		sender.setDefaultUri("http://localhost:8080/ws");

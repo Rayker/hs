@@ -16,7 +16,7 @@ public class StatisticsService {
 	private StatisticsCollector statisticsCollector;
 
 	@Autowired
-	@Qualifier("statisticsJmsSender")
+	@Qualifier("statisticsXmlJmsSender")
 	private StatisticsSender statisticsSender;
 
 	@Scheduled(cron = "${application.statisticsCollection.cron}")
@@ -26,9 +26,6 @@ public class StatisticsService {
 
 		logger.info("collectAndSendCityStatistics(): statistics sending");
 		statisticsSender.sendCityStatisticRequest(cityStatistic);
-
-		logger.info("collectAndSendCityStatistics(): statistics are successfully sent");
-
 	}
 
 }

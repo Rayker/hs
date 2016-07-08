@@ -1,7 +1,7 @@
 package ru.ardecs.hs.hscommon.entities;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "hospitals")
