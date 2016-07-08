@@ -30,12 +30,12 @@ public class Beans {
 	}
 
 	@Bean
-	public StatisticsSoapSender statisticClient(Jaxb2Marshaller marshaller) {
-		StatisticsSoapSender client = new StatisticsSoapSender();
-		client.setDefaultUri("http://localhost:8080/ws");
-		client.setMarshaller(marshaller);
-		client.setUnmarshaller(marshaller);
-		return client;
+	public StatisticsSoapSender statisticsSoapSender(Jaxb2Marshaller marshaller) {
+		StatisticsSoapSender sender = new StatisticsSoapSender();
+		sender.setDefaultUri("http://localhost:8080/ws");
+		sender.setMarshaller(marshaller);
+		sender.setUnmarshaller(marshaller);
+		return sender;
 	}
 
 	@Bean
