@@ -5,6 +5,6 @@ if ERRORLEVEL 1 (
 	pause
 	goto end
 )
-start java -jar hsclient/target/hsclient-1.0-SNAPSHOT.jar 
+start java -jar hsclient/target/hsclient-1.0-SNAPSHOT.jar -Dorg.apache.activemq.SERIALIZABLE_PACKAGES="*" 
 
 :end

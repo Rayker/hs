@@ -1,7 +1,19 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns:tns="http://localhost:8080/wsdl/cityStatistic.wsdl"
            targetNamespace="http://localhost:8080/wsdl/cityStatistic.wsdl"
-           elementFormDefault="qualified">
+           elementFormDefault="qualified"
+           xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+           xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+           jaxb:extensionBindingPrefixes="xjc"
+           jaxb:version="1.0">
+    <xs:annotation>
+        <xs:appinfo>
+            <jaxb:globalBindings generateIsSetMethod="true">
+                <xjc:serializable uid="12343"/>
+            </jaxb:globalBindings>
+        </xs:appinfo>
+    </xs:annotation>
+
     <xs:element name="sendCityStatisticRequest">
         <xs:complexType>
             <xs:sequence>

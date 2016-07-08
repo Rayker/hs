@@ -1,5 +1,6 @@
 package ru.ardecs.hs.hsclient;
 
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,6 +20,7 @@ import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Properties;
 
 @Component
@@ -64,6 +66,14 @@ public class Beans {
 		wsdl11Definition.setTargetNamespace("http://localhost:8080/wsdl/cityStatistic.wsdl");
 		wsdl11Definition.setSchema(cityStatistic);
 		return wsdl11Definition;
+	}
+
+	@Bean
+	public ActiveMQConnectionFactory activeMQConnectionFactory() {
+		ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory();
+//		factory.setTrustedPackages(Arrays.asList("ru.ardecs.hs.hscommon.soap.generated"));
+		factory.setTrustAllPackages(true);
+		return factory;
 	}
 
 //	@Bean
