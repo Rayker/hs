@@ -66,8 +66,11 @@ public class Beans {
 	}
 
 	@Bean
-	public ActiveMQConnectionFactory activeMQConnectionFactory(@Value("${spring.activemq.broker-url}") String brokerUrl) {
-		ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(brokerUrl);
+	public ActiveMQConnectionFactory activeMQConnectionFactory(
+			@Value("${spring.activemq.broker-url}") String brokerUrl,
+			@Value("${spring.activemq.user}") String user,
+			@Value("${spring.activemq.password}") String password) {
+		ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(user, password, brokerUrl);
 //		factory.setTrustedPackages(Arrays.asList("ru.ardecs.hs.hscommon.soap.generated"));
 		factory.setTrustAllPackages(true);
 		return factory;
