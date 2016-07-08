@@ -16,9 +16,9 @@ public class StatisticReceiver {
 
 	@JmsListener(destination = "${application.jms.destination}")
 	public void receiveMessage(SendCityStatisticRequest request) {
-		logger.info("sendSpecialityStatistic: date = {}, cityId = {}", request.getDate(), request.getCityId());
+		logger.debug("sendSpecialityStatistic: date = {}, cityId = {}", request.getDate(), request.getCityId());
 		repositoryWrapper.save(request);
-		logger.info("sendSpecialityStatistic: statistic is successfully saved");
+		logger.debug("sendSpecialityStatistic: statistic is successfully saved");
 	}
 
 }

@@ -171,7 +171,7 @@
                 <artifactId>spring-jms</artifactId>
                 <version>${spring.version}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.apache.activemq</groupId>
                 <artifactId>activemq-broker</artifactId>

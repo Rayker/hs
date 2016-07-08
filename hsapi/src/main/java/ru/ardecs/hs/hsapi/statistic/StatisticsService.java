@@ -21,10 +21,10 @@ public class StatisticsService {
 
 	@Scheduled(cron = "${application.statisticsCollection.cron}")
 	public void collectAndSendCityStatistics() {
-		logger.info("collectAndSendCityStatistics(): statistics collection");
+		logger.debug("collectAndSendCityStatistics(): statistics collection");
 		SendCityStatisticRequest cityStatistic = statisticsCollector.collect();
 
-		logger.info("collectAndSendCityStatistics(): statistics sending");
+		logger.debug("collectAndSendCityStatistics(): statistics sending");
 		statisticsSender.sendCityStatisticRequest(cityStatistic);
 	}
 

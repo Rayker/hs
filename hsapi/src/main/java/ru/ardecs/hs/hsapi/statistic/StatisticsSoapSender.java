@@ -9,9 +9,9 @@ public class StatisticsSoapSender extends WebServiceGatewaySupport implements St
 	private static final Logger logger = LoggerFactory.getLogger(StatisticsSoapSender.class);
 
 	public void sendCityStatisticRequest(SendCityStatisticRequest cityStatistic) {
-		logger.info("sendCityStatistic(): sending");
+		logger.debug("sendCityStatistic(): sending");
 		getWebServiceTemplate().marshalSendAndReceive(cityStatistic);
 
-		logger.info("sendCityStatistic(): success");
+		logger.debug("sendCityStatistic(): success");
 	}
 }

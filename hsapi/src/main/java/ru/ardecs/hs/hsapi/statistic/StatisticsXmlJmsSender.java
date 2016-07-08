@@ -26,7 +26,7 @@ public class StatisticsXmlJmsSender implements StatisticsSender {
 
 	@Override
 	public void sendCityStatisticRequest(SendCityStatisticRequest cityStatistic) {
-		logger.info("sendCityStatisticRequest(): convert to xml");
+		logger.debug("sendCityStatisticRequest(): convert to xml");
 		StringResult stringResult = new StringResult();
 
 		try {
@@ -37,9 +37,9 @@ public class StatisticsXmlJmsSender implements StatisticsSender {
 		}
 		String xml = stringResult.toString();
 
-		logger.info("sendCityStatisticRequest(): sending message");
+		logger.debug("sendCityStatisticRequest(): sending message");
 		jmsMessagingTemplate.convertAndSend(destination, xml);
 
-		logger.info("sendCityStatisticRequest(): success");
+		logger.debug("sendCityStatisticRequest(): success");
 	}
 }

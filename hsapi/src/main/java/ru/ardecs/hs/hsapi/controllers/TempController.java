@@ -25,12 +25,12 @@ public class TempController {
 
 	@RequestMapping(value = "/temp")
 	public void temp() {
-		logger.info("JmsMessagingTemplate creating");
+		logger.debug("JmsMessagingTemplate creating");
 		JmsMessagingTemplate jmsMessagingTemplate = new JmsMessagingTemplate(jmsTemplate);
-		logger.info("Message building");
+		logger.debug("Message building");
 		Message<String> message = MessageBuilder.withPayload("temp-destination").build();
-		logger.info("Message sending");
+		logger.debug("Message sending");
 		jmsMessagingTemplate.send("temp-destination", message);
-		logger.info("Message was successfully sent");
+		logger.debug("Message was successfully sent");
 	}
 }

@@ -28,13 +28,13 @@ public class StatisticsCollector {
 	private long cityId;
 
 	public SendCityStatisticRequest collect() {
-		logger.info("collect(): start");
+		logger.debug("collect(): start");
 
 		SendCityStatisticRequest request = new SendCityStatisticRequest();
 		request.setCityId(BigInteger.valueOf(cityId));
 		request.setDate(datatypeFactory.newXMLGregorianCalendar(new GregorianCalendar()));
 
-		logger.info("collect(): statistics collection");
+		logger.debug("collect(): statistics collection");
 		repository
 				.findBySpeciality(new java.sql.Date(new Date().getTime()))
 				.stream()
@@ -46,7 +46,7 @@ public class StatisticsCollector {
 				})
 				.forEach(s -> request.getSpecialityStatistic().add(s));
 
-		logger.info("collect(): statistics was collected");
+		logger.debug("collect(): statistics was collected");
 		return request;
 	}
 }

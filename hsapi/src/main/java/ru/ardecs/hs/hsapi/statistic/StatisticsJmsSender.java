@@ -20,9 +20,9 @@ public class StatisticsJmsSender implements StatisticsSender {
 
 	@Override
 	public void sendCityStatisticRequest(SendCityStatisticRequest cityStatistic) {
-		logger.info("sendCityStatistic(): sending message");
+		logger.debug("sendCityStatistic(): sending message");
 		jmsMessagingTemplate.convertAndSend(destination, cityStatistic);
 
-		logger.info("sendCityStatistic(): success");
+		logger.debug("sendCityStatistic(): success");
 	}
 }

@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true">
     <property name="LOGS_DIR" value="logs"/>
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="STDOUT_OTHER" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
         </filter>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT_MY" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
@@ -20,7 +26,12 @@
     </appender>
 
     <root level="DEBUG">
-        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="STDOUT_OTHER"/>
         <appender-ref ref="FILE"/>
     </root>
+
+    <logger name="ru.ardecs.hs" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT_MY"/>
+        <appender-ref ref="FILE"/>
+    </logger>
 </configuration>

@@ -22,7 +22,7 @@ public class XmlStatisticReceiver {
 
 	@JmsListener(destination = "${application.jms.xml-destination}")
 	public void receiveMessage(String xml) {
-		logger.info("sendSpecialityStatistic(): parse xml");
+		logger.debug("sendSpecialityStatistic(): parse xml");
 		SendCityStatisticRequest request;
 		try {
 			request = (SendCityStatisticRequest) marshaller.unmarshal(new StringSource(xml));
@@ -30,10 +30,10 @@ public class XmlStatisticReceiver {
 			logger.error("Unmarshaling SendCityStatisticRequest error", e);
 			return;
 		}
-		logger.info("sendSpecialityStatistic(): date = {}, cityId = {}", request.getDate(), request.getCityId());
+		logger.debug("sendSpecialityStatistic(): date = {}, cityId = {}", request.getDate(), request.getCityId());
 		repositoryWrapper.save(request);
 
-		logger.info("sendSpecialityStatistic(): statistic is successfully saved");
+		logger.debug("sendSpecialityStatistic(): statistic is successfully saved");
 	}
 
 }
