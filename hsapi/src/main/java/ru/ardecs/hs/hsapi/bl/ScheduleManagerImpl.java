@@ -5,14 +5,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hsapi.cache.CacheManager;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
-import ru.ardecs.hs.hscommon.entities.JobInterval;
 import ru.ardecs.hs.hscommon.entities.ReservedTime;
 import ru.ardecs.hs.hscommon.models.VisitModel;
 import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
 import ru.ardecs.hs.hsdb.repositories.ReservedTimeRepository;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -60,7 +57,7 @@ public class ScheduleManagerImpl implements ScheduleManager {
 				.findOne(doctorId)
 				.getJobIntervals()
 				.stream()
-				.flatMap(jobInterval -> generateArithmeticProgressionForInterval(jobInterval)
+				.flatMap(jobInterval -> scheduleFactory.generateNumbersInIntervalForInterval(jobInterval)
 						.mapToObj(
 								numberInInterval -> new VisitModel(
 										numberInInterval,
@@ -104,10 +101,5 @@ public class ScheduleManagerImpl implements ScheduleManager {
 
 	private String getKey(Long jobIntervalId, int numberInInterval) {
 		return "" + numberInInterval + "_" + jobIntervalId;
-	}
-
-	private IntStream generateArithmeticProgressionForInterval(JobInterval jobInterval) {
-		return IntStream
-				.range(0, (int) (jobInterval.getEndTime().getTime() - jobInterval.getStartTime().getTime() - 1) / visitInMilliseconds + 1);
 	}
 }

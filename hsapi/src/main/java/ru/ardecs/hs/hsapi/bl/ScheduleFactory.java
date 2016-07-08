@@ -6,6 +6,7 @@ import ru.ardecs.hs.hscommon.models.TicketModel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.stream.IntStream;
 
 public class ScheduleFactory {
 	// TODO: 7/8/16 add property timeFormat
@@ -33,4 +34,10 @@ public class ScheduleFactory {
 		long visitTimeInMilliseconds = jobInterval.getStartTime().getTime() + numberInInterval * visitInMilliseconds;
 		return timeFormat.format(new java.util.Date(visitTimeInMilliseconds));
 	}
+
+	public IntStream generateNumbersInIntervalForInterval(JobInterval jobInterval) {
+		return IntStream
+				.range(0, (int) (jobInterval.getEndTime().getTime() - jobInterval.getStartTime().getTime() - 1) / visitInMilliseconds + 1);
+	}
+
 }
