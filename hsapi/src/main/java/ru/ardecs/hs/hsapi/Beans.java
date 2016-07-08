@@ -44,8 +44,9 @@ public class Beans {
 	}
 
 	@Bean
-	public ScheduleFactory scheduleFactory(@Value("${application.schedule.visitInMinutes}") int visitInMinutes) {
+	public ScheduleFactory scheduleFactory(@Value("${application.schedule.visitInMinutes}") int visitInMinutes,
+	                                       @Value("${application.schedule.timeFormatPattern}") String timeFormatPattern) {
 		int visitItMilliseconds = visitInMinutes * 60 * 1000;
-		return new ScheduleFactory(visitItMilliseconds);
+		return new ScheduleFactory(visitItMilliseconds, timeFormatPattern);
 	}
 }

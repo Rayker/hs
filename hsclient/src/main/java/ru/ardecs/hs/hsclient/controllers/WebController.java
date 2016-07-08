@@ -24,7 +24,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO: 6/30/16 add deleting
+// TODO: 6/30/16 add deleting and refactor
 @RestController
 public class WebController {
 	@Autowired

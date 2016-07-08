@@ -9,12 +9,13 @@ import java.text.SimpleDateFormat;
 import java.util.stream.IntStream;
 
 public class ScheduleFactory {
-	// TODO: 7/8/16 add property timeFormat
-	private final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
-	private final int visitInMilliseconds;
+	// TODO: 7/8/16 make thread safe
+	private final DateFormat timeFormat;
+	private final long visitInMilliseconds;
 
-	public ScheduleFactory(int visitInMilliseconds) {
+	public ScheduleFactory(int visitInMilliseconds, String timeFormatPattern) {
 		this.visitInMilliseconds = visitInMilliseconds;
+		timeFormat = new SimpleDateFormat(timeFormatPattern);
 	}
 
 	public TicketModel createTicketModel(ReservedTime reservedTime) {
@@ -36,8 +37,8 @@ public class ScheduleFactory {
 	}
 
 	public IntStream generateNumbersInIntervalForInterval(JobInterval jobInterval) {
-		return IntStream
-				.range(0, (int) (jobInterval.getEndTime().getTime() - jobInterval.getStartTime().getTime() - 1) / visitInMilliseconds + 1);
+		long visitsInIntervalCount = ((jobInterval.getEndTime().getTime() - jobInterval.getStartTime().getTime() - 1) / visitInMilliseconds + 1);
+		return IntStream.range(0, (int) visitsInIntervalCount);
 	}
 
 }

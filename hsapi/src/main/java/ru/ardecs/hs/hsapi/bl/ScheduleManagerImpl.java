@@ -20,12 +20,8 @@ import java.util.stream.Stream;
 
 @Component
 public class ScheduleManagerImpl implements ScheduleManager {
-	// TODO: 7/8/16 refactor
-	private final static int visitInMinutes = 30;
-	private final static int visitInMilliseconds = visitInMinutes * 60 * 1000;
-
 	@Autowired
-	@Qualifier("MemoryCacheManager")
+	@Qualifier("memoryCacheManager")
 	private CacheManager cacheManager;
 
 	@Autowired

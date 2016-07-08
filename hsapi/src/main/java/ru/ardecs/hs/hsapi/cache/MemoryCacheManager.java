@@ -12,7 +12,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-@Qualifier("MemoryCacheManager")
 public class MemoryCacheManager implements CacheManager {
 	private final Object locker = new Object();
 
