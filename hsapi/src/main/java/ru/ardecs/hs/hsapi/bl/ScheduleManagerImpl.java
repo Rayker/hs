@@ -23,9 +23,9 @@ import java.util.stream.Stream;
 
 @Component
 public class ScheduleManagerImpl implements ScheduleManager {
+	// TODO: 7/8/16 refactor
 	private final static int visitInMinutes = 30;
 	private final static int visitInMilliseconds = visitInMinutes * 60 * 1000;
-	private final static DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
 	@Autowired
 	@Qualifier("MemoryCacheManager")
@@ -37,11 +37,8 @@ public class ScheduleManagerImpl implements ScheduleManager {
 	@Autowired
 	private DoctorRepository doctorRepository;
 
-	// TODO: 6/29/16 move or refactor
-	private String getVisitTime(JobInterval jobInterval, int numberInInterval) {
-		long temp = jobInterval.getStartTime().getTime() + numberInInterval * visitInMilliseconds;
-		return timeFormat.format(new java.util.Date(temp));
-	}
+	@Autowired
+	private ScheduleFactory scheduleFactory;
 
 	// TODO: 6/30/16 add doctorId dependency
 	@Override
@@ -68,7 +65,7 @@ public class ScheduleManagerImpl implements ScheduleManager {
 								numberInInterval -> new VisitModel(
 										numberInInterval,
 										jobInterval.getId(),
-										getVisitTime(jobInterval, numberInInterval),
+										scheduleFactory.getVisitTime(jobInterval, numberInInterval),
 										date,
 										reservedTimesKeys.contains(getKey(jobInterval.getId(), numberInInterval)))))
 				.collect(Collectors.toList());

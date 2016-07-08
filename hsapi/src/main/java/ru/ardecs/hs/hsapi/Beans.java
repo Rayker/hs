@@ -1,5 +1,6 @@
 package ru.ardecs.hs.hsapi;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -7,6 +8,7 @@ import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
+import ru.ardecs.hs.hsapi.bl.ScheduleFactory;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
 import ru.ardecs.hs.hsapi.statistic.StatisticsSoapSender;
 
@@ -39,5 +41,11 @@ public class Beans {
 	@Bean
 	public JmsMessagingTemplate jmsMessagingTemplate(JmsTemplate jmsTemplate) {
 		return new JmsMessagingTemplate(jmsTemplate);
+	}
+
+	@Bean
+	public ScheduleFactory scheduleFactory(@Value("${application.schedule.visitInMinutes}") int visitInMinutes) {
+		int visitItMilliseconds = visitInMinutes * 60 * 1000;
+		return new ScheduleFactory(visitItMilliseconds);
 	}
 }

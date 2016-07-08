@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ru.ardecs.hs.hsapi.bl.ScheduleFactory;
 import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
 import ru.ardecs.hs.hscommon.entities.Doctor;
@@ -39,6 +40,9 @@ public class ApiController {
 
 	@Autowired
 	private ScheduleManager scheduleManager;
+
+	@Autowired
+	private ScheduleFactory scheduleFactory;
 
 	@RequestMapping(value = "/specialities.json", method = RequestMethod.GET)
 	public Iterable<Speciality> specialities() {
@@ -94,7 +98,7 @@ public class ApiController {
 
 	@RequestMapping(value = "/visits/{reservedTimeId}/ticket.json", method = RequestMethod.GET)
 	public TicketModel getReservedTime(@PathVariable Long reservedTimeId) throws IOException, TemplateException {
-		return new TicketModel(reservedTimeRepository.findOne(reservedTimeId));
+		return scheduleFactory.createTicketModel(reservedTimeRepository.findOne(reservedTimeId));
 	}
 
 	@RequestMapping(value = "/visits/{reservedTimeId}", method = RequestMethod.DELETE)
