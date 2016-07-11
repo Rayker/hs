@@ -36,7 +36,7 @@ public class ScheduleFactory {
 		return timeFormat.format(new java.util.Date(visitTimeInMilliseconds));
 	}
 
-	public IntStream generateNumbersInIntervalForInterval(JobInterval jobInterval) {
+	public IntStream generateNumbersInInterval(JobInterval jobInterval) {
 		long visitsInIntervalCount = ((jobInterval.getEndTime().getTime() - jobInterval.getStartTime().getTime() - 1) / visitInMilliseconds + 1);
 		return IntStream.range(0, (int) visitsInIntervalCount);
 	}

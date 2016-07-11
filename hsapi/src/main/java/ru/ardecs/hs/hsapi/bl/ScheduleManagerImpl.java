@@ -53,7 +53,7 @@ public class ScheduleManagerImpl implements ScheduleManager {
 				.findOne(doctorId)
 				.getJobIntervals()
 				.stream()
-				.flatMap(jobInterval -> scheduleFactory.generateNumbersInIntervalForInterval(jobInterval)
+				.flatMap(jobInterval -> scheduleFactory.generateNumbersInInterval(jobInterval)
 						.mapToObj(
 								numberInInterval -> new VisitModel(
 										numberInInterval,
