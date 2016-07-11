@@ -66,7 +66,7 @@ public class ScheduleManagerImpl implements ScheduleManager {
 
 	@Override
 	public void cache(CachedVisit cachedVisit, String sessionId) {
-		cacheManager.cache(cachedVisit, sessionId);
+		cacheManager.cache(sessionId, cachedVisit);
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hsapi.bl.ScheduleFactory;
+import ru.ardecs.hs.hsapi.cache.MemoryCacheManager;
 import ru.ardecs.hs.hsapi.statistic.StatisticsSoapSender;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -38,5 +39,10 @@ public class Beans {
 	                                       @Value("${application.schedule.timeFormatPattern}") String timeFormatPattern) {
 		int visitItMilliseconds = visitInMinutes * 60 * 1000;
 		return new ScheduleFactory(visitItMilliseconds, timeFormatPattern);
+	}
+
+	@Bean
+	public MemoryCacheManager memoryCacheManager(@Value("${application.cache.expireTimeInMinutes}") int expireTimeInMinutes) {
+		return new MemoryCacheManager(expireTimeInMinutes);
 	}
 }
