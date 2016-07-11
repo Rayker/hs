@@ -2,7 +2,6 @@ package ru.ardecs.hs.hsapi.cache;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -18,11 +17,11 @@ public class MemoryCacheManager implements CacheManager {
 	@Value("${application.cache.expireInMinutes}")
 	private int timeoutInMinutes;
 
-	private Map<String, CachedNode> nodesBySessionId = new HashMap<>();
+	private final Map<String, CachedNode> nodesBySessionId = new HashMap<>();
 
-	private SortedMap<Date, CachedNode> nodesByExpiredTime = new TreeMap<>();
+	private final SortedMap<Date, CachedNode> nodesByExpiredTime = new TreeMap<>();
 
-	private Multimap<String, CachedNode> nodesByDateAndDoctorId = HashMultimap.create();
+	private final Multimap<String, CachedNode> nodesByDateAndDoctorId = HashMultimap.create();
 
 	@Override
 	public void cache(CachedVisit cachedVisit, String sessionId) {
@@ -77,8 +76,7 @@ public class MemoryCacheManager implements CacheManager {
 
 	@Scheduled(fixedDelayString = "${application.cache.checkDelay}")
 	private void deleteExpired() {
-		while (tryDeleteByLeastExpiredTime()) {
-		}
+		while (tryDeleteByLeastExpiredTime()) {}
 	}
 
 	private void delete(CachedNode deletedNode) {

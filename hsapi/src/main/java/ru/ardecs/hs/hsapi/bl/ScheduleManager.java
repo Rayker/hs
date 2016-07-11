@@ -7,9 +7,6 @@ import ru.ardecs.hs.hscommon.models.VisitModel;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Rayker on 7/1/16.
- */
 public interface ScheduleManager {
 	// TODO: 6/30/16 add doctorId dependency
 	List<Date> getWorkDays(Long doctorId, int dayCount);
