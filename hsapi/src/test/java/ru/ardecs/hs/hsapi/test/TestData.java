@@ -18,6 +18,8 @@ public class TestData {
 	public final String thirdSessionId = "thirdSessionId";
 	public final long doctorId = 1L;
 	public final long jobIntervalId = 1L;
+	public final int firstSpecialityId = 1;
+	public final int secondSpecialityId = 2;
 	public final int firstNumberInInterval = 0;
 	public final int secondNumberInInterval = 1;
 	public final Date date;

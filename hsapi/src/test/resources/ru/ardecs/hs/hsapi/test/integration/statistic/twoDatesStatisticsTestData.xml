@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <specialities id="1"/>
+
+    <doctors id="1" specialities_id="1"/>
+
+    <job_intervals id="1" doctors_id="1"/>
+    <job_intervals id="2" doctors_id="1"/>
+
+    <reserved_times id="1" job_intervals_id="1" number_in_interval="0" date="2016-07-12"/>
+    <reserved_times id="2" job_intervals_id="1" number_in_interval="1" date="2016-07-12"/>
+    <reserved_times id="3" job_intervals_id="2" number_in_interval="0" date="2016-07-12"/>
+    <reserved_times id="4" job_intervals_id="1" number_in_interval="1" date="2016-07-13"/>
+    <reserved_times id="5" job_intervals_id="2" number_in_interval="1" date="2016-07-13"/>
+
+</dataset>
