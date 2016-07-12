@@ -1,16 +1,17 @@
-package ru.ardecs.hs.hsapi.test;
+package ru.ardecs.hs.hsapi.test.unit;
 
 import org.junit.Before;
 import org.junit.Test;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
 import ru.ardecs.hs.hsapi.cache.MemoryCacheManager;
+import ru.ardecs.hs.hsapi.test.TestData;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class MemoryCacheManagerUnitTests {
+public class MemoryCacheManagerTests {
 	private final TestData testData = new TestData();
 	private final int expireTimeInMinutes = 30;
 	private MemoryCacheManager memoryCacheManager;

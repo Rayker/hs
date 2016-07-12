@@ -1,4 +1,4 @@
-package ru.ardecs.hs.hsapi.test;
+package ru.ardecs.hs.hsapi.test.integration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;

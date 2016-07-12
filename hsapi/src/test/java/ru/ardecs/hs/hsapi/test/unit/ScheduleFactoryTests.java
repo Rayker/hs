@@ -1,4 +1,4 @@
-package ru.ardecs.hs.hsapi.test;
+package ru.ardecs.hs.hsapi.test.unit;
 
 import org.junit.Test;
 import ru.ardecs.hs.hsapi.bl.ScheduleFactory;
