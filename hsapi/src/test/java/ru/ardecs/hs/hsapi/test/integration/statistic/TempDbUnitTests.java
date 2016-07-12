@@ -23,7 +23,7 @@ import static org.junit.Assert.assertNotNull;
 		DirtiesContextTestExecutionListener.class,
 		TransactionalTestExecutionListener.class,
 		DbUnitTestExecutionListener.class})
-@DatabaseSetup("classpath:statistic.xml")
+@DatabaseSetup("classpath:statisticTestData.xml")
 public class TempDbUnitTests {
 	@Autowired
 	private DoctorRepository doctorRepository;
