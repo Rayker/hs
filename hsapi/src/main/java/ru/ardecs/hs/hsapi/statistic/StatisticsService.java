@@ -8,6 +8,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
 
+import java.util.Date;
+
 @Component
 public class StatisticsService {
 	private static final Logger logger = LoggerFactory.getLogger(StatisticsService.class);
@@ -22,7 +24,7 @@ public class StatisticsService {
 	@Scheduled(cron = "${application.statisticsCollection.cron}")
 	public void collectAndSendCityStatistics() {
 		logger.debug("collectAndSendCityStatistics(): statistics collection");
-		SendCityStatisticRequest cityStatistic = statisticsCollector.collect();
+		SendCityStatisticRequest cityStatistic = statisticsCollector.collect(new Date());
 
 		logger.debug("collectAndSendCityStatistics(): statistics sending");
 		statisticsSender.sendCityStatisticRequest(cityStatistic);

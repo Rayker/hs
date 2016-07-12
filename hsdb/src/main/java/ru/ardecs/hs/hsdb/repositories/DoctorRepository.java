@@ -21,5 +21,5 @@ public interface DoctorRepository extends CrudRepository<Doctor, Long> {
 			"from ReservedTime v \n" +
 			"where v.date = ?1\n" +
 			"group by v.jobInterval.doctor.speciality.id")
-	List<Object[]> findBySpeciality(Date date);
+	List<Object[]> collectStatisticsByDateGroupBySpecialityId(Date date);
 }

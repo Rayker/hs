@@ -27,7 +27,7 @@ public class StatisticsCollector {
 	@Value("${application.city.id}")
 	private long cityId;
 
-	public SendCityStatisticRequest collect() {
+	public SendCityStatisticRequest collect(Date date) {
 		logger.debug("collect(): start");
 
 		SendCityStatisticRequest request = new SendCityStatisticRequest();
@@ -36,7 +36,7 @@ public class StatisticsCollector {
 
 		logger.debug("collect(): statistics collection");
 		repository
-				.findBySpeciality(new java.sql.Date(new Date().getTime()))
+				.collectStatisticsByDateGroupBySpecialityId(new java.sql.Date(date.getTime()))
 				.stream()
 				.map(e -> {
 					SpecialityStatistic s = new SpecialityStatistic();

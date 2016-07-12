@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.ardecs.hs.hsapi.bl.ScheduleManager;
 import ru.ardecs.hs.hsapi.cache.CacheManager;
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
+import ru.ardecs.hs.hsapi.test.TestBeans;
 import ru.ardecs.hs.hsapi.test.TestData;
 import ru.ardecs.hs.hscommon.entities.ReservedTime;
 import ru.ardecs.hs.hscommon.models.VisitModel;

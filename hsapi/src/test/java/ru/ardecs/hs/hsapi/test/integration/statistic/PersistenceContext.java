@@ -3,6 +3,7 @@ package ru.ardecs.hs.hsapi.test.integration.statistic;
 import com.jolbox.bonecp.BoneCPDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -11,6 +12,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ru.ardecs.hs.hsapi.statistic.StatisticsCollector;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -18,6 +20,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "ru.ardecs.hs.hsdb.repositories")
+@ComponentScan(basePackageClasses = StatisticsCollector.class)
 @PropertySource("classpath:application.properties")
 public class PersistenceContext {
 
