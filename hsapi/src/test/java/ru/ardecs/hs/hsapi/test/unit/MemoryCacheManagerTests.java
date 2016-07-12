@@ -28,7 +28,7 @@ public class MemoryCacheManagerTests {
 		List<CachedVisit> cachedVisits = memoryCacheManager
 				.getCachedVisitsByDoctorIdAndDateAndNotSessionId(testData.doctorId, testData.date, testData.thirdSessionId);
 
-		assertEquals(cachedVisits.size(), 2);
+		assertEquals(2, cachedVisits.size());
 		assertTrue(cachedVisits.contains(testData.firstVisit));
 		assertTrue(cachedVisits.contains(testData.secondVisit));
 	}
@@ -40,8 +40,8 @@ public class MemoryCacheManagerTests {
 		List<CachedVisit> cachedVisits = memoryCacheManager
 				.getCachedVisitsByDoctorIdAndDateAndNotSessionId(testData.doctorId, testData.date, testData.secondSessionId);
 
-		assertEquals(cachedVisits.size(), 1);
-		assertEquals(cachedVisits.get(0), testData.firstVisit);
+		assertEquals(1, cachedVisits.size());
+		assertEquals(testData.firstVisit, cachedVisits.get(0));
 	}
 
 	@Test
@@ -51,8 +51,8 @@ public class MemoryCacheManagerTests {
 		List<CachedVisit> cachedVisits = memoryCacheManager
 				.getCachedVisitsByDoctorIdAndDateAndNotSessionId(testData.doctorId, testData.date, testData.secondSessionId);
 
-		assertEquals(cachedVisits.size(), 1);
-		assertEquals(cachedVisits.get(0), testData.secondVisit);
+		assertEquals(1, cachedVisits.size());
+		assertEquals(testData.secondVisit, cachedVisits.get(0));
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class MemoryCacheManagerTests {
 		List<CachedVisit> cachedVisits = memoryCacheManager
 				.getCachedVisitsByDoctorIdAndDateAndNotSessionId(testData.doctorId, testData.date, testData.secondSessionId);
 
-		assertEquals(cachedVisits.size(), 0);
+		assertEquals(0, cachedVisits.size());
 	}
 
 

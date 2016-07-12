@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <doctor id="1" fullname="testFullname" specialities_id="1" hospitals_id="1"/>
+</dataset>

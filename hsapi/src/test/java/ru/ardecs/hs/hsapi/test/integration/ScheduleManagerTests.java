@@ -60,7 +60,7 @@ public class ScheduleManagerTests {
 
 		List<CachedVisit> cachedVisits = cacheManager
 				.getCachedVisitsByDoctorIdAndDateAndNotSessionId(testData.doctorId, testData.date, testData.thirdSessionId);
-		assertEquals(cachedVisits.size(), 1);
+		assertEquals(1, cachedVisits.size());
 	}
 
 	@Test
@@ -80,6 +80,6 @@ public class ScheduleManagerTests {
 		scheduleManager.save(new ReservedTime(), testData.firstSessionId);
 		List<CachedVisit> cachedVisits = cacheManager
 				.getCachedVisitsByDoctorIdAndDateAndNotSessionId(testData.doctorId, testData.date, testData.thirdSessionId);
-		assertEquals(cachedVisits.size(), 0);
+		assertEquals(0, cachedVisits.size());
 	}
 }

@@ -28,6 +28,6 @@ public class ScheduleFactoryTests {
 		List<Integer> collect = scheduleFactory.generateNumbersInInterval(jobInterval)
 				.mapToObj(i -> i)
 				.collect(Collectors.toList());
-		assertEquals(collect.size(), 10);
+		assertEquals(10, collect.size());
 	}
 }
