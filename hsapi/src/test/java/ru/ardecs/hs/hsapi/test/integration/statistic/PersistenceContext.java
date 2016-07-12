@@ -15,9 +15,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-/**
- * @author Petri Kainulainen
- */
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "ru.ardecs.hs.hsdb.repositories")
