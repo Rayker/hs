@@ -26,8 +26,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestBeans.class, ScheduleManagerTests.class})
@@ -79,8 +78,22 @@ public class ScheduleManagerTests {
 	public void cacheAndSaveTest() {
 		scheduleManager.cache(testData.firstVisit, testData.firstSessionId);
 		scheduleManager.save(new ReservedTime(), testData.firstSessionId);
+
 		List<CachedVisit> cachedVisits = cacheManager
 				.getCachedVisitsByDoctorIdAndDateAndNotSessionId(testData.doctorId, testData.date, testData.thirdSessionId);
 		assertEquals(0, cachedVisits.size());
+	}
+
+	@Test
+	public void cache_CacheSimpleVisit_DeleteBeforeCache() {
+		scheduleManager.cache(testData.firstVisit, testData.firstSessionId);
+		verify(cacheManager).delete(testData.firstSessionId);
+	}
+
+	@Test
+	public void save_CacheAndSaveSimpleVisit_DeleteBeforeCacheAndBeforeSave() {
+		scheduleManager.cache(testData.firstVisit, testData.firstSessionId);
+		scheduleManager.cache(testData.firstVisit, testData.firstSessionId);
+		verify(cacheManager, times(2)).delete(testData.firstSessionId);
 	}
 }

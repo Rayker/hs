@@ -13,6 +13,8 @@ import ru.ardecs.hs.hsapi.cache.MemoryCacheManager;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
+import static org.mockito.Mockito.spy;
+
 @Configuration
 @ComponentScan(basePackages = {"ru.ardecs.hs.hsapi.cache", "ru.ardecs.hs.hsapi.bl"})
 public class TestBeans {
@@ -32,7 +34,7 @@ public class TestBeans {
 
 	@Bean
 	public MemoryCacheManager memoryCacheManager(@Value("${application.cache.expireTimeInMinutes}") int expireTimeInMinutes) {
-		return new MemoryCacheManager(expireTimeInMinutes);
+		return spy(new MemoryCacheManager(expireTimeInMinutes));
 	}
 
 	@Bean

@@ -15,7 +15,7 @@ public class StatisticsRepositoryWrapper {
 	@Autowired
 	private CityStatisticRepository repository;
 
-	public void save(@RequestPayload SendCityStatisticRequest request) {
+	public void save(SendCityStatisticRequest request) {
 		Date date = new Date(request.getDate().toGregorianCalendar().getTime().getTime());
 		long cityId = request.getCityId().longValue();
 
