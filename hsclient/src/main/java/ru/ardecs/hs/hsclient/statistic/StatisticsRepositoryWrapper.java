@@ -2,7 +2,6 @@ package ru.ardecs.hs.hsclient.statistic;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import ru.ardecs.hs.hsclient.db.entities.CityStatistic;
 import ru.ardecs.hs.hsclient.db.repositories.CityStatisticRepository;
 import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;

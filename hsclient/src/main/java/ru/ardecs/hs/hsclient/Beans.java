@@ -13,12 +13,19 @@ import org.springframework.stereotype.Component;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.XsdSchema;
+import ru.ardecs.hs.hsclient.db.repositories.CityApiRepository;
+import ru.ardecs.hs.hsclient.signing.SignatureProviderImpl;
+import ru.ardecs.hs.hscommon.signing.SignatureFactory;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import java.io.IOException;
+import java.security.Signature;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
+import java.util.stream.StreamSupport;
 
 @Component
 public class Beans {
@@ -74,5 +81,17 @@ public class Beans {
 //		factory.setTrustedPackages(Arrays.asList("ru.ardecs.hs.hscommon.soap.generated"));
 		factory.setTrustAllPackages(true);
 		return factory;
+	}
+
+	@Bean
+	public SignatureProviderImpl signatureProvider(CityApiRepository cityApiRepository, SignatureFactory signatureFactory) {
+		Map<Long, Signature> signatures = new HashMap<>();
+		StreamSupport
+				.stream(cityApiRepository.findAll().spliterator(), false)
+				.forEach(c -> signatures
+						.put(c.getId(), signatureFactory.createVerificationSignature(c.getPublicKey())));
+//		signatures = stream
+//				.collect(Collectors.toConcurrentMap(c -> c.getId(), signatureFactory::createVerificationSignature));
+		return new SignatureProviderImpl(signatures);
 	}
 }

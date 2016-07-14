@@ -9,15 +9,19 @@ import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import org.springframework.xml.transform.StringSource;
+import ru.ardecs.hs.hsclient.signing.SignatureProvider;
 import ru.ardecs.hs.hscommon.signing.KeyLoader;
 import ru.ardecs.hs.hscommon.signing.Signer;
 import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
+
+import static sun.java2d.cmm.ProfileDataVerifier.verify;
 
 @Component
 public class XmlStatisticReceiver {
@@ -32,14 +36,8 @@ public class XmlStatisticReceiver {
 	@Autowired
 	private Jaxb2Marshaller marshaller;
 
-	private Signature signature;
-
-	@PostConstruct
-	private void init() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, InvalidKeyException {
-		PublicKey publicKey = new KeyLoader().loadKeyPair("hscommon/src/main/resources", "DSA").getPublic();
-		signature = Signature.getInstance("DSAwithSHA1");
-		signature.initVerify(publicKey);
-	}
+	@Autowired
+	private SignatureProvider signatureProvider;
 
 	@JmsListener(destination = "${application.jms.xml-destination}")
 	public void receiveMessage(String xml, @Header("signature") String realSignature) {
@@ -53,10 +51,20 @@ public class XmlStatisticReceiver {
 		}
 
 		logger.debug("sendSpecialityStatistic(): signature verification");
+
+		Signature signature = signatureProvider.getSignature(request.getCityId().longValueExact());
+		boolean verified;
 		try {
-			signature.verify(Base64.getDecoder().decode(realSignature));
+			signature.update(xml.getBytes(StandardCharsets.UTF_8));
+			verified = signature
+					.verify(Base64.getDecoder().decode(realSignature));
 		} catch (SignatureException e) {
 			logger.error("Signature verification error", e);
+			return;
+		}
+
+		if (!verified) {
+			logger.info("Verification failed");
 			return;
 		}
 

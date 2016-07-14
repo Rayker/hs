@@ -9,9 +9,16 @@ import org.springframework.stereotype.Component;
 import ru.ardecs.hs.hsapi.bl.ScheduleFactory;
 import ru.ardecs.hs.hsapi.cache.MemoryCacheManager;
 import ru.ardecs.hs.hsapi.statistic.StatisticsSoapSender;
+import ru.ardecs.hs.hscommon.signing.KeyLoader;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.Signature;
+import java.security.spec.InvalidKeySpecException;
 
 @Component
 public class Beans {
@@ -44,5 +51,14 @@ public class Beans {
 	@Bean
 	public MemoryCacheManager memoryCacheManager(@Value("${application.cache.expireTimeInMinutes}") int expireTimeInMinutes) {
 		return new MemoryCacheManager(expireTimeInMinutes);
+	}
+
+	@Bean
+	public Signature signature() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, InvalidKeyException {
+		// TODO: 7/14/16 fix key loading
+		PrivateKey privateKey = new KeyLoader().loadKeyPair("hscommon/src/main/resources", "DSA").getPrivate();
+		Signature signature = Signature.getInstance("DSAwithSHA1");
+		signature.initSign(privateKey);
+		return signature;
 	}
 }

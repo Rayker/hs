@@ -15,6 +15,8 @@ public class CityApi {
 
 	private int port;
 
+	private byte[] publicKey;
+
 	public Long getId() {
 		return id;
 	}
@@ -45,5 +47,13 @@ public class CityApi {
 
 	public void setPort(int port) {
 		this.port = port;
+	}
+
+	public byte[] getPublicKey() {
+		return publicKey;
+	}
+
+	public void setPublicKey(byte[] publicKey) {
+		this.publicKey = publicKey;
 	}
 }

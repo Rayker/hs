@@ -9,14 +9,12 @@ import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import org.springframework.xml.transform.StringResult;
-import ru.ardecs.hs.hscommon.signing.KeyLoader;
 import ru.ardecs.hs.hscommon.signing.Signer;
 import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.*;
-import java.security.spec.InvalidKeySpecException;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,8 +23,8 @@ import java.util.Map;
 public class StatisticsXmlJmsSender implements StatisticsSender {
 	private static final Logger logger = LoggerFactory.getLogger(StatisticsXmlJmsSender.class);
 
-	@Autowired
-	private Signer signer;
+//	@Autowired
+//	private Signer signer;
 
 	@Autowired
 	private JmsMessagingTemplate jmsMessagingTemplate;
@@ -37,13 +35,8 @@ public class StatisticsXmlJmsSender implements StatisticsSender {
 	@Value("${application.jms.xml-destination}")
 	private String destination;
 
+	@Autowired
 	private Signature signature;
-
-	public StatisticsXmlJmsSender() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, InvalidKeyException {
-		PrivateKey privateKey = new KeyLoader().loadKeyPair("hscommon/src/main/resources", "DSA").getPrivate();
-		signature = Signature.getInstance("DSAwithSHA1");
-		signature.initSign(privateKey);
-	}
 
 	@Override
 	public void sendCityStatisticRequest(SendCityStatisticRequest cityStatistic) {
