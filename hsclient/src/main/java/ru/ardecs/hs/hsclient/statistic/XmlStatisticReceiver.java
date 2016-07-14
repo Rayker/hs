@@ -9,8 +9,15 @@ import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import org.springframework.xml.transform.StringSource;
+import ru.ardecs.hs.hscommon.signing.KeyLoader;
 import ru.ardecs.hs.hscommon.signing.Signer;
 import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
+
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.security.*;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Base64;
 
 @Component
 public class XmlStatisticReceiver {
@@ -25,19 +32,17 @@ public class XmlStatisticReceiver {
 	@Autowired
 	private Jaxb2Marshaller marshaller;
 
+	private Signature signature;
+
+	@PostConstruct
+	private void init() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, InvalidKeyException {
+		PublicKey publicKey = new KeyLoader().loadKeyPair("hscommon/src/main/resources", "DSA").getPublic();
+		signature = Signature.getInstance("DSAwithSHA1");
+		signature.initVerify(publicKey);
+	}
+
 	@JmsListener(destination = "${application.jms.xml-destination}")
-	public void receiveMessage(String xml, @Header String testHeader) {
-		logger.info("testHeader: {}", testHeader);
-
-		try {
-			if (!signer.validate(xml)) {
-				logger.info("Invalid signature");
-				return;
-			}
-		} catch (Exception e) {
-			logger.error("Error", e);
-		}
-
+	public void receiveMessage(String xml, @Header("signature") String realSignature) {
 		logger.debug("sendSpecialityStatistic(): parse xml");
 		SendCityStatisticRequest request;
 		try {
@@ -46,6 +51,15 @@ public class XmlStatisticReceiver {
 			logger.error("Unmarshaling SendCityStatisticRequest error", e);
 			return;
 		}
+
+		logger.debug("sendSpecialityStatistic(): signature verification");
+		try {
+			signature.verify(Base64.getDecoder().decode(realSignature));
+		} catch (SignatureException e) {
+			logger.error("Signature verification error", e);
+			return;
+		}
+
 		logger.debug("sendSpecialityStatistic(): date = {}, cityId = {}", request.getDate(), request.getCityId());
 		repositoryWrapper.save(request);
 

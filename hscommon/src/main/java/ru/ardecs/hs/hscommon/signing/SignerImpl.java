@@ -50,6 +50,8 @@ public class SignerImpl implements Signer {
 		String xml = signer.sign(builder.toString());
 		logger.debug(xml);
 		signer.validate(xml);
+
+		Signature signature = Signature.getInstance("DSAwithSHA1");
 	}
 
 	@Override
@@ -110,12 +112,6 @@ public class SignerImpl implements Signer {
 								(C14NMethodParameterSpec) null),
 				fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null),
 				Collections.singletonList(ref));
-
-		// Create a DSA KeyPair
-//		KeyPairGenerator kpg = KeyPairGenerator.getInstance("DSA");
-//		kpg.initialize(512);
-//		kp = kpg.generateKeyPair();
-
 
 
 		// Create a KeyValue containing the DSA PublicKey that was generated
@@ -199,6 +195,5 @@ public class SignerImpl implements Signer {
 		}
 		return coreValidity;
 	}
-
 
 }

@@ -13,19 +13,17 @@ import ru.ardecs.hs.hscommon.signing.KeyLoader;
 import ru.ardecs.hs.hscommon.signing.Signer;
 import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
 
-import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
+import java.nio.charset.StandardCharsets;
+import java.security.*;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
 @Component
 public class StatisticsXmlJmsSender implements StatisticsSender {
 	private static final Logger logger = LoggerFactory.getLogger(StatisticsXmlJmsSender.class);
-
-	private PrivateKey privateKey;
 
 	@Autowired
 	private Signer signer;
@@ -39,8 +37,12 @@ public class StatisticsXmlJmsSender implements StatisticsSender {
 	@Value("${application.jms.xml-destination}")
 	private String destination;
 
-	public StatisticsXmlJmsSender() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
-		privateKey = new KeyLoader().loadKeyPair("hscommon/src/main/resources", "DSA").getPrivate();
+	private Signature signature;
+
+	public StatisticsXmlJmsSender() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, InvalidKeyException {
+		PrivateKey privateKey = new KeyLoader().loadKeyPair("hscommon/src/main/resources", "DSA").getPrivate();
+		signature = Signature.getInstance("DSAwithSHA1");
+		signature.initSign(privateKey);
 	}
 
 	@Override
@@ -54,20 +56,20 @@ public class StatisticsXmlJmsSender implements StatisticsSender {
 			logger.error("Marshaling SendCityStatisticRequest error", e);
 			return;
 		}
+		String xml = stringResult.toString();
 
-		String xml;
+		logger.debug("sendCityStatisticRequest(): signing");
+		byte[] realSignature;
 		try {
-			xml = signer.sign(stringResult.toString());
-		} catch (Exception e) {
-			logger.error("Signing error", e);
+			signature.update(xml.getBytes(StandardCharsets.UTF_8));
+			realSignature = signature.sign();
+		} catch (SignatureException e) {
+			logger.error("Signature exception", e);
 			return;
 		}
 
-
-
-
-		Map<String,Object> headers = new HashMap<>();
-		headers.put("testHeader", "testValue");
+		Map<String, Object> headers = new HashMap<>();
+		headers.put("signature", Base64.getEncoder().encodeToString(realSignature));
 
 		logger.debug("sendCityStatisticRequest(): sending message");
 		jmsMessagingTemplate.convertAndSend(destination, xml, headers);
