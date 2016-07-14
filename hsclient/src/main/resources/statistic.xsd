@@ -1,0 +1,34 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://localhost:8080/wsdl/cityStatistic.wsdl"
+           targetNamespace="http://localhost:8080/wsdl/cityStatistic.wsdl"
+           elementFormDefault="qualified"
+           xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+           xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+           jaxb:extensionBindingPrefixes="xjc"
+           jaxb:version="1.0">
+    <xs:annotation>
+        <xs:appinfo>
+            <jaxb:globalBindings generateIsSetMethod="true">
+                <xjc:serializable uid="12343"/>
+            </jaxb:globalBindings>
+        </xs:appinfo>
+    </xs:annotation>
+
+    <xs:element name="sendCityStatisticRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="specialityStatistic"
+                            type="tns:specialityStatistic"/>
+            </xs:sequence>
+            <xs:attribute name="cityId" type="xs:positiveInteger"/>
+            <xs:attribute name="date" type="xs:date"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="specialityStatistic">
+        <xs:sequence>
+            <xs:element name="visitsNumber" type="xs:nonNegativeInteger"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:positiveInteger"/>
+    </xs:complexType>
+</xs:schema>

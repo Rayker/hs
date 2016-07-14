@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 import org.springframework.xml.xsd.XsdSchema;
 
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+
 @Component
 public class CommonBeans {
 	@Bean(name = "freemarker.configuration")
@@ -33,5 +36,12 @@ public class CommonBeans {
 		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
 		marshaller.setContextPath("ru.ardecs.hs.hscommon.soap.generated");
 		return marshaller;
+	}
+
+	@Bean
+	public KeyPairGenerator keyPairGenerator() throws NoSuchAlgorithmException {
+		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("DSA");
+		keyPairGenerator.initialize(512);
+		return keyPairGenerator;
 	}
 }

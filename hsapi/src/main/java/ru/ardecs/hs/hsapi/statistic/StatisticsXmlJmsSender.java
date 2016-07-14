@@ -9,11 +9,26 @@ import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import org.springframework.xml.transform.StringResult;
+import ru.ardecs.hs.hscommon.signing.KeyLoader;
+import ru.ardecs.hs.hscommon.signing.Signer;
 import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
+
+import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class StatisticsXmlJmsSender implements StatisticsSender {
 	private static final Logger logger = LoggerFactory.getLogger(StatisticsXmlJmsSender.class);
+
+	private PrivateKey privateKey;
+
+	@Autowired
+	private Signer signer;
 
 	@Autowired
 	private JmsMessagingTemplate jmsMessagingTemplate;
@@ -23,6 +38,10 @@ public class StatisticsXmlJmsSender implements StatisticsSender {
 
 	@Value("${application.jms.xml-destination}")
 	private String destination;
+
+	public StatisticsXmlJmsSender() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
+		privateKey = new KeyLoader().loadKeyPair("hscommon/src/main/resources", "DSA").getPrivate();
+	}
 
 	@Override
 	public void sendCityStatisticRequest(SendCityStatisticRequest cityStatistic) {
@@ -35,10 +54,23 @@ public class StatisticsXmlJmsSender implements StatisticsSender {
 			logger.error("Marshaling SendCityStatisticRequest error", e);
 			return;
 		}
-		String xml = stringResult.toString();
+
+		String xml;
+		try {
+			xml = signer.sign(stringResult.toString());
+		} catch (Exception e) {
+			logger.error("Signing error", e);
+			return;
+		}
+
+
+
+
+		Map<String,Object> headers = new HashMap<>();
+		headers.put("testHeader", "testValue");
 
 		logger.debug("sendCityStatisticRequest(): sending message");
-		jmsMessagingTemplate.convertAndSend(destination, xml);
+		jmsMessagingTemplate.convertAndSend(destination, xml, headers);
 
 		logger.debug("sendCityStatisticRequest(): success");
 	}

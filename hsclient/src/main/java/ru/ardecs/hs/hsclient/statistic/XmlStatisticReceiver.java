@@ -4,15 +4,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import org.springframework.xml.transform.StringSource;
+import ru.ardecs.hs.hscommon.signing.Signer;
 import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
 
 @Component
 public class XmlStatisticReceiver {
 	private static Logger logger = LoggerFactory.getLogger(XmlStatisticReceiver.class);
+
+	@Autowired
+	private Signer signer;
 
 	@Autowired
 	private StatisticsRepositoryWrapper repositoryWrapper;
@@ -21,7 +26,18 @@ public class XmlStatisticReceiver {
 	private Jaxb2Marshaller marshaller;
 
 	@JmsListener(destination = "${application.jms.xml-destination}")
-	public void receiveMessage(String xml) {
+	public void receiveMessage(String xml, @Header String testHeader) {
+		logger.info("testHeader: {}", testHeader);
+
+		try {
+			if (!signer.validate(xml)) {
+				logger.info("Invalid signature");
+				return;
+			}
+		} catch (Exception e) {
+			logger.error("Error", e);
+		}
+
 		logger.debug("sendSpecialityStatistic(): parse xml");
 		SendCityStatisticRequest request;
 		try {
