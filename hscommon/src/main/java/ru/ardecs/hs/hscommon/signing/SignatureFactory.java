@@ -2,12 +2,12 @@ package ru.ardecs.hs.hscommon.signing;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.security.*;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
+import java.security.cert.Certificate;
 
 @Component
 public class SignatureFactory {
@@ -16,29 +16,25 @@ public class SignatureFactory {
 	private static final String KEY_FACTORY_ALGORITHM = "DSA";
 	private static final String SIGNATURE_ALGORITHM = "DSA";
 
-	private KeyFactory keyFactory;
+	@Autowired
+	private KeyStore trustStore;
 
-	@PostConstruct
-	private void init() throws NoSuchAlgorithmException {
-		keyFactory = KeyFactory.getInstance(KEY_FACTORY_ALGORITHM);
-	}
-
-	public Signature createVerificationSignature(byte[] storedPublicKey) {
-		PublicKey publicKey;
+	public Signature createVerificationSignature(long cityId) {
+		Certificate certificate;
 		try {
-			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(storedPublicKey);
-			publicKey = keyFactory.generatePublic(keySpec);
-		} catch (InvalidKeySpecException e) {
-			logger.error("createVerificationSignature error", e);
+			String cityIdAlias = String.valueOf(cityId);
+			certificate = trustStore.getCertificate(cityIdAlias);
+		} catch (KeyStoreException e) {
+			logger.error("Certificate loading error");
 			throw new RuntimeException(e);
 		}
-		return createVerificationSignature(publicKey);
+		return createVerificationSignature(certificate);
 	}
 
-	public Signature createVerificationSignature(PublicKey publicKey) {
+	public Signature createVerificationSignature(java.security.cert.Certificate certificate) {
 		try {
 			Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
-			signature.initVerify(publicKey);
+			signature.initVerify(certificate);
 			return signature;
 		} catch (NoSuchAlgorithmException e) {
 			logger.error("createVerificationSignature error: no such algorithm: {}", SIGNATURE_ALGORITHM, e);
@@ -48,4 +44,5 @@ public class SignatureFactory {
 			throw new RuntimeException(e);
 		}
 	}
+
 }

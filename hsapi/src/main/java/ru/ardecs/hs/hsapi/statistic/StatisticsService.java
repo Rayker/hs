@@ -18,7 +18,7 @@ public class StatisticsService {
 	private StatisticsCollector statisticsCollector;
 
 	@Autowired
-	@Qualifier("statisticsSoapSender")
+	@Qualifier("statisticsXmlJmsSender")
 	private StatisticsSender statisticsSender;
 
 	@Scheduled(cron = "${application.statisticsCollection.cron}")

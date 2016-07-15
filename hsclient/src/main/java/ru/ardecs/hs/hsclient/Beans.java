@@ -4,15 +4,14 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.ws.security.components.crypto.Crypto;
-import org.apache.ws.security.components.crypto.CryptoFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import org.springframework.ws.soap.security.support.KeyStoreFactoryBean;
 import org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor;
 import org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
@@ -26,12 +25,9 @@ import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import java.io.IOException;
-import java.io.InputStream;
-import java.security.PublicKey;
+import java.security.KeyStore;
 import java.security.Signature;
-import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -94,17 +90,21 @@ public class Beans {
 	}
 
 	@Bean
-	public SignatureProviderImpl signatureProvider(CityApiRepository cityApiRepository, SignatureFactory signatureFactory) throws CertificateException {
-		CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-		InputStream certificateStream = Beans.class.getResourceAsStream("/public.cert");
-		Certificate certificate = certificateFactory.generateCertificate(certificateStream);
-		PublicKey publicKey = certificate.getPublicKey();
+	public KeyStoreFactoryBean trustStoreFactoryBean() {
+		KeyStoreFactoryBean keyStoreFactoryBean = new KeyStoreFactoryBean();
+		keyStoreFactoryBean.setLocation(new ClassPathResource("truststore.jks"));
+		keyStoreFactoryBean.setPassword("testpass");
+		keyStoreFactoryBean.setType(KeyStore.getDefaultType()); // TODO: 7/16/16 change?
+		return keyStoreFactoryBean;
+	}
 
+	@Bean
+	public SignatureProviderImpl signatureProvider(CityApiRepository cityApiRepository, SignatureFactory signatureFactory, KeyStore trustStore) throws CertificateException {
 		Map<Long, Signature> signatures = new HashMap<>();
 		StreamSupport
 				.stream(cityApiRepository.findAll().spliterator(), false)
 				.forEach(c -> signatures
-						.put(c.getId(), signatureFactory.createVerificationSignature(publicKey)));
+						.put(c.getId(), signatureFactory.createVerificationSignature(c.getId())));
 		return new SignatureProviderImpl(signatures);
 	}
 
