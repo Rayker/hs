@@ -17,6 +17,7 @@ import org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.XsdSchema;
+import ru.ardecs.hs.hsclient.db.entities.CityApi;
 import ru.ardecs.hs.hsclient.db.repositories.CityApiRepository;
 import ru.ardecs.hs.hsclient.signing.SignatureProviderImpl;
 import ru.ardecs.hs.hscommon.signing.SignatureFactory;
@@ -28,9 +29,9 @@ import java.io.IOException;
 import java.security.KeyStore;
 import java.security.Signature;
 import java.security.cert.CertificateException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Component
@@ -100,11 +101,11 @@ public class Beans {
 
 	@Bean
 	public SignatureProviderImpl signatureProvider(CityApiRepository cityApiRepository, SignatureFactory signatureFactory, KeyStore trustStore) throws CertificateException {
-		Map<Long, Signature> signatures = new HashMap<>();
-		StreamSupport
+		Map<Long, Signature> signatures = StreamSupport
 				.stream(cityApiRepository.findAll().spliterator(), false)
-				.forEach(c -> signatures
-						.put(c.getId(), signatureFactory.createVerificationSignature(c.getId())));
+				.collect(Collectors.toConcurrentMap(
+						CityApi::getId,
+						c -> signatureFactory.createVerificationSignature(c.getId())));
 		return new SignatureProviderImpl(signatures);
 	}
 

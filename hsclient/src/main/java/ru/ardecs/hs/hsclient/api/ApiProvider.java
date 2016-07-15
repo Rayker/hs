@@ -24,7 +24,7 @@ public class ApiProvider {
 	@PostConstruct
 	private void init() {
 		StreamSupport
-				.stream(cityApiRepository.findAll().spliterator(),false)
+				.stream(cityApiRepository.findAll().spliterator(), false)
 				.forEach(this::load);
 	}
 
