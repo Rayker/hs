@@ -4,6 +4,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.ws.security.components.crypto.Crypto;
+import org.apache.ws.security.components.crypto.CryptoFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
@@ -111,7 +112,7 @@ public class Beans {
 	public CryptoFactoryBean serverCrypto() throws IOException {
 		CryptoFactoryBean factory = new CryptoFactoryBean();
 		factory.setKeyStorePassword("testpass");
-		factory.setKeyStoreLocation(new ClassPathResource("keystore.jks"));
+		factory.setKeyStoreLocation(new ClassPathResource("truststore.jks"));
 		return factory;
 	}
 

@@ -47,8 +47,10 @@
             <groupId>org.springframework.ws</groupId>
             <artifactId>spring-ws-security</artifactId>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.apache.wss4j</groupId>
+            <artifactId>wss4j</artifactId>
+        </dependency>
 
         <!-- db -->
         <dependency>

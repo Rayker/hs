@@ -3,14 +3,13 @@ package ru.ardecs.hs.hsapi;
 import org.apache.wss4j.common.crypto.Crypto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
-import org.springframework.ws.client.core.WebServiceTemplate;
-import org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor;
+import org.springframework.ws.client.support.interceptor.ClientInterceptor;
+import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 import org.springframework.ws.soap.security.wss4j2.support.CryptoFactoryBean;
 import ru.ardecs.hs.hsapi.bl.ScheduleFactory;
 import ru.ardecs.hs.hsapi.cache.MemoryCacheManager;
@@ -24,13 +23,12 @@ import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 
 
-
 @Component
 public class Beans {
 	@Bean
-	public StatisticsSoapSender statisticsSoapSender(Jaxb2Marshaller marshaller, Wss4jSecurityInterceptor interceptor) {
+	public StatisticsSoapSender statisticsSoapSender(Jaxb2Marshaller marshaller, org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor interceptor) {
 		StatisticsSoapSender sender = new StatisticsSoapSender();
-		sender.setInterceptors(new Wss4jSecurityInterceptor[]{interceptor});
+		sender.setInterceptors(new ClientInterceptor[]{interceptor});
 		sender.setDefaultUri("http://localhost:8080/ws");
 		sender.setMarshaller(marshaller);
 		sender.setUnmarshaller(marshaller);
@@ -84,12 +82,30 @@ public class Beans {
 	}
 
 	@Bean
-	public Wss4jSecurityInterceptor wss4jSecurityInterceptor(org.apache.ws.security.components.crypto.Crypto crypto) {
-		Wss4jSecurityInterceptor interceptor = new Wss4jSecurityInterceptor();
+	public org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor wss4jSecurityInterceptor(org.apache.ws.security.components.crypto.Crypto crypto) {
+		org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor interceptor = new org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor();
 		interceptor.setSecurementActions("Signature");
 		interceptor.setSecurementUsername("soap");
 		interceptor.setSecurementPassword("testpass");
 		interceptor.setSecurementSignatureCrypto(crypto);
 		return interceptor;
 	}
+
+//	@Bean
+//	public Wss4jSecurityInterceptor wss4jSecurityInterceptor(Crypto crypto) {
+//		Wss4jSecurityInterceptor interceptor = new Wss4jSecurityInterceptor();
+//		interceptor.setSecurementActions("Signature");
+//		interceptor.setSecurementUsername("soap");
+//		interceptor.setSecurementPassword("testpass");
+//		interceptor.setSecurementSignatureCrypto(crypto);
+//		return interceptor;
+//	}
+//
+//	@Bean
+//	public CryptoFactoryBean serverCryptoFactoryBean() throws IOException {
+//		CryptoFactoryBean factory = new CryptoFactoryBean();
+//		factory.setKeyStorePassword("testpass");
+//		factory.setKeyStoreLocation(new ClassPathResource("keystore.jks"));
+//		return factory;
+//	}
 }
