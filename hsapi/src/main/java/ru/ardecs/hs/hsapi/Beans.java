@@ -14,10 +14,8 @@ import ru.ardecs.hs.hscommon.signing.KeyLoader;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.Signature;
+import java.security.*;
+import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 
 @Component
@@ -54,9 +52,11 @@ public class Beans {
 	}
 
 	@Bean
-	public Signature signature() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, InvalidKeyException {
-		// TODO: 7/14/16 fix key loading
-		PrivateKey privateKey = new KeyLoader().loadKeyPair("hscommon/src/main/resources", "DSA").getPrivate();
+	public Signature signature() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, InvalidKeyException, KeyStoreException, CertificateException, UnrecoverableKeyException {
+		KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+		keyStore.load(Beans.class.getResourceAsStream("keystore.jks"), "testpass".toCharArray());
+		Key key = keyStore.getKey("soap", "testpass".toCharArray());
+		PrivateKey privateKey = (PrivateKey) key;
 		Signature signature = Signature.getInstance("DSAwithSHA1");
 		signature.initSign(privateKey);
 		return signature;

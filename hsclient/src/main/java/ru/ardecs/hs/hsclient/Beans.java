@@ -21,7 +21,12 @@ import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import java.io.IOException;
+import java.io.InputStream;
+import java.security.PublicKey;
 import java.security.Signature;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -84,14 +89,17 @@ public class Beans {
 	}
 
 	@Bean
-	public SignatureProviderImpl signatureProvider(CityApiRepository cityApiRepository, SignatureFactory signatureFactory) {
+	public SignatureProviderImpl signatureProvider(CityApiRepository cityApiRepository, SignatureFactory signatureFactory) throws CertificateException {
+		CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+		InputStream certificateStream = Beans.class.getResourceAsStream("/public.cert");
+		Certificate certificate = certificateFactory.generateCertificate(certificateStream);
+		PublicKey publicKey = certificate.getPublicKey();
+
 		Map<Long, Signature> signatures = new HashMap<>();
 		StreamSupport
 				.stream(cityApiRepository.findAll().spliterator(), false)
 				.forEach(c -> signatures
-						.put(c.getId(), signatureFactory.createVerificationSignature(c.getPublicKey())));
-//		signatures = stream
-//				.collect(Collectors.toConcurrentMap(c -> c.getId(), signatureFactory::createVerificationSignature));
+						.put(c.getId(), signatureFactory.createVerificationSignature(publicKey)));
 		return new SignatureProviderImpl(signatures);
 	}
 }

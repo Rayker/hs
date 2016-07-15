@@ -56,8 +56,7 @@ public class XmlStatisticReceiver {
 		boolean verified;
 		try {
 			signature.update(xml.getBytes(StandardCharsets.UTF_8));
-			verified = signature
-					.verify(Base64.getDecoder().decode(realSignature));
+			verified = signature.verify(Base64.getDecoder().decode(realSignature));
 		} catch (SignatureException e) {
 			logger.error("Signature verification error", e);
 			return;

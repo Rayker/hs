@@ -24,19 +24,28 @@ public class SignatureFactory {
 	}
 
 	public Signature createVerificationSignature(byte[] storedPublicKey) {
-		Signature signature;
+		PublicKey publicKey;
 		try {
-			signature = Signature.getInstance(SIGNATURE_ALGORITHM);
 			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(storedPublicKey);
-			PublicKey publicKey = keyFactory.generatePublic(keySpec);
-			signature.initVerify(publicKey);
-		} catch (NoSuchAlgorithmException e) {
-			logger.error("createVerificationSignature error: no such algorithm: {}", SIGNATURE_ALGORITHM, e);
-			throw new RuntimeException(e);
-		} catch (InvalidKeySpecException | InvalidKeyException e) {
+			publicKey = keyFactory.generatePublic(keySpec);
+		} catch (InvalidKeySpecException e) {
 			logger.error("createVerificationSignature error", e);
 			throw new RuntimeException(e);
 		}
-		return signature;
+		return createVerificationSignature(publicKey);
+	}
+
+	public Signature createVerificationSignature(PublicKey publicKey) {
+		try {
+			Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+			signature.initVerify(publicKey);
+			return signature;
+		} catch (NoSuchAlgorithmException e) {
+			logger.error("createVerificationSignature error: no such algorithm: {}", SIGNATURE_ALGORITHM, e);
+			throw new RuntimeException(e);
+		} catch (InvalidKeyException e) {
+			logger.error("createVerificationSignature error", e);
+			throw new RuntimeException(e);
+		}
 	}
 }
