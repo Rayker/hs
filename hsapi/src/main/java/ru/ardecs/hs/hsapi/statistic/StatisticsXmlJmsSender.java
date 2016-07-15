@@ -9,7 +9,6 @@ import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import org.springframework.xml.transform.StringResult;
-import ru.ardecs.hs.hscommon.signing.Signer;
 import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
 
 import java.nio.charset.StandardCharsets;
@@ -22,9 +21,6 @@ import java.util.Map;
 @Component
 public class StatisticsXmlJmsSender implements StatisticsSender {
 	private static final Logger logger = LoggerFactory.getLogger(StatisticsXmlJmsSender.class);
-
-//	@Autowired
-//	private Signer signer;
 
 	@Autowired
 	private JmsMessagingTemplate jmsMessagingTemplate;

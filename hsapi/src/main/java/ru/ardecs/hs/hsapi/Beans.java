@@ -1,6 +1,5 @@
 package ru.ardecs.hs.hsapi;
 
-import org.apache.wss4j.common.crypto.Crypto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
@@ -9,8 +8,6 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
-import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
-import org.springframework.ws.soap.security.wss4j2.support.CryptoFactoryBean;
 import ru.ardecs.hs.hsapi.bl.ScheduleFactory;
 import ru.ardecs.hs.hsapi.cache.MemoryCacheManager;
 import ru.ardecs.hs.hsapi.statistic.StatisticsSoapSender;
@@ -91,6 +88,7 @@ public class Beans {
 		return interceptor;
 	}
 
+	// TODO: 7/15/16 update wss4j security
 //	@Bean
 //	public Wss4jSecurityInterceptor wss4jSecurityInterceptor(Crypto crypto) {
 //		Wss4jSecurityInterceptor interceptor = new Wss4jSecurityInterceptor();

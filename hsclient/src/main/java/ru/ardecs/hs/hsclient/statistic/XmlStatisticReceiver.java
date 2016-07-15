@@ -10,25 +10,16 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import org.springframework.xml.transform.StringSource;
 import ru.ardecs.hs.hsclient.signing.SignatureProvider;
-import ru.ardecs.hs.hscommon.signing.KeyLoader;
-import ru.ardecs.hs.hscommon.signing.Signer;
 import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
 
-import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.*;
-import java.security.spec.InvalidKeySpecException;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.util.Base64;
-
-import static sun.java2d.cmm.ProfileDataVerifier.verify;
 
 @Component
 public class XmlStatisticReceiver {
 	private static Logger logger = LoggerFactory.getLogger(XmlStatisticReceiver.class);
-
-	@Autowired
-	private Signer signer;
 
 	@Autowired
 	private StatisticsRepositoryWrapper repositoryWrapper;
