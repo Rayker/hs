@@ -26,7 +26,6 @@ import java.security.spec.InvalidKeySpecException;
 
 
 @Component
-@ImportResource({"classpath:spring-ws-context.xml"})
 public class Beans {
 	@Bean
 	public StatisticsSoapSender statisticsSoapSender(Jaxb2Marshaller marshaller, Wss4jSecurityInterceptor interceptor) {
@@ -76,31 +75,21 @@ public class Beans {
 		return signature;
 	}
 
-//	@Bean
-//	public Crypto crypto() throws Exception {
-//		CryptoFactoryBean cryptoFactoryBean = new CryptoFactoryBean();
-//		cryptoFactoryBean.setKeyStoreLocation(new ClassPathResource("keystore.jks"));
-//		cryptoFactoryBean.setKeyStorePassword("testpass");
-//		return cryptoFactoryBean.getObject();
-//	}
-//
-//	@Bean
-//	public Wss4jSecurityInterceptor wsClientSecurityInterceptor(Crypto crypto) {
-//		Wss4jSecurityInterceptor interceptor = new Wss4jSecurityInterceptor();
-//		interceptor.setSecurementActions("Signature");
-//		interceptor.setSecurementUsername("soap");
-//		interceptor.setSecurementPassword("testpass");
-//		interceptor.setSecurementSignatureAlgorithm("DSAwithSHA1");
-//		interceptor.setSecurementSignatureCrypto(crypto);
-////		interceptor.setSecurementEncryptionCrypto(crypto);
-////		interceptor.setSecurementEncryptionParts();
-//		return interceptor;
-//	}
-//
-//	@Bean
-//	public WebServiceTemplate webServiceTemplate(Wss4jSecurityInterceptor wss4jSecurityInterceptor) {
-//		WebServiceTemplate webServiceTemplate = new WebServiceTemplate();
-//		webServiceTemplate.setInterceptors(new Wss4jSecurityInterceptor[]{wss4jSecurityInterceptor});
-//		return webServiceTemplate;
-//	}
+	@Bean
+	public org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean serverCrypto() throws IOException {
+		org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean factory = new org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean();
+		factory.setKeyStorePassword("testpass");
+		factory.setKeyStoreLocation(new ClassPathResource("keystore.jks"));
+		return factory;
+	}
+
+	@Bean
+	public Wss4jSecurityInterceptor wss4jSecurityInterceptor(org.apache.ws.security.components.crypto.Crypto crypto) {
+		Wss4jSecurityInterceptor interceptor = new Wss4jSecurityInterceptor();
+		interceptor.setSecurementActions("Signature");
+		interceptor.setSecurementUsername("soap");
+		interceptor.setSecurementPassword("testpass");
+		interceptor.setSecurementSignatureCrypto(crypto);
+		return interceptor;
+	}
 }
