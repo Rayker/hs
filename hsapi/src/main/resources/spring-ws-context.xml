@@ -6,7 +6,7 @@
 
     <bean id="wsClientSecurityInterceptor"
           class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
-        <property name="securementActions" value="Timestamp Signature" />
+        <property name="securementActions" value="Signature" />
         <!-- Key alias for signature -->
         <property name="securementUsername" value="soap" />
         <property name="securementPassword" value="testpass" />

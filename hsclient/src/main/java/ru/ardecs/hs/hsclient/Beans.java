@@ -3,13 +3,17 @@ package ru.ardecs.hs.hsclient;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.wss4j.common.crypto.Crypto;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
+import org.springframework.ws.soap.security.wss4j2.support.CryptoFactoryBean;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.XsdSchema;
@@ -33,6 +37,7 @@ import java.util.Properties;
 import java.util.stream.StreamSupport;
 
 @Component
+@ImportResource({"classpath:spring-ws-server-context.xml"})
 public class Beans {
 	@Bean
 	public CloseableHttpClient httpClient() {
@@ -102,4 +107,21 @@ public class Beans {
 						.put(c.getId(), signatureFactory.createVerificationSignature(publicKey)));
 		return new SignatureProviderImpl(signatures);
 	}
+
+//	@Bean
+//	public Wss4jSecurityInterceptor wss4jSecurityInterceptor(Crypto signatureCrypto) {
+//		Wss4jSecurityInterceptor interceptor = new Wss4jSecurityInterceptor();
+//		interceptor.setValidationActions("Signature");
+//		interceptor.setValidationSignatureCrypto(signatureCrypto);
+//		return interceptor;
+//	}
+//
+//	@Bean
+//	public Crypto cryptoFactoryBean() {
+////		CryptoFactoryBean factory = new CryptoFactoryBean();
+////		factory.setKey
+////
+////		return factory;
+//		new Crypto();
+//	}
 }
