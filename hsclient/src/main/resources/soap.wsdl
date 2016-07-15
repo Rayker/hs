@@ -1,55 +1,53 @@
-<definitions name="cityStatistic"
-             targetNamespace="http://localhost:8080/wsdl/cityStatistic.wsdl"
-             xmlns="http://schemas.xmlsoap.org/wsdl/"
-             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-             xmlns:tns="http://localhost:8080/wsdl/cityStatistic.wsdl">
-
-    <types>
-        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-            <xs:element name="cityStatistic">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://localhost:8080/wsdl/cityStatistic.wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://localhost:8080/wsdl/cityStatistic.wsdl" targetNamespace="http://localhost:8080/wsdl/cityStatistic.wsdl">
+    <wsdl:types>
+        <xs:schema xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" jaxb:extensionBindingPrefixes="xjc" jaxb:version="1.0" targetNamespace="http://localhost:8080/wsdl/cityStatistic.wsdl">
+            <xs:annotation>
+                <xs:appinfo>
+                    <jaxb:globalBindings generateIsSetMethod="true">
+                        <xjc:serializable uid="12343"/>
+                    </jaxb:globalBindings>
+                </xs:appinfo>
+            </xs:annotation>
+            <xs:element name="sendCityStatisticRequest">
                 <xs:complexType>
-                    <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                        <xs:element name="speciality">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="visitsNumber" type="xs:nonNegativeInteger"/>
-                                </xs:sequence>
-                                <xs:attribute name="id" type="xs:positiveInteger"/>
-                            </xs:complexType>
-                        </xs:element>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="specialityStatistic" type="tns:specialityStatistic"/>
                     </xs:sequence>
                     <xs:attribute name="cityId" type="xs:positiveInteger"/>
                     <xs:attribute name="date" type="xs:date"/>
                 </xs:complexType>
             </xs:element>
+            <xs:complexType name="specialityStatistic">
+                <xs:sequence>
+                    <xs:element name="visitsNumber" type="xs:nonNegativeInteger"/>
+                </xs:sequence>
+                <xs:attribute name="id" type="xs:positiveInteger"/>
+            </xs:complexType>
         </xs:schema>
-    </types>
-
-    <message name="cityStatisticRequest">
-        <part name="cityStatistic" type="tns:cityStatistic"/>
-    </message>
-
-    <portType name="cityStatisticPortType">
-        <operation name="sendCityStatistic">
-            <input message="tns:cityStatisticRequest"/>
-        </operation>
-    </portType>
-
-    <binding name="cityStatisticBinding" type="tns:cityStatisticPortType">
-        <soap:binding style="rpc"
-                      transport="http://schemas.xmlsoap.org/soap/http"/>
-        <operation name="sendCityStatistic">
-            <soap:operation soapAction="sendCityStatistic"/>
-            <input>
+    </wsdl:types>
+    <wsdl:message name="sendCityStatisticRequest">
+        <wsdl:part element="tns:sendCityStatisticRequest" name="sendCityStatisticRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="CityStatisticPort">
+        <wsdl:operation name="sendCityStatistic">
+            <wsdl:input message="tns:sendCityStatisticRequest" name="sendCityStatisticRequest">
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="CityStatisticPortSoap11" type="tns:CityStatisticPort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="sendCityStatistic">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="sendCityStatisticRequest">
                 <soap:body use="literal"/>
-            </input>
-        </operation>
-    </binding>
-
-    <service name="cityStatisticService">
-        <port binding="tns:cityStatisticBinding" name="cityStatisticPort">
-            <soap:address
-                    location="http://localhost:8080/sendCityStatistic/"/>
-        </port>
-    </service>
-</definitions>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="CityStatisticPortService">
+        <wsdl:port binding="tns:CityStatisticPortSoap11" name="CityStatisticPortSoap11">
+            <soap:address location="http://localhost:8080/ws"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

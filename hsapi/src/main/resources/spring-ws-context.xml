@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="wsClientSecurityInterceptor"
+          class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+        <property name="securementActions" value="Timestamp Signature" />
+        <!-- Key alias for signature -->
+        <property name="securementUsername" value="soap" />
+        <property name="securementPassword" value="testpass" />
+        <property name="securementSignatureCrypto" ref="clientCrypto"/>
+        <!--<property name="securementEncryptionCrypto" ref="clientCrypto"/>-->
+        <!--<property name="securementEncryptionParts" value="{Content}{http://javacrumbs.net/calc}a"/>-->
+        <!-- Key alias for encryption -->
+        <!--<property name="securementEncryptionUser" value="server"/>-->
+
+        <!-- Validation config -->
+        <!--<property name="validationActions" value="Signature" />-->
+        <!--<property name="validationSignatureCrypto" ref="clientCrypto"/>-->
+    </bean>
+
+    <bean id="clientCrypto" class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+        <property name="keyStorePassword" value="testpass"/>
+        <property name="keyStoreLocation" value="classpath:keystore.jks"/>
+    </bean>
+</beans>
