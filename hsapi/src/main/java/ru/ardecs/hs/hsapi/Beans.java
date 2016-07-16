@@ -71,19 +71,26 @@ public class Beans {
 	}
 
 	@Bean
-	public org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean serverCrypto() throws IOException {
+	public org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean serverCrypto(
+			@Value("${application.security.keystore.location}") String location,
+			@Value("${application.security.keystore.password}") String password
+	) throws IOException {
 		org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean factory = new org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean();
-		factory.setKeyStorePassword("testpass");
-		factory.setKeyStoreLocation(new ClassPathResource("keystore.jks"));
+		factory.setKeyStorePassword(password);
+		factory.setKeyStoreLocation(new ClassPathResource(location));
 		return factory;
 	}
 
 	@Bean
-	public org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor wss4jSecurityInterceptor(org.apache.ws.security.components.crypto.Crypto crypto) {
-		org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor interceptor = new org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor();
+	public org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor wss4jSecurityInterceptor(
+			@Value("${application.security.keystore.alias}") String alias,
+			@Value("${application.security.keystore.password}") String password,
+			org.apache.ws.security.components.crypto.Crypto crypto) {
+		org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor interceptor =
+				new org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor();
 		interceptor.setSecurementActions("Signature");
-		interceptor.setSecurementUsername("soap");
-		interceptor.setSecurementPassword("testpass");
+		interceptor.setSecurementUsername(alias);
+		interceptor.setSecurementPassword(password);
 		interceptor.setSecurementSignatureCrypto(crypto);
 		return interceptor;
 	}

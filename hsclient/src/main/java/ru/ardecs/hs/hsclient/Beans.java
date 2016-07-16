@@ -91,10 +91,13 @@ public class Beans {
 	}
 
 	@Bean
-	public KeyStoreFactoryBean trustStoreFactoryBean() {
+	public KeyStoreFactoryBean trustStoreFactoryBean(
+			@Value("${application.security.truststore.password}") String password,
+			@Value("${application.security.truststore.location}") String location
+	) {
 		KeyStoreFactoryBean keyStoreFactoryBean = new KeyStoreFactoryBean();
-		keyStoreFactoryBean.setLocation(new ClassPathResource("truststore.jks"));
-		keyStoreFactoryBean.setPassword("testpass");
+		keyStoreFactoryBean.setLocation(new ClassPathResource(location));
+		keyStoreFactoryBean.setPassword(password);
 		keyStoreFactoryBean.setType(KeyStore.getDefaultType()); // TODO: 7/16/16 change?
 		return keyStoreFactoryBean;
 	}
@@ -110,10 +113,13 @@ public class Beans {
 	}
 
 	@Bean
-	public CryptoFactoryBean serverCrypto() throws IOException {
+	public CryptoFactoryBean serverCrypto(
+			@Value("${application.security.truststore.password}") String password,
+			@Value("${application.security.truststore.location}") String location
+	) throws IOException {
 		CryptoFactoryBean factory = new CryptoFactoryBean();
-		factory.setKeyStorePassword("testpass");
-		factory.setKeyStoreLocation(new ClassPathResource("truststore.jks"));
+		factory.setKeyStorePassword(password);
+		factory.setKeyStoreLocation(new ClassPathResource(location));
 		return factory;
 	}
 

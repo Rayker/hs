@@ -31,23 +31,20 @@ public class XmlStatisticReceiver {
 	private SignatureProvider signatureProvider;
 
 	@JmsListener(destination = "${application.jms.xml-destination}")
-	public void receiveMessage(String xml, @Header("signature") String realSignature) {
-		logger.debug("sendSpecialityStatistic(): parse xml");
+	public void receiveMessage(String xml, @Header("signature") String encodedSignature) {
 		SendCityStatisticRequest request;
+		boolean verified;
 		try {
+			logger.debug("sendSpecialityStatistic(): parse xml");
 			request = (SendCityStatisticRequest) marshaller.unmarshal(new StringSource(xml));
+
+			logger.debug("sendSpecialityStatistic(): signature verification");
+			Signature signature = signatureProvider.getSignature(request.getCityId().longValueExact());
+			signature.update(xml.getBytes(StandardCharsets.UTF_8));
+			verified = signature.verify(Base64.getDecoder().decode(encodedSignature));
 		} catch (XmlMappingException e) {
 			logger.error("Unmarshaling SendCityStatisticRequest error", e);
 			return;
-		}
-
-		logger.debug("sendSpecialityStatistic(): signature verification");
-
-		Signature signature = signatureProvider.getSignature(request.getCityId().longValueExact());
-		boolean verified;
-		try {
-			signature.update(xml.getBytes(StandardCharsets.UTF_8));
-			verified = signature.verify(Base64.getDecoder().decode(realSignature));
 		} catch (SignatureException e) {
 			logger.error("Signature verification error", e);
 			return;
