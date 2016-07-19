@@ -103,7 +103,7 @@ public class Beans {
 	}
 
 	@Bean
-	public SignatureProviderImpl signatureProvider(CityApiRepository cityApiRepository, SignatureFactory signatureFactory, KeyStore trustStore) throws CertificateException {
+	public SignatureProviderImpl signatureProvider(CityApiRepository cityApiRepository, SignatureFactory signatureFactory) throws CertificateException {
 		Map<Long, Signature> signatures = StreamSupport
 				.stream(cityApiRepository.findAll().spliterator(), false)
 				.collect(Collectors.toConcurrentMap(

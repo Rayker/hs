@@ -6,6 +6,6 @@ if ERRORLEVEL 1 (
 	goto end
 )
 start java -jar hsapi/target/hsapi-1.0-SNAPSHOT.jar --server.port=8090 --spring.datasource.url=jdbc:mysql://localhost:3306/hospital_db
-rem start java -jar hsapi/target/hsapi-1.0-SNAPSHOT.jar --server.port=8091 --spring.datasource.url=jdbc:mysql://localhost:3306/hospital_db_2
+start java -jar hsapi/target/hsapi-1.0-SNAPSHOT.jar --server.port=8091 --spring.datasource.url=jdbc:mysql://localhost:3306/hospital_db_2
 
 :end

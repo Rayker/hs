@@ -10,6 +10,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.ardecs.hs.hscommon.entities.Doctor;
 import ru.ardecs.hs.hscommon.entities.Hospital;
 import ru.ardecs.hs.hscommon.entities.Speciality;
@@ -32,6 +34,8 @@ import java.util.List;
 
 // TODO: 7/1/16 refactor
 public class ApiWrapperImpl implements ApiWrapper {
+	private static Logger logger = LoggerFactory.getLogger(ApiWrapperImpl.class);
+
 	private final CloseableHttpClient httpClient;
 	private final String host;
 	private final int port;
@@ -157,5 +161,19 @@ public class ApiWrapperImpl implements ApiWrapper {
 	@Override
 	public boolean delete(Long reservedTimeId) {
 		throw new NotImplementedException();
+	}
+
+	@Override
+	public boolean ping() {
+		try {
+			this.sendPost("/ping", new ArrayList<>());
+		} catch (URISyntaxException e) {
+			logger.error("uri error", e);
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			logger.debug("Host {}:{} is unreachable", host, port);
+			return false;
+		}
+		return true;
 	}
 }

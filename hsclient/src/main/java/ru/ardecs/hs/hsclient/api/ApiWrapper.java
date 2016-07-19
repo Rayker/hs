@@ -30,4 +30,6 @@ public interface ApiWrapper {
 	TicketModel getTicketModel(Long reservedTimeId) throws IOException, URISyntaxException;
 
 	boolean delete(Long reservedTimeId);
+
+	boolean ping();
 }

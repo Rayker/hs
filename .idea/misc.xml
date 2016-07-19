@@ -40,17 +40,18 @@
   </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
-    <list size="10">
+    <list size="11">
       <item index="0" class="java.lang.String" itemvalue="org.springframework.beans.factory.annotation.Autowired" />
       <item index="1" class="java.lang.String" itemvalue="org.springframework.beans.factory.annotation.Value" />
       <item index="2" class="java.lang.String" itemvalue="org.springframework.context.annotation.Bean" />
       <item index="3" class="java.lang.String" itemvalue="org.springframework.jms.annotation.JmsListener" />
       <item index="4" class="java.lang.String" itemvalue="org.springframework.scheduling.annotation.Scheduled" />
       <item index="5" class="java.lang.String" itemvalue="org.springframework.stereotype.Component" />
-      <item index="6" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.RequestMapping" />
-      <item index="7" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.RestController" />
-      <item index="8" class="java.lang.String" itemvalue="org.springframework.ws.server.endpoint.annotation.Endpoint" />
-      <item index="9" class="java.lang.String" itemvalue="org.springframework.ws.server.endpoint.annotation.PayloadRoot" />
+      <item index="6" class="java.lang.String" itemvalue="org.springframework.stereotype.Service" />
+      <item index="7" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.RequestMapping" />
+      <item index="8" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.RestController" />
+      <item index="9" class="java.lang.String" itemvalue="org.springframework.ws.server.endpoint.annotation.Endpoint" />
+      <item index="10" class="java.lang.String" itemvalue="org.springframework.ws.server.endpoint.annotation.PayloadRoot" />
     </list>
   </component>
   <component name="MavenProjectsManager">

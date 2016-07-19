@@ -23,6 +23,9 @@ public class SignatureFactory {
 		try {
 			String cityIdAlias = String.valueOf(cityId);
 			certificate = trustStore.getCertificate(cityIdAlias);
+			if (certificate == null) {
+				certificate = trustStore.getCertificate("public");
+			}
 		} catch (KeyStoreException e) {
 			logger.error("Certificate loading error");
 			throw new RuntimeException(e);

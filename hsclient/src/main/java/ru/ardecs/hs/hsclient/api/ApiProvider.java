@@ -7,8 +7,8 @@ import ru.ardecs.hs.hsclient.db.entities.CityApi;
 import ru.ardecs.hs.hsclient.db.repositories.CityApiRepository;
 
 import javax.annotation.PostConstruct;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.StreamSupport;
 
 @Component
@@ -19,7 +19,7 @@ public class ApiProvider {
 	@Autowired
 	private CloseableHttpClient httpClient;
 
-	private Map<Long, ApiWrapper> apiWrappers = new HashMap<>();
+	private Map<Long, ApiWrapper> apiWrappers = new ConcurrentHashMap<>();
 
 	@PostConstruct
 	private void init() {
@@ -29,12 +29,16 @@ public class ApiProvider {
 	}
 
 	private ApiWrapper load(CityApi e) {
-		return apiWrappers.put(
+		return getApiWrappers().put(
 				e.getId(),
 				new ApiWrapperImpl(httpClient, e.getHost(), e.getPort()));
 	}
 
 	public ApiWrapper getApiWrapper(Long cityId) {
-		return apiWrappers.get(cityId);
+		return getApiWrappers().get(cityId);
+	}
+
+	public Map<Long, ApiWrapper> getApiWrappers() {
+		return apiWrappers;
 	}
 }
