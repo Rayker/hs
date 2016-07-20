@@ -29,8 +29,8 @@ public class TempController {
 	@RequestMapping(value = "/doctorByName", method = RequestMethod.POST)
 	public void temp(@RequestParam String doctorName, @RequestParam boolean rollback) {
 		try {
-//			doctorService.createDoctor(doctorName, rollback);
-			doctorService.createHospital(doctorName, rollback);
+			doctorService.createDoctor(doctorName, rollback);
+//			doctorService.createHospital(doctorName, rollback);
 		} catch (RuntimeException e) {
 			logger.error("Error", e);
 		}

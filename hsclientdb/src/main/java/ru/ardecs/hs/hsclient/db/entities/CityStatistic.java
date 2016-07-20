@@ -17,11 +17,11 @@ public class CityStatistic {
 
 	@ManyToOne
 	@JoinColumn(name = "specialities_id")
-	private Speciality speciality = new Speciality();
+	private transient Speciality speciality = new Speciality();
 
 	@ManyToOne
 	@JoinColumn(name = "city_id")
-	private CityApi cityApi = new CityApi();
+	private transient CityApi cityApi = new CityApi();
 
 	public Long getId() {
 		return id;
