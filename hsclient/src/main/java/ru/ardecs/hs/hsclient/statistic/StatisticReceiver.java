@@ -12,12 +12,12 @@ public class StatisticReceiver {
 	private static Logger logger = LoggerFactory.getLogger(StatisticReceiver.class);
 
 	@Autowired
-	private StatisticsRepositoryWrapper repositoryWrapper;
+	private StatisticsService statisticsService;
 
 	@JmsListener(destination = "${application.jms.destination}")
 	public void receiveMessage(SendCityStatisticRequest request) {
 		logger.debug("sendSpecialityStatistic: date = {}, cityId = {}", request.getDate(), request.getCityId());
-		repositoryWrapper.save(request);
+		statisticsService.save(request);
 		logger.debug("sendSpecialityStatistic: statistic is successfully saved");
 	}
 

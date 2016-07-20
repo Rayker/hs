@@ -16,13 +16,14 @@ import java.nio.charset.StandardCharsets;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.util.Base64;
+import java.util.concurrent.CompletableFuture;
 
 @Component
 public class XmlStatisticReceiver {
 	private static Logger logger = LoggerFactory.getLogger(XmlStatisticReceiver.class);
 
 	@Autowired
-	private StatisticsRepositoryWrapper repositoryWrapper;
+	private StatisticsService statisticsService;
 
 	@Autowired
 	private Jaxb2Marshaller marshaller;
@@ -56,7 +57,8 @@ public class XmlStatisticReceiver {
 		}
 
 		logger.debug("sendSpecialityStatistic(): date = {}, cityId = {}", request.getDate(), request.getCityId());
-		repositoryWrapper.save(request);
+
+		CompletableFuture.runAsync(() -> statisticsService.save(request));
 
 		logger.debug("sendSpecialityStatistic(): statistic is successfully saved");
 	}

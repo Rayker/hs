@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import ru.ardecs.hs.hscommon.entities.Doctor;
 import ru.ardecs.hs.hscommon.entities.Hospital;
 import ru.ardecs.hs.hscommon.entities.Speciality;
@@ -54,6 +55,7 @@ public class DoctorService {
 
 	@org.springframework.transaction.annotation.Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
 	public Speciality createSpeciality(String specialityName, long delay) throws InterruptedException {
+		logger.debug("get specialities, transaction = {}", TransactionSynchronizationManager.isActualTransactionActive());
 		Speciality speciality = new Speciality();
 		speciality.setName(specialityName);
 		speciality = specialityRepository.save(speciality);
@@ -63,13 +65,13 @@ public class DoctorService {
 
 	@org.springframework.transaction.annotation.Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
 	public Iterable<Speciality> getAllSpecialities() {
-		logger.debug("get specialities");
+		logger.debug("get specialities, transaction = {}", TransactionSynchronizationManager.isActualTransactionActive());
 		return specialityRepository.findAll();
 	}
 
 	@org.springframework.transaction.annotation.Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
 	public Iterable<Speciality> getAllSpecialitiesNow() {
-		logger.debug("get specialities now");
+		logger.debug("get specialities now, transaction = {}", TransactionSynchronizationManager.isActualTransactionActive());
 		return specialityRepository.findAll();
 	}
 }

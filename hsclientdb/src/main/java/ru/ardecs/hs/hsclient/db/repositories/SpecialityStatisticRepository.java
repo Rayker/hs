@@ -7,7 +7,7 @@ import ru.ardecs.hs.hsclient.db.entities.SummarySpecialityStatistic;
 import javax.persistence.LockModeType;
 
 public interface SpecialityStatisticRepository extends Repository<SummarySpecialityStatistic, Long> {
-	@Lock(LockModeType.PESSIMISTIC_READ)
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	SummarySpecialityStatistic findOne(Long id);
 
 	SummarySpecialityStatistic save(SummarySpecialityStatistic summarySpecialityStatistic);

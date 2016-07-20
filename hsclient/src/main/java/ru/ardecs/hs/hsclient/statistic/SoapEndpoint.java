@@ -15,13 +15,13 @@ public class SoapEndpoint {
 	private static final Logger logger = LoggerFactory.getLogger(SoapEndpoint.class);
 
 	@Autowired
-	private StatisticsRepositoryWrapper repositoryWrapper;
+	private StatisticsService statisticsService;
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "sendCityStatisticRequest")
 	public void sendSpecialityStatistic(@RequestPayload SendCityStatisticRequest request) {
 		logger.debug("sendSpecialityStatistic: date = {}, cityId = {}", request.getDate(), request.getCityId());
 
-		repositoryWrapper.save(request);
+		statisticsService.save(request);
 
 		logger.debug("sendSpecialityStatistic: statistic is successfully saved");
 	}
