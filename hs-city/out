@@ -1,0 +1,20 @@
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building hs-city 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[WARNING] The POM for ru.ardecs:hs-city-db:jar:1.0-SNAPSHOT is missing, no dependency information available
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 3.333 s
+[INFO] Finished at: 2016-07-15T18:34:56+04:00
+[INFO] Final Memory: 11M/27M
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal on project hs-city: Could not resolve dependencies for project ru.ardecs:hs-city:jar:1.0-SNAPSHOT: Could not find artifact ru.ardecs:hs-city-db:jar:1.0-SNAPSHOT -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException

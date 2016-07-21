@@ -5,8 +5,8 @@
     <file url="file://$PROJECT_DIR$/hs-central" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hs-central-db" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hs-central-web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hs-city" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hs-city-db" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hs-common" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/hsapi" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/hsdb" charset="UTF-8" />
   </component>
 </project>

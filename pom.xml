@@ -20,8 +20,8 @@
     </properties>
 
     <modules>
-        <module>hsapi</module>
-        <module>hsdb</module>
+        <module>hs-city</module>
+        <module>hs-city-db</module>
         <module>hs-central</module>
         <module>hs-common</module>
         <module>hs-central-db</module>
@@ -70,12 +70,12 @@
             </dependency>
             <dependency>
                 <groupId>ru.ardecs</groupId>
-                <artifactId>hsdb</artifactId>
+                <artifactId>hs-city-db</artifactId>
                 <version>${hs.version}</version>
             </dependency>
             <dependency>
                 <groupId>ru.ardecs</groupId>
-                <artifactId>hsapi</artifactId>
+                <artifactId>hs-city</artifactId>
                 <version>${hs.version}</version>
             </dependency>
             <dependency>

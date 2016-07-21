@@ -25,6 +25,8 @@
         <module name="hs-central" />
         <module name="hs-central-db" />
         <module name="hs-central-web" />
+        <module name="hs-city" />
+        <module name="hs-city-db" />
         <module name="hs-common" />
         <module name="hsapi" />
         <module name="hsclient" />
@@ -38,6 +40,8 @@
       <module name="hs-central" target="1.8" />
       <module name="hs-central-db" target="1.8" />
       <module name="hs-central-web" target="1.8" />
+      <module name="hs-city" target="1.8" />
+      <module name="hs-city-db" target="1.8" />
       <module name="hs-common" target="1.8" />
       <module name="hsapi" target="1.8" />
       <module name="hsclient" target="1.8" />
