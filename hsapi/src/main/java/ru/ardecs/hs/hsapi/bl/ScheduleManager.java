@@ -1,8 +1,8 @@
 package ru.ardecs.hs.hsapi.bl;
 
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
-import ru.ardecs.hs.hscommon.entities.ReservedTime;
-import ru.ardecs.hs.hscommon.models.VisitModel;
+import ru.ardecs.hs.common.entities.ReservedTime;
+import ru.ardecs.hs.common.models.VisitModel;
 
 import java.util.Date;
 import java.util.List;

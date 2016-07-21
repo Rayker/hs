@@ -3,14 +3,11 @@ package ru.ardecs.hs.hsapi.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.ardecs.hs.hscommon.entities.Speciality;
+import ru.ardecs.hs.common.entities.Speciality;
 import ru.ardecs.hs.hsdb.services.DoctorService;
 
 // TODO: 7/7/16 remove

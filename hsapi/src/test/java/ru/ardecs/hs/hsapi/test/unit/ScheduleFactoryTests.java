@@ -2,7 +2,7 @@ package ru.ardecs.hs.hsapi.test.unit;
 
 import org.junit.Test;
 import ru.ardecs.hs.hsapi.bl.ScheduleFactory;
-import ru.ardecs.hs.hscommon.entities.JobInterval;
+import ru.ardecs.hs.common.entities.JobInterval;
 
 import java.sql.Time;
 import java.util.List;

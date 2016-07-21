@@ -35,7 +35,7 @@ public class PersistenceContext {
 	private static final String PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY = "hibernate.ejb.naming_strategy";
 	private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
 
-	private static final String PROPERTY_PACKAGES_TO_SCAN = "ru.ardecs.hs.hscommon.entities";
+	private static final String PROPERTY_PACKAGES_TO_SCAN = "ru.ardecs.hs.common.entities";
 
 	@Autowired
 	private Environment environment;

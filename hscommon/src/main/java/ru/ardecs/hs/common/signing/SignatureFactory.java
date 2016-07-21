@@ -1,4 +1,4 @@
-package ru.ardecs.hs.hscommon.signing;
+package ru.ardecs.hs.common.signing;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.ardecs.hs.hsclient.db.entities.CityStatistic;
-import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
+import ru.ardecs.hs.common.soap.generated.SendCityStatisticRequest;
 
 import java.sql.Date;
 

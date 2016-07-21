@@ -2,8 +2,8 @@ package ru.ardecs.hs.hsdb.repositories;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import ru.ardecs.hs.hscommon.entities.Doctor;
-import ru.ardecs.hs.hscommon.entities.Hospital;
+import ru.ardecs.hs.common.entities.Doctor;
+import ru.ardecs.hs.common.entities.Hospital;
 
 import java.sql.Date;
 import java.util.List;

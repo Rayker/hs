@@ -1,13 +1,11 @@
 package ru.ardecs.hs.hsapi.test;
 
 import ru.ardecs.hs.hsapi.cache.CachedVisit;
-import ru.ardecs.hs.hscommon.entities.Doctor;
-import ru.ardecs.hs.hscommon.entities.JobInterval;
-import ru.ardecs.hs.hscommon.entities.ReservedTime;
+import ru.ardecs.hs.common.entities.Doctor;
+import ru.ardecs.hs.common.entities.JobInterval;
+import ru.ardecs.hs.common.entities.ReservedTime;
 
 import java.sql.Time;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;

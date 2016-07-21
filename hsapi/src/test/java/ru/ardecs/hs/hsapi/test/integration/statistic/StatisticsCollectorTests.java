@@ -15,7 +15,7 @@ import ru.ardecs.hs.hsapi.statistic.StatisticsCollector;
 import ru.ardecs.hs.hsapi.test.Mocks;
 import ru.ardecs.hs.hsapi.test.TestBeans;
 import ru.ardecs.hs.hsapi.test.TestData;
-import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
+import ru.ardecs.hs.common.soap.generated.SendCityStatisticRequest;
 
 import java.util.Map;
 import java.util.stream.Collectors;

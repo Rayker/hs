@@ -1,7 +1,7 @@
 package ru.ardecs.hs.hsdb.repositories;
 
 import org.springframework.data.repository.CrudRepository;
-import ru.ardecs.hs.hscommon.entities.ReservedTime;
+import ru.ardecs.hs.common.entities.ReservedTime;
 
 import java.sql.Date;
 import java.util.List;

@@ -1,8 +1,8 @@
 package ru.ardecs.hs.hsapi.bl;
 
-import ru.ardecs.hs.hscommon.entities.JobInterval;
-import ru.ardecs.hs.hscommon.entities.ReservedTime;
-import ru.ardecs.hs.hscommon.models.TicketModel;
+import ru.ardecs.hs.common.entities.JobInterval;
+import ru.ardecs.hs.common.entities.ReservedTime;
+import ru.ardecs.hs.common.models.TicketModel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

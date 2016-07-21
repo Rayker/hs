@@ -9,7 +9,7 @@ import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
 import org.springframework.xml.transform.StringResult;
-import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
+import ru.ardecs.hs.common.soap.generated.SendCityStatisticRequest;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Signature;

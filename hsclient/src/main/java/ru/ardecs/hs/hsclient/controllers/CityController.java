@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import ru.ardecs.hs.hsclient.db.repositories.CityApiRepository;
-import ru.ardecs.hs.hscommon.TemplateGenerator;
+import ru.ardecs.hs.common.TemplateGenerator;
 
 import java.io.IOException;
 

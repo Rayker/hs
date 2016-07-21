@@ -1,6 +1,6 @@
 package ru.ardecs.hs.hsclient.db.entities;
 
-import ru.ardecs.hs.hscommon.entities.Speciality;
+import ru.ardecs.hs.common.entities.Speciality;
 
 import javax.persistence.*;
 import java.sql.Date;

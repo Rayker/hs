@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
-import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
+import ru.ardecs.hs.common.soap.generated.SendCityStatisticRequest;
 
 @Endpoint
 public class SoapEndpoint {

@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.ardecs.hs.hsclient.api.ApiProvider;
 import ru.ardecs.hs.hsclient.mail.MailSender;
-import ru.ardecs.hs.hscommon.TemplateGenerator;
-import ru.ardecs.hs.hscommon.models.TicketModel;
-import ru.ardecs.hs.hscommon.models.VisitModel;
-import ru.ardecs.hs.hscommon.requestmodels.*;
+import ru.ardecs.hs.common.TemplateGenerator;
+import ru.ardecs.hs.common.models.TicketModel;
+import ru.ardecs.hs.common.models.VisitModel;
+import ru.ardecs.hs.common.requestmodels.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;

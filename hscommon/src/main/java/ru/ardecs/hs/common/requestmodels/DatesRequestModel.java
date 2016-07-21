@@ -1,4 +1,4 @@
-package ru.ardecs.hs.hscommon.requestmodels;
+package ru.ardecs.hs.common.requestmodels;
 
 public class DatesRequestModel {
 	private long doctorId;

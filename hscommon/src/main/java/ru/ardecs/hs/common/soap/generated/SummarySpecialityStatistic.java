@@ -6,7 +6,7 @@
 //
 
 
-package ru.ardecs.hs.hscommon.soap.generated;
+package ru.ardecs.hs.common.soap.generated;
 
 import java.io.Serializable;
 import java.math.BigInteger;

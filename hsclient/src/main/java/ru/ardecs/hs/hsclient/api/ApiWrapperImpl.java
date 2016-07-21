@@ -12,12 +12,12 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.ardecs.hs.hscommon.entities.Doctor;
-import ru.ardecs.hs.hscommon.entities.Hospital;
-import ru.ardecs.hs.hscommon.entities.Speciality;
-import ru.ardecs.hs.hscommon.models.TicketModel;
-import ru.ardecs.hs.hscommon.models.VisitModel;
-import ru.ardecs.hs.hscommon.requestmodels.*;
+import ru.ardecs.hs.common.entities.Doctor;
+import ru.ardecs.hs.common.entities.Hospital;
+import ru.ardecs.hs.common.entities.Speciality;
+import ru.ardecs.hs.common.models.TicketModel;
+import ru.ardecs.hs.common.models.VisitModel;
+import ru.ardecs.hs.common.requestmodels.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.BufferedReader;

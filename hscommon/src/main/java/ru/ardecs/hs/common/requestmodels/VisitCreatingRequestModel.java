@@ -1,12 +1,11 @@
-package ru.ardecs.hs.hscommon.requestmodels;
+package ru.ardecs.hs.common.requestmodels;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Date;
 
-public class VisitFormRequestModel implements Serializable {
+public class VisitCreatingRequestModel {
 	@NotNull
 	private Long jobIntervalId;
 
@@ -16,6 +15,13 @@ public class VisitFormRequestModel implements Serializable {
 	@NotNull
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private Date date;
+
+	@NotNull
+	private String visitorName;
+
+	@NotNull
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	private Date visitorBirthday;
 
 	public Long getJobIntervalId() {
 		return jobIntervalId;
@@ -39,5 +45,21 @@ public class VisitFormRequestModel implements Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public String getVisitorName() {
+		return visitorName;
+	}
+
+	public void setVisitorName(String visitorName) {
+		this.visitorName = visitorName;
+	}
+
+	public Date getVisitorBirthday() {
+		return visitorBirthday;
+	}
+
+	public void setVisitorBirthday(Date visitorBirthday) {
+		this.visitorBirthday = visitorBirthday;
 	}
 }

@@ -20,7 +20,7 @@ import org.springframework.xml.xsd.XsdSchema;
 import ru.ardecs.hs.hsclient.db.entities.CityApi;
 import ru.ardecs.hs.hsclient.db.repositories.CityApiRepository;
 import ru.ardecs.hs.hsclient.signing.SignatureProviderImpl;
-import ru.ardecs.hs.hscommon.signing.SignatureFactory;
+import ru.ardecs.hs.common.signing.SignatureFactory;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
@@ -85,7 +85,7 @@ public class Beans {
 			@Value("${spring.activemq.user}") String user,
 			@Value("${spring.activemq.password}") String password) {
 		ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(user, password, brokerUrl);
-//		factory.setTrustedPackages(Arrays.asList("ru.ardecs.hs.hscommon.soap.generated"));
+//		factory.setTrustedPackages(Arrays.asList("ru.ardecs.hs.common.soap.generated"));
 		factory.setTrustAllPackages(true);
 		return factory;
 	}

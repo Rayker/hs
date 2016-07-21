@@ -29,7 +29,7 @@
                     <sources>
                         <source>src/main/resources/statistic.xsd</source>
                     </sources>
-                    <packageName>ru.ardecs.hs.hscommon.soap.generated</packageName>
+                    <packageName>ru.ardecs.hs.common.soap.generated</packageName>
                     <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
                     <clearOutputDir>false</clearOutputDir>
                 </configuration>

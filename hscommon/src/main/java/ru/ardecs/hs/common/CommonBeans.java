@@ -1,4 +1,4 @@
-package ru.ardecs.hs.hscommon;
+package ru.ardecs.hs.common;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
@@ -34,7 +34,7 @@ public class CommonBeans {
 	@Bean
 	public Jaxb2Marshaller marshaller() {
 		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-		marshaller.setContextPath("ru.ardecs.hs.hscommon.soap.generated");
+		marshaller.setContextPath("ru.ardecs.hs.common.soap.generated");
 		return marshaller;
 	}
 

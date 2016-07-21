@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableScheduling
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"ru.ardecs.hs.hsclient.*", "ru.ardecs.hs.*"})
-@EntityScan(basePackages = {"ru.ardecs.hs.hsclient.*", "ru.ardecs.hs.hscommon.*"})
+@EntityScan(basePackages = {"ru.ardecs.hs.hsclient.*", "ru.ardecs.hs.common.*"})
 public class HsclientApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HsclientApplication.class, args);

@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.ardecs.hs.hscommon.soap.generated.SendCityStatisticRequest;
-import ru.ardecs.hs.hscommon.soap.generated.SpecialityStatistic;
+import ru.ardecs.hs.common.soap.generated.SendCityStatisticRequest;
+import ru.ardecs.hs.common.soap.generated.SpecialityStatistic;
 import ru.ardecs.hs.hsdb.repositories.DoctorRepository;
 
 import javax.xml.datatype.DatatypeFactory;

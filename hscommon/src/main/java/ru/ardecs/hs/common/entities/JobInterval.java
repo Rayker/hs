@@ -1,4 +1,4 @@
-package ru.ardecs.hs.hscommon.entities;
+package ru.ardecs.hs.common.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
