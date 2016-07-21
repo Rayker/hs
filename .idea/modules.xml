@@ -6,7 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/hs-central/hs-central.iml" filepath="$PROJECT_DIR$/hs-central/hs-central.iml" />
       <module fileurl="file://$PROJECT_DIR$/hs-central-db/hs-central-db.iml" filepath="$PROJECT_DIR$/hs-central-db/hs-central-db.iml" />
       <module fileurl="file://$PROJECT_DIR$/hs-central-web/hs-central-web.iml" filepath="$PROJECT_DIR$/hs-central-web/hs-central-web.iml" />
-      <module fileurl="file://$PROJECT_DIR$/hs-city/hsapi.iml" filepath="$PROJECT_DIR$/hs-city/hsapi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hs-city/hs-city.iml" filepath="$PROJECT_DIR$/hs-city/hs-city.iml" />
       <module fileurl="file://$PROJECT_DIR$/hs-city-db/hs-city-db.iml" filepath="$PROJECT_DIR$/hs-city-db/hs-city-db.iml" />
       <module fileurl="file://$PROJECT_DIR$/hs-common/hs-common.iml" filepath="$PROJECT_DIR$/hs-common/hs-common.iml" />
     </modules>
