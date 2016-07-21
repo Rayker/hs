@@ -23,7 +23,7 @@
     </build>
 
     <properties>
-        <start-class>ru.ardecs.hs.hsclient.HsclientApplication</start-class>
+        <start-class>ru.ardecs.hs.central.HsclientApplication</start-class>
     </properties>
 
     <dependencies>
