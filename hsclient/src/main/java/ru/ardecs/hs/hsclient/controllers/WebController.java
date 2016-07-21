@@ -2,34 +2,28 @@ package ru.ardecs.hs.hsclient.controllers;
 
 import freemarker.template.TemplateException;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import ru.ardecs.hs.hsclient.api.ApiProvider;
-import ru.ardecs.hs.hsclient.db.repositories.CityApiRepository;
 import ru.ardecs.hs.hsclient.mail.MailSender;
 import ru.ardecs.hs.hscommon.TemplateGenerator;
 import ru.ardecs.hs.hscommon.models.TicketModel;
 import ru.ardecs.hs.hscommon.models.VisitModel;
 import ru.ardecs.hs.hscommon.requestmodels.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
 
 // TODO: 6/30/16 add deleting and refactor
-@RestController
+@Controller
+@RequestMapping("/cities/{cityId}")
 public class WebController {
-	@Autowired
-	private CityApiRepository cityApiRepository;
-
 	@Autowired
 	private ApiProvider apiProvider;
 
@@ -42,61 +36,49 @@ public class WebController {
 	@Autowired
 	private MailSender mailSender;
 
-	@RequestMapping(value = {"/cities.html", "/index.html"}, method = RequestMethod.GET)
-	public String cities() throws IOException, TemplateException {
-		Map<String, Object> map = new HashMap<>();
-		map.put("cities", cityApiRepository.findAll());
-		return templateGenerator.generateHtml(map, "cities.ftl");
+	@RequestMapping(value = "/specialities.html", method = RequestMethod.GET)
+	public String specialities(@PathVariable Long cityId, Model model) throws IOException, URISyntaxException {
+		model.addAttribute("specialities", apiProvider.getApiWrapper(cityId).specialities());
+		model.addAttribute("cityId", cityId);
+		return "specialities";
 	}
 
-	@RequestMapping(value = "/cities/{cityId}/specialities.html", method = RequestMethod.GET)
-	public String specialities(@PathVariable Long cityId) throws IOException, TemplateException, ClassNotFoundException, JSONException, URISyntaxException {
-		Map<String, Object> map = new HashMap<>();
-		map.put("specialities", apiProvider.getApiWrapper(cityId).specialities());
-		map.put("cityId", cityId);
-		return templateGenerator.generateHtml(map, "specialities.ftl");
+	@RequestMapping(value = "/hospitals.html", method = RequestMethod.GET)
+	public String hospitals(@PathVariable Long cityId, @Validated HospitalsRequestModel requestModel, Model model) throws IOException, URISyntaxException {
+		model.addAttribute("specialityId", requestModel.getSpecialityId());
+		model.addAttribute("hospitals", apiProvider.getApiWrapper(cityId).hospitals(requestModel));
+		model.addAttribute("cityId", cityId);
+		return "hospitals";
 	}
 
-	@RequestMapping(value = "/cities/{cityId}/hospitals.html", method = RequestMethod.GET)
-	public String hospitals(@PathVariable Long cityId, @Validated HospitalsRequestModel requestModel) throws IOException, TemplateException, URISyntaxException {
-		Map<String, Object> map = new HashMap<>();
-		map.put("specialityId", requestModel.getSpecialityId());
-		map.put("hospitals", apiProvider.getApiWrapper(cityId).hospitals(requestModel));
-		map.put("cityId", cityId);
-		return templateGenerator.generateHtml(map, "hospitals.ftl");
+	@RequestMapping(value = "/doctors.html", method = RequestMethod.GET)
+	public String doctors(@PathVariable Long cityId, @Validated DoctorsRequestModel doctorsRequestModel, Model model) throws IOException, URISyntaxException {
+		model.addAttribute("specialityId", doctorsRequestModel.getSpecialityId());
+		model.addAttribute("hospitalId", doctorsRequestModel.getHospitalId());
+		model.addAttribute("doctors", apiProvider.getApiWrapper(cityId).doctors(doctorsRequestModel));
+		model.addAttribute("cityId", cityId);
+		return "doctors";
 	}
 
-	@RequestMapping(value = "/cities/{cityId}/doctors.html", method = RequestMethod.GET)
-	public String doctors(@PathVariable Long cityId, @Validated DoctorsRequestModel doctorsRequestModel) throws IOException, TemplateException, URISyntaxException {
-		Map<String, Object> map = new HashMap<>();
-		map.put("specialityId", doctorsRequestModel.getSpecialityId());
-		map.put("hospitalId", doctorsRequestModel.getHospitalId());
-		map.put("doctors", apiProvider.getApiWrapper(cityId).doctors(doctorsRequestModel));
-		map.put("cityId", cityId);
-		return templateGenerator.generateHtml(map, "doctors.ftl");
+	@RequestMapping(value = "/doctors/workdays.html", params = "doctorId")
+	public String choseDate(@PathVariable Long cityId, Long doctorId, Model model) throws IOException, URISyntaxException {
+		model.addAttribute("dates", apiProvider.getApiWrapper(cityId).choseDate(doctorId));
+		model.addAttribute("doctorId", doctorId);
+		model.addAttribute("cityId", cityId);
+		return "dates";
 	}
 
-	@RequestMapping(value = "/cities/{cityId}/doctors/workdays.html", params = "doctorId")
-	public String choseDate(@PathVariable Long cityId, Long doctorId) throws IOException, TemplateException, URISyntaxException {
-		Map<String, Object> map = new HashMap<>();
-		map.put("dates", apiProvider.getApiWrapper(cityId).choseDate(doctorId));
-		map.put("doctorId", doctorId);
-		map.put("cityId", cityId);
-		return templateGenerator.generateHtml(map, "dates.ftl");
-	}
-
-	@RequestMapping(value = "/cities/{cityId}/visits/all.html", method = RequestMethod.GET)
-	public String times(@PathVariable Long cityId, @Validated IntervalsRequestModel intervalsRequestModel, HttpSession session) throws IOException, TemplateException, URISyntaxException {
-		Map<String, Object> map = new HashMap<>();
-		map.put("date", intervalsRequestModel.getDate());
-		map.put("visits", apiProvider.getApiWrapper(cityId).times(intervalsRequestModel, session.getId()));
-		map.put("cityId", cityId);
-		return templateGenerator.generateHtml(map, "visitTimes.ftl");
+	@RequestMapping(value = "/visits/all.html", method = RequestMethod.GET)
+	public String times(@PathVariable Long cityId, @Validated IntervalsRequestModel intervalsRequestModel, Model model, HttpSession session) throws IOException, URISyntaxException {
+		model.addAttribute("date", intervalsRequestModel.getDate());
+		model.addAttribute("visits", apiProvider.getApiWrapper(cityId).times(intervalsRequestModel, session.getId()));
+		model.addAttribute("cityId", cityId);
+		return "visitTimes";
 	}
 
 	// TODO: 7/7/16 replace to VisitFormModel
-	@RequestMapping(value = "/cities/{cityId}/visits/new.html", method = RequestMethod.POST)
-	public String getVisitForm(@PathVariable Long cityId, @Validated VisitFormRequestModel visitFormRequestModel, HttpSession session) throws IOException, TemplateException, URISyntaxException {
+	@RequestMapping(value = "/visits/new.html", method = RequestMethod.POST)
+	public String getVisitForm(@PathVariable Long cityId, @Validated VisitFormRequestModel visitFormRequestModel, Model model, HttpSession session) throws IOException, URISyntaxException {
 //		apiWrapperImpl.sendPost("/cache/visits.json", visitFormRequestModel);
 
 		apiProvider.getApiWrapper(cityId).cache(visitFormRequestModel, session.getId());
@@ -108,32 +90,30 @@ public class WebController {
 				null,
 				visitFormRequestModel.getDate(),
 				false);
-		Map<String, Object> map = new HashMap<>();
-		map.put("model", visitModel);
-		map.put("cityId", cityId);
-		return templateGenerator.generateHtml(map, "visitForm.ftl");
+		model.addAttribute("model", visitModel);
+		model.addAttribute("cityId", cityId);
+		return "visitForm";
 	}
 
 	// TODO: 7/7/16 replace to VisitFormModel
-	@RequestMapping(value = "/cities/{cityId}/visits", method = RequestMethod.POST)
-	public void createVisit(@PathVariable Long cityId, @Validated VisitCreatingRequestModel visitCreatingRequestModel, HttpServletResponse response, HttpSession session) throws IOException, URISyntaxException {
+	@RequestMapping(value = "/visits", method = RequestMethod.POST)
+	public String createVisit(@PathVariable Long cityId, @Validated VisitCreatingRequestModel visitCreatingRequestModel, HttpSession session) throws IOException, URISyntaxException {
 		long reservedTimeId = apiProvider.getApiWrapper(cityId).createVisit(visitCreatingRequestModel, session.getId());
-		response.sendRedirect("/cities/" + cityId + "/visits/" + reservedTimeId + "/ticket.html");
+		return "redirect:/cities/" + cityId + "/visits/" + reservedTimeId + "/ticket.html";
 	}
 
-	@RequestMapping(value = "/cities/{cityId}/visits/{reservedTimeId}/ticket.html", method = RequestMethod.GET)
-	public String getTicket(@PathVariable Long cityId, @PathVariable Long reservedTimeId) throws IOException, TemplateException, URISyntaxException {
-		TicketModel model = apiProvider.getApiWrapper(cityId).getTicketModel(reservedTimeId);
-		Map<String, Object> map = new HashMap<>();
-		map.put("model", model);
-		map.put("cityId", cityId);
-		return templateGenerator.generateHtml(map, "ticket.ftl");
+	@RequestMapping(value = "/visits/{reservedTimeId}/ticket.html", method = RequestMethod.GET)
+	public String getTicket(@PathVariable Long cityId, @PathVariable Long reservedTimeId, Model model) throws IOException, URISyntaxException {
+		TicketModel ticketModel = apiProvider.getApiWrapper(cityId).getTicketModel(reservedTimeId);
+		model.addAttribute("model", ticketModel);
+		model.addAttribute("cityId", cityId);
+		return "ticket";
 	}
 
 	// TODO: 6/30/16 move?
-	@RequestMapping(value = "/cities/{cityId}/visits/{reservedTimeId}/ticket/send", method = RequestMethod.POST, params = {"addressTo"})
-	public void send(@PathVariable Long cityId, @PathVariable Long reservedTimeId, String addressTo, HttpServletResponse response) throws IOException, TemplateException {
+	@RequestMapping(value = "/visits/{reservedTimeId}/ticket/send", method = RequestMethod.POST, params = {"addressTo"})
+	public String send(@PathVariable Long cityId, @PathVariable Long reservedTimeId, String addressTo) throws IOException, TemplateException {
 		mailSender.send(cityId, addressTo, reservedTimeId);
-		response.sendRedirect("/visits/" + reservedTimeId + "/ticket.html");
+		return "redirect:/visits/" + reservedTimeId + "/ticket.html";
 	}
 }
