@@ -22,9 +22,9 @@
     <modules>
         <module>hsapi</module>
         <module>hsdb</module>
-        <module>hsclient</module>
-        <module>hscommon</module>
-        <module>hsclientdb</module>
+        <module>hs-central</module>
+        <module>hs-common</module>
+        <module>hs-central-db</module>
         <module>hs-central-web</module>
     </modules>
 
@@ -65,7 +65,7 @@
         <dependencies>
             <dependency>
                 <groupId>ru.ardecs</groupId>
-                <artifactId>hscommon</artifactId>
+                <artifactId>hs-common</artifactId>
                 <version>${hs.version}</version>
             </dependency>
             <dependency>
@@ -80,12 +80,12 @@
             </dependency>
             <dependency>
                 <groupId>ru.ardecs</groupId>
-                <artifactId>hsclientdb</artifactId>
+                <artifactId>hs-central-db</artifactId>
                 <version>${hs.version}</version>
             </dependency>
             <dependency>
                 <groupId>ru.ardecs</groupId>
-                <artifactId>hsclient</artifactId>
+                <artifactId>hs-central</artifactId>
                 <version>${hs.version}</version>
             </dependency>
 

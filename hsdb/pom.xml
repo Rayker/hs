@@ -18,7 +18,7 @@
         </dependency>
         <dependency>
             <groupId>ru.ardecs</groupId>
-            <artifactId>hscommon</artifactId>
+            <artifactId>hs-common</artifactId>
         </dependency>
     </dependencies>
 

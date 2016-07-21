@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>hsclientdb</artifactId>
+    <artifactId>hs-central-db</artifactId>
 
     <dependencies>
 
@@ -38,7 +38,7 @@
 
         <dependency>
             <groupId>ru.ardecs</groupId>
-            <artifactId>hscommon</artifactId>
+            <artifactId>hs-common</artifactId>
         </dependency>
     </dependencies>
 

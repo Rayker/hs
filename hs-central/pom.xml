@@ -9,16 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>hsclient</artifactId>
+    <artifactId>hs-central</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>ru.ardecs</groupId>
-            <artifactId>hscommon</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ru.ardecs</groupId>
-            <artifactId>hsclientdb</artifactId>
+            <artifactId>hs-central-db</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

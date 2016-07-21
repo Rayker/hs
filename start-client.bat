@@ -1,7 +1,7 @@
 call mvn clean
 call mvn package -pl hs-central-web -am 
 if ERRORLEVEL 1 (
-	echo Error package:hsclient
+	echo Error package:hs-central-web
 	pause
 	goto end
 )
