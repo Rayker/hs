@@ -10,21 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>hsclient</artifactId>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>${start-class}</mainClass>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-    <properties>
-        <start-class>ru.ardecs.hs.central.HsclientApplication</start-class>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -34,10 +19,6 @@
         <dependency>
             <groupId>ru.ardecs</groupId>
             <artifactId>hsclientdb</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -63,10 +44,6 @@
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.0-api</artifactId>
         </dependency>
 
         <dependency>

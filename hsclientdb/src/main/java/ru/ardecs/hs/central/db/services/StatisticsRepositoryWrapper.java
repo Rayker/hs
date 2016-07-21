@@ -1,4 +1,4 @@
-package ru.ardecs.hs.central.statistic;
+package ru.ardecs.hs.central.db.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +65,7 @@ public class StatisticsRepositoryWrapper {
 
 	private void longBl() {
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			logger.error("InterruptedException", e);
 			throw new RuntimeException(e);

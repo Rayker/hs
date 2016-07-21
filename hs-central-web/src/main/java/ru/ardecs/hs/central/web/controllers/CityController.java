@@ -1,4 +1,4 @@
-package ru.ardecs.hs.central.controllers;
+package ru.ardecs.hs.central.web.controllers;
 
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
