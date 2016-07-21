@@ -15,7 +15,7 @@ import ru.ardecs.hs.hsapi.cache.CachedVisit;
 import ru.ardecs.hs.common.entities.Doctor;
 import ru.ardecs.hs.common.entities.Hospital;
 import ru.ardecs.hs.common.entities.ReservedTime;
-import ru.ardecs.hs.common.entities.Speciality;
+import ru.ardecs.hs.common.entities.shared.Speciality;
 import ru.ardecs.hs.common.models.TicketModel;
 import ru.ardecs.hs.common.models.VisitModel;
 import ru.ardecs.hs.common.requestmodels.*;

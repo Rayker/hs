@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.ardecs.hs.common.entities.Speciality;
+import ru.ardecs.hs.common.entities.shared.Speciality;
 import ru.ardecs.hs.hsdb.services.DoctorService;
 
 // TODO: 7/7/16 remove

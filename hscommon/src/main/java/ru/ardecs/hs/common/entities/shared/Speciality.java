@@ -1,4 +1,4 @@
-package ru.ardecs.hs.common.entities;
+package ru.ardecs.hs.common.entities.shared;
 
 import javax.persistence.*;
 import java.io.Serializable;

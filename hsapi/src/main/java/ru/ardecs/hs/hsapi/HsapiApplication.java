@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(basePackages = {"ru.ardecs.hs.hsdb.repositories"})
 @EnableScheduling
 @EnableTransactionManagement
-@EntityScan("ru.ardecs.hs.common.*")
+@EntityScan("ru.ardecs.hs.common.entities")
 @ComponentScan(basePackages = {"ru.ardecs.hs.hsapi.*", "ru.ardecs.hs.*"})
 public class HsapiApplication {
 	public static void main(String[] args) {

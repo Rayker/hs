@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.ardecs.hs.common.entities.Doctor;
 import ru.ardecs.hs.common.entities.Hospital;
-import ru.ardecs.hs.common.entities.Speciality;
+import ru.ardecs.hs.common.entities.shared.Speciality;
 import ru.ardecs.hs.common.models.TicketModel;
 import ru.ardecs.hs.common.models.VisitModel;
 import ru.ardecs.hs.common.requestmodels.*;

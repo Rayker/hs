@@ -1,6 +1,7 @@
 package ru.ardecs.hs.common.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import ru.ardecs.hs.common.entities.shared.Speciality;
 
 import javax.persistence.*;
 import java.io.Serializable;
