@@ -5,6 +5,7 @@ if ERRORLEVEL 1 (
 	pause
 	goto end
 )
-start java -jar hs-central-web/target/hs-central-web-1.0-SNAPSHOT.war 
+rem start java -jar hs-central-web/target/hs-central-web-1.0-SNAPSHOT.war 
+start java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -jar hs-central-web/target/hs-central-web-1.0-SNAPSHOT.war 
 
 :end
