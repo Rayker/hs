@@ -5,6 +5,6 @@ if ERRORLEVEL 1 (
 	pause
 	goto end
 )
-start java -jar hs-central-web/target/hs-central-web-1.0-SNAPSHOT.jar 
+start java -jar hs-central-web/target/hs-central-web-1.0-SNAPSHOT.war 
 
 :end
