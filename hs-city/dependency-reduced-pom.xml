@@ -28,7 +28,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>ru.ardecs.hs.city.HsapiApplication</mainClass>
+                  <mainClass>ru.ardecs.hs.city.HsCityApplication</mainClass>
                 </transformer>
               </transformers>
             </configuration>
@@ -40,7 +40,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.2.1</version>
         <configuration>
-          <mainClass>ru.ardecs.hs.city.HsapiApplication</mainClass>
+          <mainClass>ru.ardecs.hs.city.HsCityApplication</mainClass>
         </configuration>
       </plugin>
       <plugin>

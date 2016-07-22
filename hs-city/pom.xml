@@ -23,7 +23,7 @@
     </build>
 
     <properties>
-        <start-class>ru.ardecs.hs.city.HsapiApplication</start-class>
+        <start-class>ru.ardecs.hs.city.HsCityApplication</start-class>
     </properties>
 
     <dependencies>

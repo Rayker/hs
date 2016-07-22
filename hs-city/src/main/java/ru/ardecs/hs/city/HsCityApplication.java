@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EntityScan("ru.ardecs.hs.common.entities")
 @ComponentScan(basePackages = {"ru.ardecs.hs.city.*", "ru.ardecs.hs.*"})
-public class HsapiApplication {
+public class HsCityApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(HsapiApplication.class, args);
+		SpringApplication.run(HsCityApplication.class, args);
 	}
 }
