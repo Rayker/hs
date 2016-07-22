@@ -1,6 +1,8 @@
 package ru.ardecs.hs.city.controllers;
 
 import freemarker.template.TemplateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.ardecs.hs.city.bl.ScheduleFactory;
 import ru.ardecs.hs.city.bl.ScheduleManager;
 import ru.ardecs.hs.city.cache.CachedVisit;
+import ru.ardecs.hs.city.db.repositories.DoctorRepository;
+import ru.ardecs.hs.city.db.repositories.ReservedTimeRepository;
+import ru.ardecs.hs.city.db.repositories.SpecialityRepository;
 import ru.ardecs.hs.common.entities.Doctor;
 import ru.ardecs.hs.common.entities.Hospital;
 import ru.ardecs.hs.common.entities.ReservedTime;
@@ -19,9 +24,6 @@ import ru.ardecs.hs.common.entities.shared.Speciality;
 import ru.ardecs.hs.common.models.TicketModel;
 import ru.ardecs.hs.common.models.VisitModel;
 import ru.ardecs.hs.common.requestmodels.*;
-import ru.ardecs.hs.city.db.repositories.DoctorRepository;
-import ru.ardecs.hs.city.db.repositories.ReservedTimeRepository;
-import ru.ardecs.hs.city.db.repositories.SpecialityRepository;
 
 import java.io.IOException;
 import java.util.Date;
@@ -29,6 +31,8 @@ import java.util.List;
 
 @RestController
 public class ApiController {
+	private static Logger logger = LoggerFactory.getLogger(ApiController.class);
+
 	@Autowired
 	private SpecialityRepository specialityRepository;
 
@@ -60,7 +64,7 @@ public class ApiController {
 	}
 
 	@RequestMapping(value = "/doctors/{doctorId}/workdays.json", method = RequestMethod.GET)
-	public List<Date> choseDate(@PathVariable Long doctorId) throws IOException, TemplateException {
+	public List<Date> choseDate(@PathVariable Long doctorId) {
 		// TODO: 6/30/16 refactor it
 		return scheduleManager.getWorkDays(doctorId, 7);
 	}
@@ -84,7 +88,7 @@ public class ApiController {
 	}
 
 	@RequestMapping(value = "/visits", method = RequestMethod.POST, params = {"sessionId"})
-	public long createVisit(@Validated VisitCreatingRequestModel visitCreatingRequestModel, String sessionId) throws IOException {
+	public long createVisit(@Validated VisitCreatingRequestModel visitCreatingRequestModel, String sessionId) {
 		ReservedTime reservedTime = new ReservedTime(
 				visitCreatingRequestModel.getJobIntervalId(),
 				visitCreatingRequestModel.getNumberInInterval(),
@@ -105,7 +109,9 @@ public class ApiController {
 	public ResponseEntity delete(@PathVariable Long reservedTimeId) {
 		try {
 			reservedTimeRepository.delete(reservedTimeId);
+			// TODO: 7/22/16 specify exception
 		} catch (Exception e) {
+			logger.debug("{} with id {} not found", ReservedTime.class.getSimpleName(), reservedTimeId);
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
