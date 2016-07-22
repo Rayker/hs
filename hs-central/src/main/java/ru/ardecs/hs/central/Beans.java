@@ -4,12 +4,15 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.ws.security.components.crypto.Crypto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -41,7 +44,10 @@ import java.util.stream.StreamSupport;
 @EnableJms
 @EnableScheduling
 @EnableTransactionManagement
+@EnableAspectJAutoProxy
 public class Beans {
+	private static Logger logger = LoggerFactory.getLogger(Beans.class);
+
 	@Bean
 	public CloseableHttpClient httpClient() {
 		return HttpClients.createDefault();

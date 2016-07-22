@@ -19,10 +19,14 @@ public class SignatureFactory {
 	private KeyStore trustStore;
 
 	public Signature createVerificationSignature(long cityId) {
+		String cityIdAlias = String.valueOf(cityId);
+		return createVerificationSignature(cityIdAlias);
+	}
+
+	public Signature createVerificationSignature(String alias) {
 		Certificate certificate;
 		try {
-			String cityIdAlias = String.valueOf(cityId);
-			certificate = trustStore.getCertificate(cityIdAlias);
+			certificate = trustStore.getCertificate(alias);
 			if (certificate == null) {
 				certificate = trustStore.getCertificate("public");
 			}
